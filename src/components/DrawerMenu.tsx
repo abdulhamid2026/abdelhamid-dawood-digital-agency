@@ -1,0 +1,140 @@
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Sparkles, Moon, Sun, LogOut, ChevronLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { menuItems } from '@/data/services';
+
+interface DrawerMenuProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    onClose();
+  };
+
+  const handleLogout = () => {
+    logout();
+    onClose();
+    navigate('/auth');
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
+          />
+
+          {/* Drawer */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[85vw] bg-card border-l border-border shadow-elevated overflow-hidden"
+          >
+            {/* Header */}
+            <div className="p-6 border-b border-border">
+              <div className="flex items-center justify-between mb-4">
+                <Button variant="ghost" size="icon" onClick={onClose}>
+                  <X className="w-5 h-5" />
+                </Button>
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-lg">القائمة</span>
+                  <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-primary-foreground" />
+                  </div>
+                </div>
+              </div>
+
+              {/* User Info */}
+              {user && (
+                <div className="flex items-center gap-3 p-3 bg-secondary rounded-xl">
+                  <div className="w-12 h-12 rounded-full gradient-gold flex items-center justify-center text-primary-foreground font-bold text-lg">
+                    {user.name.charAt(0)}
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-foreground">{user.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {user.isGuest ? 'زائر' : user.email}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Menu Items */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-custom max-h-[calc(100vh-280px)]">
+              {menuItems.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <motion.button
+                    key={item.id}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    onClick={() => handleNavigate(item.path)}
+                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-secondary transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-secondary group-hover:bg-primary/10 flex items-center justify-center transition-colors">
+                      <Icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="flex-1 text-right font-medium text-foreground">
+                      {item.title}
+                    </span>
+                    <ChevronLeft className="w-4 h-4 text-muted-foreground" />
+                  </motion.button>
+                );
+              })}
+            </div>
+
+            {/* Footer Actions */}
+            <div className="p-4 border-t border-border space-y-3">
+              {/* Theme Toggle */}
+              <Button
+                variant="outline"
+                className="w-full justify-between"
+                onClick={toggleTheme}
+              >
+                <span>{theme === 'dark' ? 'الوضع الفاتح' : 'الوضع المظلم'}</span>
+                {theme === 'dark' ? (
+                  <Sun className="w-5 h-5 text-primary" />
+                ) : (
+                  <Moon className="w-5 h-5 text-primary" />
+                )}
+              </Button>
+
+              {/* Logout */}
+              <Button
+                variant="destructive"
+                className="w-full"
+                onClick={handleLogout}
+              >
+                <LogOut className="w-5 h-5 ml-2" />
+                تسجيل الخروج
+              </Button>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
+
+export default DrawerMenu;
