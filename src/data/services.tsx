@@ -13,6 +13,7 @@ import {
   Phone,
   Bot,
   Sparkles,
+  LayoutDashboard,
 } from 'lucide-react';
 
 export interface Service {
@@ -106,6 +107,7 @@ export const menuItems = [
   { id: 'booking', title: 'حجز الخدمات', icon: Calendar, path: '/booking' },
   { id: 'contact', title: 'اتصل بنا', icon: Phone, path: '/contact' },
   { id: 'assistant', title: 'المساعد الذكي', icon: Bot, path: '/assistant' },
+  { id: 'admin', title: 'لوحة التحكم', icon: LayoutDashboard, path: '/admin' },
 ];
 
 export const newsItems = [
