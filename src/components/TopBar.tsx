@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Bell, MessageCircle, Menu, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useNotifications } from '@/hooks/useNotifications';
+import { useMessages } from '@/hooks/useMessages';
+import NotificationsDropdown from './NotificationsDropdown';
+import MessagesDropdown from './MessagesDropdown';
 
 interface TopBarProps {
   onMenuClick: () => void;
 }
 
 const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
+  const { unreadCount: notificationCount } = useNotifications();
+  const { unreadCount: messageCount } = useMessages();
+
   const openWhatsApp = () => {
     window.open('https://wa.me/967778215553', '_blank');
   };
@@ -41,20 +50,52 @@ const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
         {/* Actions */}
         <div className="flex items-center gap-1">
           {/* Notifications */}
-          <Button variant="ghost" size="icon" className="relative text-foreground hover:bg-secondary">
-            <Bell className="w-5 h-5" />
-            <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center text-xs bg-primary text-primary-foreground">
-              3
-            </Badge>
-          </Button>
+          <div className="relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative text-foreground hover:bg-secondary"
+              onClick={() => {
+                setShowNotifications(!showNotifications);
+                setShowMessages(false);
+              }}
+            >
+              <Bell className="w-5 h-5" />
+              {notificationCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center text-xs bg-primary text-primary-foreground">
+                  {notificationCount > 9 ? '9+' : notificationCount}
+                </Badge>
+              )}
+            </Button>
+            <NotificationsDropdown
+              isOpen={showNotifications}
+              onClose={() => setShowNotifications(false)}
+            />
+          </div>
 
           {/* Messages */}
-          <Button variant="ghost" size="icon" className="relative text-foreground hover:bg-secondary">
-            <MessageCircle className="w-5 h-5" />
-            <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center text-xs bg-primary text-primary-foreground">
-              2
-            </Badge>
-          </Button>
+          <div className="relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative text-foreground hover:bg-secondary"
+              onClick={() => {
+                setShowMessages(!showMessages);
+                setShowNotifications(false);
+              }}
+            >
+              <MessageCircle className="w-5 h-5" />
+              {messageCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center text-xs bg-primary text-primary-foreground">
+                  {messageCount > 9 ? '9+' : messageCount}
+                </Badge>
+              )}
+            </Button>
+            <MessagesDropdown
+              isOpen={showMessages}
+              onClose={() => setShowMessages(false)}
+            />
+          </div>
 
           {/* WhatsApp */}
           <Button
