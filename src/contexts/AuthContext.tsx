@@ -1,78 +1,156 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { User, Session } from '@supabase/supabase-js';
 
-interface User {
+interface Profile {
   id: string;
+  user_id: string;
   name: string;
-  email: string;
-  isGuest: boolean;
+  email: string | null;
+  avatar_url: string | null;
 }
 
 interface AuthContextType {
   user: User | null;
+  session: Session | null;
+  profile: Profile | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<{ error: string | null }>;
+  register: (name: string, email: string, password: string) => Promise<{ error: string | null }>;
   loginAsGuest: () => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isGuest, setIsGuest] = useState(false);
 
-  useEffect(() => {
-    const savedUser = localStorage.getItem('app-user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+  const fetchProfile = async (userId: string) => {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
+    
+    if (!error && data) {
+      setProfile(data);
     }
-  }, []);
-
-  const login = async (email: string, password: string): Promise<boolean> => {
-    // Simulate login
-    const newUser: User = {
-      id: Date.now().toString(),
-      name: email.split('@')[0],
-      email,
-      isGuest: false,
-    };
-    setUser(newUser);
-    localStorage.setItem('app-user', JSON.stringify(newUser));
-    return true;
   };
 
-  const register = async (name: string, email: string, password: string): Promise<boolean> => {
-    const newUser: User = {
-      id: Date.now().toString(),
-      name,
+  useEffect(() => {
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setIsGuest(false);
+        
+        if (session?.user) {
+          setTimeout(() => {
+            fetchProfile(session.user.id);
+          }, 0);
+        } else {
+          setProfile(null);
+        }
+      }
+    );
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      
+      if (session?.user) {
+        fetchProfile(session.user.id);
+      }
+      
+      // Check for guest session
+      const guestData = localStorage.getItem('guest-session');
+      if (!session && guestData) {
+        setIsGuest(true);
+      }
+      
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const login = async (email: string, password: string): Promise<{ error: string | null }> => {
+    const { error } = await supabase.auth.signInWithPassword({
       email,
-      isGuest: false,
-    };
-    setUser(newUser);
-    localStorage.setItem('app-user', JSON.stringify(newUser));
-    return true;
+      password,
+    });
+    
+    if (error) {
+      return { error: error.message };
+    }
+    
+    localStorage.removeItem('guest-session');
+    setIsGuest(false);
+    return { error: null };
+  };
+
+  const register = async (name: string, email: string, password: string): Promise<{ error: string | null }> => {
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl,
+        data: {
+          name: name,
+        },
+      },
+    });
+    
+    if (error) {
+      if (error.message.includes('already registered')) {
+        return { error: 'هذا البريد الإلكتروني مسجل بالفعل' };
+      }
+      return { error: error.message };
+    }
+    
+    localStorage.removeItem('guest-session');
+    setIsGuest(false);
+    return { error: null };
   };
 
   const loginAsGuest = () => {
-    const guestUser: User = {
+    const guestData = {
       id: 'guest-' + Date.now(),
       name: 'زائر',
-      email: '',
       isGuest: true,
     };
-    setUser(guestUser);
-    localStorage.setItem('app-user', JSON.stringify(guestUser));
+    localStorage.setItem('guest-session', JSON.stringify(guestData));
+    setIsGuest(true);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut();
+    localStorage.removeItem('guest-session');
+    setIsGuest(false);
     setUser(null);
-    localStorage.removeItem('app-user');
+    setSession(null);
+    setProfile(null);
   };
+
+  const isAuthenticated = !!user || isGuest;
 
   return (
     <AuthContext.Provider value={{
       user,
-      isAuthenticated: !!user,
+      session,
+      profile,
+      isAuthenticated,
+      isLoading,
       login,
       register,
       loginAsGuest,

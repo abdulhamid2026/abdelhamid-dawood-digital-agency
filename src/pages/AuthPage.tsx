@@ -26,19 +26,27 @@ const AuthPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      let success: boolean;
+      let result: { error: string | null };
       if (mode === 'login') {
-        success = await login(email, password);
+        result = await login(email, password);
       } else {
-        success = await register(name, email, password);
+        result = await register(name, email, password);
       }
 
-      if (success) {
+      if (result.error) {
+        toast({
+          title: 'خطأ',
+          description: result.error,
+          variant: 'destructive',
+        });
+      } else {
         toast({
           title: mode === 'login' ? 'تم تسجيل الدخول' : 'تم إنشاء الحساب',
-          description: 'مرحباً بك في عبدالحميد داوؤد',
+          description: mode === 'login' ? 'مرحباً بك في عبدالحميد داوؤد' : 'يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب',
         });
-        navigate('/');
+        if (mode === 'login') {
+          navigate('/');
+        }
       }
     } catch (error) {
       toast({

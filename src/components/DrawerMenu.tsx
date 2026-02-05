@@ -7,6 +7,28 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { menuItems } from '@/data/services';
 
+const getUserDisplayInfo = (user: any, profile: any) => {
+  if (profile) {
+    return {
+      name: profile.name,
+      email: profile.email,
+      isGuest: false,
+    };
+  }
+  if (user) {
+    return {
+      name: user.user_metadata?.name || user.email?.split('@')[0] || 'مستخدم',
+      email: user.email,
+      isGuest: false,
+    };
+  }
+  return {
+    name: 'زائر',
+    email: '',
+    isGuest: true,
+  };
+};
+
 interface DrawerMenuProps {
   isOpen: boolean;
   onClose: () => void;
@@ -15,7 +37,8 @@ interface DrawerMenuProps {
 const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
-  const { user, logout } = useAuth();
+  const { user, profile, logout } = useAuth();
+  const displayInfo = getUserDisplayInfo(user, profile);
 
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -64,15 +87,15 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
               </div>
 
               {/* User Info */}
-              {user && (
+              {(user || displayInfo.isGuest) && (
                 <div className="flex items-center gap-3 p-3 bg-secondary rounded-xl">
                   <div className="w-12 h-12 rounded-full gradient-gold flex items-center justify-center text-primary-foreground font-bold text-lg">
-                    {user.name.charAt(0)}
+                    {displayInfo.name.charAt(0)}
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-foreground">{user.name}</p>
+                    <p className="font-semibold text-foreground">{displayInfo.name}</p>
                     <p className="text-sm text-muted-foreground">
-                      {user.isGuest ? 'زائر' : user.email}
+                      {displayInfo.isGuest ? 'زائر' : displayInfo.email}
                     </p>
                   </div>
                 </div>
