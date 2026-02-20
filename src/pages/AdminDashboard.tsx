@@ -8,13 +8,14 @@ import {
   Users,
   TrendingUp,
   Clock,
-  CheckCircle,
   XCircle,
-  ArrowRight
+  ArrowRight,
+  Newspaper,
+  MessageSquare,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useBookings } from '@/hooks/useBookings';
@@ -23,6 +24,9 @@ import { useServices } from '@/hooks/useServices';
 import AdminBookingsTable from '@/components/admin/AdminBookingsTable';
 import AdminOrdersTable from '@/components/admin/AdminOrdersTable';
 import AdminServicesTable from '@/components/admin/AdminServicesTable';
+import AdminUsersTable from '@/components/admin/AdminUsersTable';
+import AdminNewsTable from '@/components/admin/AdminNewsTable';
+import AdminChatPanel from '@/components/admin/AdminChatPanel';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
@@ -64,34 +68,10 @@ const AdminDashboard: React.FC = () => {
   const activeServices = services.filter(s => s.is_active).length;
 
   const stats = [
-    {
-      title: 'إجمالي الحجوزات',
-      value: bookings.length,
-      icon: Calendar,
-      color: 'text-primary',
-      bgColor: 'bg-primary/10',
-    },
-    {
-      title: 'حجوزات معلقة',
-      value: pendingBookings,
-      icon: Clock,
-      color: 'text-primary',
-      bgColor: 'bg-primary/10',
-    },
-    {
-      title: 'إجمالي الطلبات',
-      value: orders.length,
-      icon: Package,
-      color: 'text-primary',
-      bgColor: 'bg-primary/10',
-    },
-    {
-      title: 'طلبات معلقة',
-      value: pendingOrders,
-      icon: TrendingUp,
-      color: 'text-primary',
-      bgColor: 'bg-primary/10',
-    },
+    { title: 'إجمالي الحجوزات', value: bookings.length, icon: Calendar, color: 'text-primary', bgColor: 'bg-primary/10' },
+    { title: 'حجوزات معلقة', value: pendingBookings, icon: Clock, color: 'text-primary', bgColor: 'bg-primary/10' },
+    { title: 'إجمالي الطلبات', value: orders.length, icon: Package, color: 'text-primary', bgColor: 'bg-primary/10' },
+    { title: 'طلبات معلقة', value: pendingOrders, icon: TrendingUp, color: 'text-primary', bgColor: 'bg-primary/10' },
   ];
 
   return (
@@ -115,12 +95,7 @@ const AdminDashboard: React.FC = () => {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {stats.map((stat, index) => (
-              <motion.div
-                key={stat.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
+              <motion.div key={stat.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                 <Card>
                   <CardContent className="p-4">
                     <div className="flex items-center gap-3">
@@ -140,32 +115,39 @@ const AdminDashboard: React.FC = () => {
 
           {/* Tabs */}
           <Tabs defaultValue="bookings" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6">
-              <TabsTrigger value="bookings" className="flex items-center gap-2">
+            <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 mb-6 h-auto">
+              <TabsTrigger value="bookings" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <Calendar className="w-4 h-4" />
                 <span className="hidden sm:inline">الحجوزات</span>
               </TabsTrigger>
-              <TabsTrigger value="orders" className="flex items-center gap-2">
+              <TabsTrigger value="orders" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <Package className="w-4 h-4" />
                 <span className="hidden sm:inline">الطلبات</span>
               </TabsTrigger>
-              <TabsTrigger value="services" className="flex items-center gap-2">
+              <TabsTrigger value="services" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <Settings className="w-4 h-4" />
                 <span className="hidden sm:inline">الخدمات</span>
               </TabsTrigger>
+              <TabsTrigger value="users" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+                <Users className="w-4 h-4" />
+                <span className="hidden sm:inline">المستخدمون</span>
+              </TabsTrigger>
+              <TabsTrigger value="news" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+                <Newspaper className="w-4 h-4" />
+                <span className="hidden sm:inline">الأخبار</span>
+              </TabsTrigger>
+              <TabsTrigger value="chat" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+                <MessageSquare className="w-4 h-4" />
+                <span className="hidden sm:inline">المراسلات</span>
+              </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="bookings">
-              <AdminBookingsTable />
-            </TabsContent>
-
-            <TabsContent value="orders">
-              <AdminOrdersTable />
-            </TabsContent>
-
-            <TabsContent value="services">
-              <AdminServicesTable />
-            </TabsContent>
+            <TabsContent value="bookings"><AdminBookingsTable /></TabsContent>
+            <TabsContent value="orders"><AdminOrdersTable /></TabsContent>
+            <TabsContent value="services"><AdminServicesTable /></TabsContent>
+            <TabsContent value="users"><AdminUsersTable /></TabsContent>
+            <TabsContent value="news"><AdminNewsTable /></TabsContent>
+            <TabsContent value="chat"><AdminChatPanel /></TabsContent>
           </Tabs>
         </div>
       </main>
