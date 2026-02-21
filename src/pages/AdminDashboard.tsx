@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  LayoutDashboard, 
-  Package, 
-  Calendar, 
-  Settings, 
-  Users,
-  TrendingUp,
-  Clock,
-  XCircle,
-  ArrowRight,
-  Newspaper,
-  MessageSquare,
+  LayoutDashboard, Package, Calendar, Settings, Users,
+  TrendingUp, Clock, XCircle, ArrowRight, Newspaper, MessageSquare, Image,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -27,6 +18,7 @@ import AdminServicesTable from '@/components/admin/AdminServicesTable';
 import AdminUsersTable from '@/components/admin/AdminUsersTable';
 import AdminNewsTable from '@/components/admin/AdminNewsTable';
 import AdminChatPanel from '@/components/admin/AdminChatPanel';
+import AdminSlidesTable from '@/components/admin/AdminSlidesTable';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
@@ -55,8 +47,7 @@ const AdminDashboard: React.FC = () => {
           <h1 className="text-2xl font-bold text-foreground mb-2">غير مصرح</h1>
           <p className="text-muted-foreground mb-6">ليس لديك صلاحية الوصول إلى لوحة التحكم</p>
           <Button onClick={() => navigate('/')}>
-            <ArrowRight className="w-4 h-4 ml-2" />
-            العودة للرئيسية
+            <ArrowRight className="w-4 h-4 ml-2" />العودة للرئيسية
           </Button>
         </div>
       </div>
@@ -81,7 +72,6 @@ const AdminDashboard: React.FC = () => {
 
       <main className="flex-1 pt-16 pb-20">
         <div className="container mx-auto px-4 py-6">
-          {/* Header */}
           <div className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 rounded-xl gradient-gold flex items-center justify-center">
               <LayoutDashboard className="w-6 h-6 text-primary-foreground" />
@@ -92,7 +82,6 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Stats Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {stats.map((stat, index) => (
               <motion.div key={stat.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
@@ -113,32 +102,28 @@ const AdminDashboard: React.FC = () => {
             ))}
           </div>
 
-          {/* Tabs */}
           <Tabs defaultValue="bookings" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 mb-6 h-auto">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 mb-6 h-auto">
               <TabsTrigger value="bookings" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Calendar className="w-4 h-4" />
-                <span className="hidden sm:inline">الحجوزات</span>
+                <Calendar className="w-4 h-4" /><span className="hidden sm:inline">الحجوزات</span>
               </TabsTrigger>
               <TabsTrigger value="orders" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Package className="w-4 h-4" />
-                <span className="hidden sm:inline">الطلبات</span>
+                <Package className="w-4 h-4" /><span className="hidden sm:inline">الطلبات</span>
               </TabsTrigger>
               <TabsTrigger value="services" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Settings className="w-4 h-4" />
-                <span className="hidden sm:inline">الخدمات</span>
+                <Settings className="w-4 h-4" /><span className="hidden sm:inline">الخدمات</span>
               </TabsTrigger>
               <TabsTrigger value="users" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Users className="w-4 h-4" />
-                <span className="hidden sm:inline">المستخدمون</span>
+                <Users className="w-4 h-4" /><span className="hidden sm:inline">المستخدمون</span>
               </TabsTrigger>
               <TabsTrigger value="news" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Newspaper className="w-4 h-4" />
-                <span className="hidden sm:inline">الأخبار</span>
+                <Newspaper className="w-4 h-4" /><span className="hidden sm:inline">الأخبار</span>
+              </TabsTrigger>
+              <TabsTrigger value="slides" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+                <Image className="w-4 h-4" /><span className="hidden sm:inline">السلايدر</span>
               </TabsTrigger>
               <TabsTrigger value="chat" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <MessageSquare className="w-4 h-4" />
-                <span className="hidden sm:inline">المراسلات</span>
+                <MessageSquare className="w-4 h-4" /><span className="hidden sm:inline">المراسلات</span>
               </TabsTrigger>
             </TabsList>
 
@@ -147,6 +132,7 @@ const AdminDashboard: React.FC = () => {
             <TabsContent value="services"><AdminServicesTable /></TabsContent>
             <TabsContent value="users"><AdminUsersTable /></TabsContent>
             <TabsContent value="news"><AdminNewsTable /></TabsContent>
+            <TabsContent value="slides"><AdminSlidesTable /></TabsContent>
             <TabsContent value="chat"><AdminChatPanel /></TabsContent>
           </Tabs>
         </div>

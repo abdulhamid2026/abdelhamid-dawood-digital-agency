@@ -25,7 +25,7 @@ const NewsTicker: React.FC = () => {
             className="flex gap-16 whitespace-nowrap"
             animate={{ x: ['0%', '50%'] }}
             transition={{
-              duration: 30,
+              duration: 18,
               repeat: Infinity,
               ease: 'linear',
             }}

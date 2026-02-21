@@ -16,6 +16,7 @@ import AssistantPage from "@/pages/AssistantPage";
 import ServicePage from "@/pages/ServicePage";
 import PortfolioPage from "@/pages/PortfolioPage";
 import AdminDashboard from "@/pages/AdminDashboard";
+import ProfilePage from "@/pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const AppContent: React.FC = () => {
       <Route path="/services/:serviceId" element={<ProtectedRoute><ServicePage /></ProtectedRoute>} />
       <Route path="/portfolio" element={<ProtectedRoute><PortfolioPage /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
