@@ -88,17 +88,20 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
 
               {/* User Info */}
               {(user || displayInfo.isGuest) && (
-                <div className="flex items-center gap-3 p-3 bg-secondary rounded-xl">
+                <button
+                  onClick={() => { if (user) handleNavigate('/profile'); }}
+                  className="w-full flex items-center gap-3 p-3 bg-secondary rounded-xl hover:bg-secondary/80 transition-colors"
+                >
                   <div className="w-12 h-12 rounded-full gradient-gold flex items-center justify-center text-primary-foreground font-bold text-lg">
                     {displayInfo.name.charAt(0)}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 text-right">
                     <p className="font-semibold text-foreground">{displayInfo.name}</p>
                     <p className="text-sm text-muted-foreground">
                       {displayInfo.isGuest ? 'زائر' : displayInfo.email}
                     </p>
                   </div>
-                </div>
+                </button>
               )}
             </div>
 

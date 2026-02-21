@@ -1,30 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { sliderItems } from '@/data/services';
 import { Button } from '@/components/ui/button';
+import { useHeroSlides } from '@/hooks/useHeroSlides';
+import { sliderItems } from '@/data/services';
 
 const HeroSlider: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { activeSlides, isLoading } = useHeroSlides();
+
+  // Use DB slides if available, otherwise fallback to static
+  const items = activeSlides.length > 0
+    ? activeSlides.map(s => ({ id: s.id, title: s.title, description: s.description || '', gradient: s.gradient }))
+    : sliderItems;
 
   useEffect(() => {
+    if (items.length === 0) return;
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % sliderItems.length);
+      setCurrentIndex((prev) => (prev + 1) % items.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [items.length]);
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
+  useEffect(() => {
+    if (currentIndex >= items.length && items.length > 0) {
+      setCurrentIndex(0);
+    }
+  }, [items.length, currentIndex]);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % sliderItems.length);
-  };
+  if (items.length === 0) return null;
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + sliderItems.length) % sliderItems.length);
-  };
+  const goToSlide = (index: number) => setCurrentIndex(index);
+  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % items.length);
+  const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
 
   return (
     <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden">
@@ -35,58 +43,32 @@ const HeroSlider: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 100 }}
           transition={{ duration: 0.5 }}
-          className={`absolute inset-0 bg-gradient-to-br ${sliderItems[currentIndex].gradient} border border-border rounded-2xl`}
+          className={`absolute inset-0 bg-gradient-to-br ${items[currentIndex]?.gradient} border border-border rounded-2xl`}
         >
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-            <motion.h2
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
+            <motion.h2 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
               className="text-2xl md:text-3xl font-bold text-foreground mb-3"
-            >
-              {sliderItems[currentIndex].title}
-            </motion.h2>
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
+            >{items[currentIndex]?.title}</motion.h2>
+            <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}
               className="text-muted-foreground max-w-md"
-            >
-              {sliderItems[currentIndex].description}
-            </motion.p>
+            >{items[currentIndex]?.description}</motion.p>
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Arrows */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={prevSlide}
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/70 text-foreground"
-      >
+      <Button variant="ghost" size="icon" onClick={prevSlide}
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/70 text-foreground">
         <ChevronRight className="w-5 h-5" />
       </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={nextSlide}
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/70 text-foreground"
-      >
+      <Button variant="ghost" size="icon" onClick={nextSlide}
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/70 text-foreground">
         <ChevronLeft className="w-5 h-5" />
       </Button>
 
-      {/* Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-        {sliderItems.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              index === currentIndex
-                ? 'w-6 bg-primary'
-                : 'bg-muted-foreground/50 hover:bg-muted-foreground'
-            }`}
+        {items.map((_, index) => (
+          <button key={index} onClick={() => goToSlide(index)}
+            className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? 'w-6 bg-primary' : 'bg-muted-foreground/50 hover:bg-muted-foreground'}`}
           />
         ))}
       </div>
