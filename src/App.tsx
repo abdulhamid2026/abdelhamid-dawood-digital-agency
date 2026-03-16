@@ -17,6 +17,7 @@ import ServicePage from "@/pages/ServicePage";
 import PortfolioPage from "@/pages/PortfolioPage";
 import AdminDashboard from "@/pages/AdminDashboard";
 import ProfilePage from "@/pages/ProfilePage";
+import MessagesPage from "@/pages/MessagesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
