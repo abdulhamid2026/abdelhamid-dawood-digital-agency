@@ -24,11 +24,11 @@ const ExportButton: React.FC<ExportButtonProps> = ({ onExportExcel, onExportPDF 
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={onExportExcel} className="gap-2">
-          <FileSpreadsheet className="w-4 h-4 text-green-600" />
+          <FileSpreadsheet className="w-4 h-4 text-primary" />
           تصدير Excel
         </DropdownMenuItem>
         <DropdownMenuItem onClick={onExportPDF} className="gap-2">
-          <FileText className="w-4 h-4 text-red-600" />
+          <FileText className="w-4 h-4 text-destructive" />
           تصدير PDF
         </DropdownMenuItem>
       </DropdownMenuContent>

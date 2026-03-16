@@ -88,6 +88,12 @@ const AdminOrdersTable: React.FC = () => {
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <ExportButton
+          onExportExcel={() => exportToExcel(prepareOrdersData(orders), orderColumns, 'orders')}
+          onExportPDF={() => exportToPDF(prepareOrdersData(orders), orderColumns, 'orders', 'Orders Report')}
+        />
+      </div>
       {orders.map((order, index) => (
         <motion.div
           key={order.id}

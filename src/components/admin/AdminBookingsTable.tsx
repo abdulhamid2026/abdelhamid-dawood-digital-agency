@@ -88,6 +88,12 @@ const AdminBookingsTable: React.FC = () => {
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <ExportButton
+          onExportExcel={() => exportToExcel(prepareBookingsData(bookings), bookingColumns, 'bookings')}
+          onExportPDF={() => exportToPDF(prepareBookingsData(bookings), bookingColumns, 'bookings', 'Bookings Report')}
+        />
+      </div>
       {bookings.map((booking, index) => (
         <motion.div
           key={booking.id}
