@@ -14,6 +14,7 @@ import {
   Bot,
   Sparkles,
   LayoutDashboard,
+  MessageCircle,
 } from 'lucide-react';
 
 export interface Service {
