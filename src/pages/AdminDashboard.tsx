@@ -104,8 +104,11 @@ const AdminDashboard: React.FC = () => {
             ))}
           </div>
 
-          <Tabs defaultValue="bookings" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 mb-6 h-auto">
+          <Tabs defaultValue="stats" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 sm:grid-cols-8 mb-6 h-auto">
+              <TabsTrigger value="stats" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+                <BarChart3 className="w-4 h-4" /><span className="hidden sm:inline">الإحصائيات</span>
+              </TabsTrigger>
               <TabsTrigger value="bookings" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <Calendar className="w-4 h-4" /><span className="hidden sm:inline">الحجوزات</span>
               </TabsTrigger>
@@ -129,6 +132,7 @@ const AdminDashboard: React.FC = () => {
               </TabsTrigger>
             </TabsList>
 
+            <TabsContent value="stats"><AdminStatsCharts bookings={bookings} orders={orders} services={services} /></TabsContent>
             <TabsContent value="bookings"><AdminBookingsTable /></TabsContent>
             <TabsContent value="orders"><AdminOrdersTable /></TabsContent>
             <TabsContent value="services"><AdminServicesTable /></TabsContent>
