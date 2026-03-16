@@ -14,6 +14,7 @@ import {
   Bot,
   Sparkles,
   LayoutDashboard,
+  MessageCircle,
 } from 'lucide-react';
 
 export interface Service {
@@ -107,6 +108,7 @@ export const menuItems = [
   { id: 'booking', title: 'حجز الخدمات', icon: Calendar, path: '/booking' },
   { id: 'contact', title: 'اتصل بنا', icon: Phone, path: '/contact' },
   { id: 'assistant', title: 'المساعد الذكي', icon: Bot, path: '/assistant' },
+  { id: 'messages', title: 'مراسلة الإدارة', icon: MessageCircle, path: '/messages' },
   { id: 'admin', title: 'لوحة التحكم', icon: LayoutDashboard, path: '/admin' },
 ];
 
