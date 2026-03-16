@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, Package, Calendar, Settings, Users,
   TrendingUp, Clock, XCircle, ArrowRight, Newspaper, MessageSquare, Image,
+  BarChart3,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
