@@ -20,6 +20,7 @@ import AdminUsersTable from '@/components/admin/AdminUsersTable';
 import AdminNewsTable from '@/components/admin/AdminNewsTable';
 import AdminChatPanel from '@/components/admin/AdminChatPanel';
 import AdminSlidesTable from '@/components/admin/AdminSlidesTable';
+import AdminStatsCharts from '@/components/admin/AdminStatsCharts';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
