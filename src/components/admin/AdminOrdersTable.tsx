@@ -14,6 +14,8 @@ import { useOrders } from '@/hooks/useOrders';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
 import { ar } from 'date-fns/locale';
+import ExportButton from './ExportButton';
+import { exportToExcel, exportToPDF, orderColumns, prepareOrdersData } from '@/lib/exportUtils';
 
 const statusColors: Record<string, string> = {
   pending: 'bg-primary/20 text-primary',
@@ -86,6 +88,12 @@ const AdminOrdersTable: React.FC = () => {
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <ExportButton
+          onExportExcel={() => exportToExcel(prepareOrdersData(orders), orderColumns, 'orders')}
+          onExportPDF={() => exportToPDF(prepareOrdersData(orders), orderColumns, 'orders', 'Orders Report')}
+        />
+      </div>
       {orders.map((order, index) => (
         <motion.div
           key={order.id}

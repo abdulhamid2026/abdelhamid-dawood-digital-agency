@@ -14,6 +14,8 @@ import { useBookings } from '@/hooks/useBookings';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
 import { ar } from 'date-fns/locale';
+import ExportButton from './ExportButton';
+import { exportToExcel, exportToPDF, bookingColumns, prepareBookingsData } from '@/lib/exportUtils';
 
 const statusColors: Record<string, string> = {
   pending: 'bg-primary/20 text-primary',
@@ -86,6 +88,12 @@ const AdminBookingsTable: React.FC = () => {
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <ExportButton
+          onExportExcel={() => exportToExcel(prepareBookingsData(bookings), bookingColumns, 'bookings')}
+          onExportPDF={() => exportToPDF(prepareBookingsData(bookings), bookingColumns, 'bookings', 'Bookings Report')}
+        />
+      </div>
       {bookings.map((booking, index) => (
         <motion.div
           key={booking.id}
