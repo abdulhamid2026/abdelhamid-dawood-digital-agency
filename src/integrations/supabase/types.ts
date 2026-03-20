@@ -240,6 +240,98 @@ export type Database = {
           },
         ]
       }
+      package_subscriptions: {
+        Row: {
+          country_code: string
+          created_at: string
+          customer_name: string
+          customer_phone: string
+          id: string
+          package_id: string | null
+          package_name: string
+          package_type: string
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          country_code?: string
+          created_at?: string
+          customer_name: string
+          customer_phone: string
+          id?: string
+          package_id?: string | null
+          package_name: string
+          package_type: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          country_code?: string
+          created_at?: string
+          customer_name?: string
+          customer_phone?: string
+          id?: string
+          package_id?: string | null
+          package_name?: string
+          package_type?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_subscriptions_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      packages: {
+        Row: {
+          created_at: string
+          description: string | null
+          discount_percent: number | null
+          features: string[] | null
+          id: string
+          is_active: boolean
+          name: string
+          price: number
+          sort_order: number
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          features?: string[] | null
+          id?: string
+          is_active?: boolean
+          name: string
+          price?: number
+          sort_order?: number
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          features?: string[] | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          price?: number
+          sort_order?: number
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
