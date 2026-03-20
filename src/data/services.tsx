@@ -15,6 +15,7 @@ import {
   Sparkles,
   LayoutDashboard,
   MessageCircle,
+  Crown,
 } from 'lucide-react';
 
 export interface Service {
@@ -104,6 +105,7 @@ export const services: Service[] = [
 export const menuItems = [
   { id: 'home', title: 'الرئيسية', icon: Sparkles, path: '/' },
   ...services,
+  { id: 'packages', title: 'الباقات', icon: Crown, path: '/packages' },
   { id: 'about', title: 'من نحن', icon: Users, path: '/about' },
   { id: 'booking', title: 'حجز الخدمات', icon: Calendar, path: '/booking' },
   { id: 'contact', title: 'اتصل بنا', icon: Phone, path: '/contact' },
