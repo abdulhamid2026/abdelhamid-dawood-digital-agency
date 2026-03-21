@@ -107,7 +107,7 @@ const AdminDashboard: React.FC = () => {
           </div>
 
           <Tabs defaultValue="stats" className="w-full">
-            <TabsList className="grid w-full grid-cols-5 sm:grid-cols-9 mb-6 h-auto">
+            <TabsList className="grid w-full grid-cols-5 sm:grid-cols-10 mb-6 h-auto">
               <TabsTrigger value="stats" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <BarChart3 className="w-4 h-4" /><span className="hidden sm:inline">الإحصائيات</span>
               </TabsTrigger>
@@ -135,6 +135,9 @@ const AdminDashboard: React.FC = () => {
               <TabsTrigger value="chat" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <MessageSquare className="w-4 h-4" /><span className="hidden sm:inline">المراسلات</span>
               </TabsTrigger>
+              <TabsTrigger value="apps" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+                <Smartphone className="w-4 h-4" /><span className="hidden sm:inline">التطبيقات</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="stats"><AdminStatsCharts bookings={bookings} orders={orders} services={services} /></TabsContent>
@@ -146,6 +149,7 @@ const AdminDashboard: React.FC = () => {
             <TabsContent value="news"><AdminNewsTable /></TabsContent>
             <TabsContent value="slides"><AdminSlidesTable /></TabsContent>
             <TabsContent value="chat"><AdminChatPanel /></TabsContent>
+            <TabsContent value="apps"><AdminAppsTable /></TabsContent>
           </Tabs>
         </div>
       </main>
