@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, Package, Calendar, Settings, Users,
   TrendingUp, Clock, XCircle, ArrowRight, Newspaper, MessageSquare, Image,
-  BarChart3, Crown,
+  BarChart3, Crown, Smartphone,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ import AdminChatPanel from '@/components/admin/AdminChatPanel';
 import AdminSlidesTable from '@/components/admin/AdminSlidesTable';
 import AdminPackagesTable from '@/components/admin/AdminPackagesTable';
 import AdminStatsCharts from '@/components/admin/AdminStatsCharts';
+import AdminAppsTable from '@/components/admin/AdminAppsTable';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
@@ -106,7 +107,7 @@ const AdminDashboard: React.FC = () => {
           </div>
 
           <Tabs defaultValue="stats" className="w-full">
-            <TabsList className="grid w-full grid-cols-5 sm:grid-cols-9 mb-6 h-auto">
+            <TabsList className="grid w-full grid-cols-5 sm:grid-cols-10 mb-6 h-auto">
               <TabsTrigger value="stats" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <BarChart3 className="w-4 h-4" /><span className="hidden sm:inline">الإحصائيات</span>
               </TabsTrigger>
@@ -134,6 +135,9 @@ const AdminDashboard: React.FC = () => {
               <TabsTrigger value="chat" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <MessageSquare className="w-4 h-4" /><span className="hidden sm:inline">المراسلات</span>
               </TabsTrigger>
+              <TabsTrigger value="apps" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+                <Smartphone className="w-4 h-4" /><span className="hidden sm:inline">التطبيقات</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="stats"><AdminStatsCharts bookings={bookings} orders={orders} services={services} /></TabsContent>
@@ -145,6 +149,7 @@ const AdminDashboard: React.FC = () => {
             <TabsContent value="news"><AdminNewsTable /></TabsContent>
             <TabsContent value="slides"><AdminSlidesTable /></TabsContent>
             <TabsContent value="chat"><AdminChatPanel /></TabsContent>
+            <TabsContent value="apps"><AdminAppsTable /></TabsContent>
           </Tabs>
         </div>
       </main>
