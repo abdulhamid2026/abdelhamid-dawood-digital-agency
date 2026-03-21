@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, Package, Calendar, Settings, Users,
   TrendingUp, Clock, XCircle, ArrowRight, Newspaper, MessageSquare, Image,
-  BarChart3, Crown,
+  BarChart3, Crown, Smartphone,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ import AdminChatPanel from '@/components/admin/AdminChatPanel';
 import AdminSlidesTable from '@/components/admin/AdminSlidesTable';
 import AdminPackagesTable from '@/components/admin/AdminPackagesTable';
 import AdminStatsCharts from '@/components/admin/AdminStatsCharts';
+import AdminAppsTable from '@/components/admin/AdminAppsTable';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
