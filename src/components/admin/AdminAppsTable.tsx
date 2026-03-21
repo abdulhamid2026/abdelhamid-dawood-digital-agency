@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2, Upload, Download, Smartphone, ExternalLink } from 'lucide-react';
 import { toast } from 'sonner';
 import ExportButton from './ExportButton';
+import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
 
 const categories = [
   { value: 'social', label: 'التواصل الاجتماعي' },
@@ -135,7 +136,7 @@ const AdminAppsTable: React.FC = () => {
           <Smartphone className="w-5 h-5" /> إدارة التطبيقات
         </h2>
         <div className="flex gap-2">
-          <ExportButton data={apps} filename="apps" />
+          <ExportButton onExportExcel={() => exportToExcel(apps, 'apps')} onExportPDF={() => exportToPDF(apps, 'apps')} />
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button size="sm" onClick={openAdd}><Plus className="w-4 h-4 ml-1" /> إضافة تطبيق</Button>
