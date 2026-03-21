@@ -19,6 +19,7 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import ProfilePage from "@/pages/ProfilePage";
 import MessagesPage from "@/pages/MessagesPage";
 import PackagesPage from "@/pages/PackagesPage";
+import AppsStorePage from "@/pages/AppsStorePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const AppContent: React.FC = () => {
       <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
       <Route path="/packages" element={<ProtectedRoute><PackagesPage /></ProtectedRoute>} />
+      <Route path="/apps-store" element={<ProtectedRoute><AppsStorePage /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
