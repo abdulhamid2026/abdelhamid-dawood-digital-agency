@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Upload, Download, Smartphone, ExternalLink } from 'lucide-react';
+import { Plus, Edit, Trash2, Smartphone, ExternalLink } from 'lucide-react';
 import { toast } from 'sonner';
 import ExportButton from './ExportButton';
 import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
@@ -51,7 +51,7 @@ const defaultForm = {
 };
 
 const AdminAppsTable: React.FC = () => {
-  const { apps, addApp, updateApp, deleteApp, uploadApk } = useApps();
+  const { apps, addApp, updateApp, deleteApp, uploadApk, refetch } = useApps();
   const [isOpen, setIsOpen] = useState(false);
   const [editingApp, setEditingApp] = useState<App | null>(null);
   const [form, setForm] = useState(defaultForm);
@@ -98,27 +98,13 @@ const AdminAppsTable: React.FC = () => {
       await updateApp(editingApp.id, form);
       if (apkFile) await uploadApk(apkFile, editingApp.id);
     } else {
-      // Create app first, then upload if file exists
-      const { data, error } = await (await import('@/integrations/supabase/client')).supabase
-        .from('apps')
-        .insert([form as any])
-        .select()
-        .single();
-      
-      if (!error && data && apkFile) {
-        await uploadApk(apkFile, (data as any).id);
-      } else if (!error) {
-        toast.success('تم إضافة التطبيق بنجاح');
-      }
-      // Refetch
-      const { useApps: _ } = await import('@/hooks/useApps');
+      await addApp(form);
     }
 
     setUploading(false);
     setIsOpen(false);
     setApkFile(null);
-    // Force refetch by closing dialog
-    window.location.reload();
+    refetch();
   };
 
   const handleDelete = async (id: string) => {
@@ -129,6 +115,14 @@ const AdminAppsTable: React.FC = () => {
 
   const getCategoryLabel = (cat: string) => categories.find(c => c.value === cat)?.label || cat;
 
+  const exportColumns = [
+    { header: 'الاسم', key: 'name' },
+    { header: 'التصنيف', key: 'category' },
+    { header: 'الإصدار', key: 'version' },
+    { header: 'الحجم', key: 'size' },
+    { header: 'التقييم', key: 'rating' },
+  ];
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -137,19 +131,8 @@ const AdminAppsTable: React.FC = () => {
         </h2>
         <div className="flex gap-2">
           <ExportButton 
-            onExportExcel={() => exportToExcel(apps, [
-              { header: 'الاسم', key: 'name' },
-              { header: 'التصنيف', key: 'category' },
-              { header: 'الإصدار', key: 'version' },
-              { header: 'الحجم', key: 'size' },
-              { header: 'التقييم', key: 'rating' },
-            ], 'apps')} 
-            onExportPDF={() => exportToPDF(apps, [
-              { header: 'الاسم', key: 'name' },
-              { header: 'التصنيف', key: 'category' },
-              { header: 'الإصدار', key: 'version' },
-              { header: 'الحجم', key: 'size' },
-            ], 'التطبيقات', 'apps')} 
+            onExportExcel={() => exportToExcel(apps, exportColumns, 'apps')} 
+            onExportPDF={() => exportToPDF(apps, exportColumns, 'التطبيقات', 'apps')} 
           />
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
