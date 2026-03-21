@@ -14,6 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_storage: {
+        Row: {
+          app_id: string
+          created_at: string
+          file_name: string
+          file_size: number | null
+          file_url: string
+          id: string
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          file_name: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          file_name?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_storage_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "apps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      apps: {
+        Row: {
+          category: string
+          color: string | null
+          created_at: string
+          description: string | null
+          download_url: string | null
+          downloads_count: string | null
+          icon: string | null
+          icon_url: string | null
+          id: string
+          is_active: boolean
+          name: string
+          rating: number | null
+          size: string | null
+          sort_order: number
+          updated_at: string
+          version: string | null
+        }
+        Insert: {
+          category?: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          download_url?: string | null
+          downloads_count?: string | null
+          icon?: string | null
+          icon_url?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          rating?: number | null
+          size?: string | null
+          sort_order?: number
+          updated_at?: string
+          version?: string | null
+        }
+        Update: {
+          category?: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          download_url?: string | null
+          downloads_count?: string | null
+          icon?: string | null
+          icon_url?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          rating?: number | null
+          size?: string | null
+          sort_order?: number
+          updated_at?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           created_at: string
