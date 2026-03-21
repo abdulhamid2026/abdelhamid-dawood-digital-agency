@@ -136,7 +136,21 @@ const AdminAppsTable: React.FC = () => {
           <Smartphone className="w-5 h-5" /> إدارة التطبيقات
         </h2>
         <div className="flex gap-2">
-          <ExportButton onExportExcel={() => exportToExcel(apps, 'apps')} onExportPDF={() => exportToPDF(apps, 'apps')} />
+          <ExportButton 
+            onExportExcel={() => exportToExcel(apps, [
+              { header: 'الاسم', key: 'name' },
+              { header: 'التصنيف', key: 'category' },
+              { header: 'الإصدار', key: 'version' },
+              { header: 'الحجم', key: 'size' },
+              { header: 'التقييم', key: 'rating' },
+            ], 'apps')} 
+            onExportPDF={() => exportToPDF(apps, [
+              { header: 'الاسم', key: 'name' },
+              { header: 'التصنيف', key: 'category' },
+              { header: 'الإصدار', key: 'version' },
+              { header: 'الحجم', key: 'size' },
+            ], 'التطبيقات', 'apps')} 
+          />
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button size="sm" onClick={openAdd}><Plus className="w-4 h-4 ml-1" /> إضافة تطبيق</Button>
