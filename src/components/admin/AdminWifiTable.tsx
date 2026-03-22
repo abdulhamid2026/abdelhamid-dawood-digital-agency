@@ -157,7 +157,7 @@ const AdminWifiTable: React.FC = () => {
               <div className="flex gap-2">
                 <ExportButton
                   onExportExcel={() => exportToExcel(productExportData, productColumns, 'wifi-products')}
-                  onExportPDF={() => exportToPDF(productExportData, productColumns, 'منتجات الواي فاي')}
+                  onExportPDF={() => exportToPDF(productExportData, productColumns, 'wifi-products', 'منتجات الواي فاي')}
                 />
                 <Button size="sm" onClick={() => openProductDialog()}>
                   <Plus className="w-4 h-4 ml-1" />إضافة منتج
@@ -207,7 +207,10 @@ const AdminWifiTable: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg">طلبات الواي فاي</CardTitle>
-              <ExportButton data={ordersExportData} filename="wifi-orders" title="طلبات الواي فاي" />
+              <ExportButton
+                onExportExcel={() => exportToExcel(orderExportData, orderColumns, 'wifi-orders')}
+                onExportPDF={() => exportToPDF(orderExportData, orderColumns, 'wifi-orders', 'طلبات الواي فاي')}
+              />
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
