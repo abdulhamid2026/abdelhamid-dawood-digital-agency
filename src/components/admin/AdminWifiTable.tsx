@@ -15,6 +15,7 @@ import { useWifiProducts, WifiProduct } from '@/hooks/useWifiProducts';
 import { useWifiOrders, WifiOrder } from '@/hooks/useWifiOrders';
 import { useWifiPosts, WifiPost } from '@/hooks/useWifiPosts';
 import ExportButton from '@/components/admin/ExportButton';
+import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
 import { toast } from '@/hooks/use-toast';
 
 const productCategories = [
