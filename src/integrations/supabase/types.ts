@@ -559,6 +559,202 @@ export type Database = {
         }
         Relationships: []
       }
+      wifi_orders: {
+        Row: {
+          admin_notes: string | null
+          country: string | null
+          country_code: string | null
+          created_at: string
+          customer_name: string
+          customer_phone: string
+          details: string | null
+          id: string
+          order_type: string
+          price: number | null
+          product_id: string | null
+          product_name: string
+          section: string
+          status: string
+          title: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          customer_name: string
+          customer_phone: string
+          details?: string | null
+          id?: string
+          order_type?: string
+          price?: number | null
+          product_id?: string | null
+          product_name: string
+          section: string
+          status?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          customer_name?: string
+          customer_phone?: string
+          details?: string | null
+          id?: string
+          order_type?: string
+          price?: number | null
+          product_id?: string | null
+          product_name?: string
+          section?: string
+          status?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wifi_orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "wifi_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wifi_posts: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          sort_order: number | null
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          sort_order?: number | null
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          sort_order?: number | null
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      wifi_product_images: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          product_id: string
+          sort_order: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          product_id: string
+          sort_order?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          product_id?: string
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wifi_product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "wifi_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wifi_products: {
+        Row: {
+          category: string
+          code_content: string | null
+          created_at: string
+          description: string | null
+          discount_percent: number | null
+          download_url: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          is_free: boolean | null
+          logo_url: string | null
+          name: string
+          preview_url: string | null
+          price: number | null
+          sort_order: number | null
+          type: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          code_content?: string | null
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          download_url?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          is_free?: boolean | null
+          logo_url?: string | null
+          name: string
+          preview_url?: string | null
+          price?: number | null
+          sort_order?: number | null
+          type?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          code_content?: string | null
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          download_url?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          is_free?: boolean | null
+          logo_url?: string | null
+          name?: string
+          preview_url?: string | null
+          price?: number | null
+          sort_order?: number | null
+          type?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
