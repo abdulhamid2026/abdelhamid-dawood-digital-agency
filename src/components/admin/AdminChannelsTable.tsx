@@ -7,8 +7,17 @@ import { toast } from '@/hooks/use-toast';
 import { Plus, Pencil, Trash2, Eye, ThumbsUp, Radio } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
 import { Switch } from '@/components/ui/switch';
 import ExportButton from './ExportButton';
+
+const channelColumns = [
+  { header: 'الاسم', key: 'name' },
+  { header: 'القسم', key: 'cat_label' },
+  { header: 'المشاهدات', key: 'views_count' },
+  { header: 'الإعجابات', key: 'likes_count' },
+  { header: 'الحالة', key: 'status_label' },
+];
 
 const categories = [
   { value: 'news', label: 'الأخبار' },
@@ -62,9 +71,13 @@ const AdminChannelsTable: React.FC = () => {
   const totalLikes = channels.reduce((s, c) => s + c.likes_count, 0);
 
   const exportData = channels.map(c => ({
-    'الاسم': c.name, 'القسم': categories.find(x => x.value === c.category)?.label || c.category,
-    'المشاهدات': c.views_count, 'الإعجابات': c.likes_count, 'الحالة': c.is_active ? 'نشط' : 'متوقف',
+    ...c,
+    cat_label: categories.find(x => x.value === c.category)?.label || c.category,
+    status_label: c.is_active ? 'نشط' : 'متوقف',
   }));
+
+  const handleExportExcel = () => exportToExcel(exportData, channelColumns, 'channels');
+  const handleExportPDF = () => exportToPDF(exportData, channelColumns, 'channels', 'البث المباشر');
 
   return (
     <div className="space-y-4">
@@ -120,7 +133,7 @@ const AdminChannelsTable: React.FC = () => {
             </div>
           </DialogContent>
         </Dialog>
-        <ExportButton data={exportData} filename="channels" title="البث المباشر" />
+        <ExportButton onExportExcel={handleExportExcel} onExportPDF={handleExportPDF} />
       </div>
 
       {/* Channels list */}
