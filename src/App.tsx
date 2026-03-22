@@ -20,6 +20,7 @@ import ProfilePage from "@/pages/ProfilePage";
 import MessagesPage from "@/pages/MessagesPage";
 import PackagesPage from "@/pages/PackagesPage";
 import AppsStorePage from "@/pages/AppsStorePage";
+import LiveStreamPage from "@/pages/LiveStreamPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ const AppContent: React.FC = () => {
       <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
       <Route path="/packages" element={<ProtectedRoute><PackagesPage /></ProtectedRoute>} />
       <Route path="/apps-store" element={<ProtectedRoute><AppsStorePage /></ProtectedRoute>} />
+      <Route path="/live-stream" element={<ProtectedRoute><LiveStreamPage /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
