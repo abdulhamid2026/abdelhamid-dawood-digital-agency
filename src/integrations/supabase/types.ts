@@ -159,6 +159,54 @@ export type Database = {
           },
         ]
       }
+      channels: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          likes_count: number
+          logo_url: string | null
+          name: string
+          sort_order: number
+          stream_url: string | null
+          thumbnail_url: string | null
+          updated_at: string
+          views_count: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          likes_count?: number
+          logo_url?: string | null
+          name: string
+          sort_order?: number
+          stream_url?: string | null
+          thumbnail_url?: string | null
+          updated_at?: string
+          views_count?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          likes_count?: number
+          logo_url?: string | null
+          name?: string
+          sort_order?: number
+          stream_url?: string | null
+          thumbnail_url?: string | null
+          updated_at?: string
+          views_count?: number
+        }
+        Relationships: []
+      }
       hero_slides: {
         Row: {
           created_at: string
