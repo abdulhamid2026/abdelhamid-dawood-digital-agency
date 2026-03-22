@@ -119,14 +119,25 @@ const AdminWifiTable: React.FC = () => {
 
   const orderTypeLabel = (t: string) => t === 'purchase' ? 'شراء' : t === 'custom_request' ? 'طلب مخصص' : 'استفسار';
 
-  const productsExportData = allProducts.map(p => ({
-    الاسم: p.name, القسم: p.category, النوع: p.type || '-', السعر: p.price, مجاني: p.is_free ? 'نعم' : 'لا', نشط: p.is_active ? 'نعم' : 'لا',
+  const productColumns = [
+    { header: 'الاسم', key: 'name' }, { header: 'القسم', key: 'category' },
+    { header: 'النوع', key: 'type' }, { header: 'السعر', key: 'price' },
+    { header: 'مجاني', key: 'is_free' }, { header: 'نشط', key: 'is_active' },
+  ];
+  const productExportData = allProducts.map(p => ({
+    name: p.name, category: p.category, type: p.type || '-', price: p.price,
+    is_free: p.is_free ? 'نعم' : 'لا', is_active: p.is_active ? 'نعم' : 'لا',
   }));
 
-  const ordersExportData = orders.map(o => ({
-    المنتج: o.product_name, القسم: o.section, النوع: orderTypeLabel(o.order_type), العميل: o.customer_name,
-    الهاتف: `${o.country_code}${o.customer_phone}`, البلد: o.country, السعر: o.price, الحالة: statusMap[o.status]?.label || o.status,
-    التاريخ: new Date(o.created_at).toLocaleDateString('ar'),
+  const orderColumns = [
+    { header: 'المنتج', key: 'product_name' }, { header: 'النوع', key: 'order_type' },
+    { header: 'العميل', key: 'customer_name' }, { header: 'الهاتف', key: 'phone' },
+    { header: 'البلد', key: 'country' }, { header: 'الحالة', key: 'status' },
+  ];
+  const orderExportData = orders.map(o => ({
+    product_name: o.product_name, order_type: orderTypeLabel(o.order_type),
+    customer_name: o.customer_name, phone: `${o.country_code}${o.customer_phone}`,
+    country: o.country, status: statusMap[o.status]?.label || o.status,
   }));
 
   return (
@@ -144,7 +155,10 @@ const AdminWifiTable: React.FC = () => {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg">إدارة المنتجات</CardTitle>
               <div className="flex gap-2">
-                <ExportButton data={productsExportData} filename="wifi-products" title="منتجات الواي فاي" />
+                <ExportButton
+                  onExportExcel={() => exportToExcel(productExportData, productColumns, 'wifi-products')}
+                  onExportPDF={() => exportToPDF(productExportData, productColumns, 'منتجات الواي فاي')}
+                />
                 <Button size="sm" onClick={() => openProductDialog()}>
                   <Plus className="w-4 h-4 ml-1" />إضافة منتج
                 </Button>
