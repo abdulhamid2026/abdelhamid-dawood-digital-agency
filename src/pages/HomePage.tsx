@@ -8,6 +8,7 @@ import NewsTicker from '@/components/NewsTicker';
 import ServiceGrid from '@/components/ServiceGrid';
 import PackagesPromoCard from '@/components/PackagesPromoCard';
 import AppsPromoCard from '@/components/AppsPromoCard';
+import LiveStreamPromoCard from '@/components/LiveStreamPromoCard';
 import SocialIcons from '@/components/SocialIcons';
 
 const HomePage: React.FC = () => {
@@ -30,6 +31,7 @@ const HomePage: React.FC = () => {
 
           <PackagesPromoCard />
           <AppsPromoCard />
+          <LiveStreamPromoCard />
 
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <div className="flex items-center justify-between mb-4">
