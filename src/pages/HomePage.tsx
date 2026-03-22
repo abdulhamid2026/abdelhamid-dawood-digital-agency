@@ -9,6 +9,7 @@ import ServiceGrid from '@/components/ServiceGrid';
 import PackagesPromoCard from '@/components/PackagesPromoCard';
 import AppsPromoCard from '@/components/AppsPromoCard';
 import LiveStreamPromoCard from '@/components/LiveStreamPromoCard';
+import WifiPromoCard from '@/components/WifiPromoCard';
 import SocialIcons from '@/components/SocialIcons';
 
 const HomePage: React.FC = () => {
@@ -32,6 +33,7 @@ const HomePage: React.FC = () => {
           <PackagesPromoCard />
           <AppsPromoCard />
           <LiveStreamPromoCard />
+          <WifiPromoCard />
 
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <div className="flex items-center justify-between mb-4">
@@ -41,7 +43,6 @@ const HomePage: React.FC = () => {
             <ServiceGrid />
           </motion.section>
 
-          {/* Social Icons */}
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
             <div className="text-center mb-4">
               <h3 className="text-lg font-bold text-foreground mb-1">تابعنا على</h3>

@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { useWifiProducts, WifiProduct } from '@/hooks/useWifiProducts';
 import { useWifiOrders, WifiOrder } from '@/hooks/useWifiOrders';
 import { useWifiPosts, WifiPost } from '@/hooks/useWifiPosts';
-import { ExportButton } from '@/components/admin/ExportButton';
+import ExportButton from '@/components/admin/ExportButton';
 import { toast } from '@/hooks/use-toast';
 
 const productCategories = [
