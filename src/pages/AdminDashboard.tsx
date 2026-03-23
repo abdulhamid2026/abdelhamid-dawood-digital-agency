@@ -151,7 +151,6 @@ const AdminDashboard: React.FC = () => {
                 <Palette className="w-4 h-4" /><span className="hidden sm:inline">الأعمال</span>
               </TabsTrigger>
             </TabsList>
-            </TabsList>
 
             <TabsContent value="stats"><AdminStatsCharts bookings={bookings} orders={orders} services={services} /></TabsContent>
             <TabsContent value="bookings"><AdminBookingsTable /></TabsContent>
