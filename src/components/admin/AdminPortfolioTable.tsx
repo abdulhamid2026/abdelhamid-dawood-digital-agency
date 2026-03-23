@@ -9,6 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Plus, Trash2, Edit2, Save, X, Image } from 'lucide-react';
 import { usePortfolio, PORTFOLIO_CATEGORIES } from '@/hooks/usePortfolio';
 import ExportButton from './ExportButton';
+import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
 
 const AdminPortfolioTable: React.FC = () => {
   const { items, addItem, updateItem, deleteItem } = usePortfolio();
@@ -42,16 +43,23 @@ const AdminPortfolioTable: React.FC = () => {
 
   const getCategoryLabel = (val: string) => PORTFOLIO_CATEGORIES.find(c => c.value === val)?.label || val;
 
-  const exportData = items.map(i => ({
-    العنوان: i.title, القسم: getCategoryLabel(i.category), الوصف: i.description || '', مفعل: i.is_active ? 'نعم' : 'لا'
-  }));
+  const exportColumns = [
+    { header: 'العنوان', key: 'title' },
+    { header: 'القسم', key: 'category' },
+    { header: 'الوصف', key: 'description' },
+    { header: 'الحالة', key: 'is_active' },
+  ];
+  const exportData = items.map(i => ({ ...i, category: getCategoryLabel(i.category), is_active: i.is_active ? 'نعم' : 'لا' }));
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>إدارة معرض الأعمال</CardTitle>
         <div className="flex gap-2">
-          <ExportButton data={exportData} filename="portfolio" title="معرض الأعمال" />
+          <ExportButton
+            onExportExcel={() => exportToExcel(exportData, exportColumns, 'portfolio')}
+            onExportPDF={() => exportToPDF(exportData, exportColumns, 'portfolio', 'معرض الأعمال')}
+          />
           <Button size="sm" onClick={() => { setIsAdding(true); setEditingId(null); }}>
             <Plus className="w-4 h-4 ml-1" />إضافة
           </Button>
