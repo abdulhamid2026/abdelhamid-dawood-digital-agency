@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, Package, Calendar, Settings, Users,
   TrendingUp, Clock, XCircle, ArrowRight, Newspaper, MessageSquare, Image,
-  BarChart3, Crown, Smartphone, Radio, Wifi,
+  BarChart3, Crown, Smartphone, Radio, Wifi, Palette,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,7 @@ import AdminStatsCharts from '@/components/admin/AdminStatsCharts';
 import AdminAppsTable from '@/components/admin/AdminAppsTable';
 import AdminChannelsTable from '@/components/admin/AdminChannelsTable';
 import AdminWifiTable from '@/components/admin/AdminWifiTable';
+import AdminPortfolioTable from '@/components/admin/AdminPortfolioTable';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
@@ -109,7 +110,7 @@ const AdminDashboard: React.FC = () => {
           </div>
 
           <Tabs defaultValue="stats" className="w-full" dir="rtl">
-            <TabsList className="grid w-full grid-cols-6 sm:grid-cols-12 mb-6 h-auto">
+            <TabsList className="grid w-full grid-cols-7 sm:grid-cols-13 mb-6 h-auto">
               <TabsTrigger value="stats" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <BarChart3 className="w-4 h-4" /><span className="hidden sm:inline">الإحصائيات</span>
               </TabsTrigger>
@@ -146,6 +147,9 @@ const AdminDashboard: React.FC = () => {
               <TabsTrigger value="wifi" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <Wifi className="w-4 h-4" /><span className="hidden sm:inline">الواي فاي</span>
               </TabsTrigger>
+              <TabsTrigger value="portfolio" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+                <Palette className="w-4 h-4" /><span className="hidden sm:inline">الأعمال</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="stats"><AdminStatsCharts bookings={bookings} orders={orders} services={services} /></TabsContent>
@@ -160,6 +164,7 @@ const AdminDashboard: React.FC = () => {
             <TabsContent value="apps"><AdminAppsTable /></TabsContent>
             <TabsContent value="channels"><AdminChannelsTable /></TabsContent>
             <TabsContent value="wifi"><AdminWifiTable /></TabsContent>
+            <TabsContent value="portfolio"><AdminPortfolioTable /></TabsContent>
           </Tabs>
         </div>
       </main>
