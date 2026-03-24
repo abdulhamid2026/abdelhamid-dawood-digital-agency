@@ -213,6 +213,7 @@ export type Database = {
           description: string | null
           gradient: string
           id: string
+          image_url: string | null
           is_active: boolean
           sort_order: number
           title: string
@@ -223,6 +224,7 @@ export type Database = {
           description?: string | null
           gradient?: string
           id?: string
+          image_url?: string | null
           is_active?: boolean
           sort_order?: number
           title: string
@@ -233,6 +235,7 @@ export type Database = {
           description?: string | null
           gradient?: string
           id?: string
+          image_url?: string | null
           is_active?: boolean
           sort_order?: number
           title?: string
@@ -244,8 +247,11 @@ export type Database = {
         Row: {
           content: string
           created_at: string
+          file_name: string | null
           id: string
           is_read: boolean
+          media_type: string | null
+          media_url: string | null
           receiver_id: string
           sender_id: string
           subject: string
@@ -253,8 +259,11 @@ export type Database = {
         Insert: {
           content: string
           created_at?: string
+          file_name?: string | null
           id?: string
           is_read?: boolean
+          media_type?: string | null
+          media_url?: string | null
           receiver_id: string
           sender_id: string
           subject: string
@@ -262,8 +271,11 @@ export type Database = {
         Update: {
           content?: string
           created_at?: string
+          file_name?: string | null
           id?: string
           is_read?: boolean
+          media_type?: string | null
+          media_url?: string | null
           receiver_id?: string
           sender_id?: string
           subject?: string
@@ -472,6 +484,30 @@ export type Database = {
         }
         Relationships: []
       }
+      points_history: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          reason: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          reason?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       portfolio_items: {
         Row: {
           category: string
@@ -538,6 +574,36 @@ export type Database = {
         }
         Relationships: []
       }
+      referrals: {
+        Row: {
+          created_at: string
+          id: string
+          points_awarded: number
+          referred_email: string
+          referred_user_id: string | null
+          referrer_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          points_awarded?: number
+          referred_email: string
+          referred_user_id?: string | null
+          referrer_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          points_awarded?: number
+          referred_email?: string
+          referred_user_id?: string | null
+          referrer_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           category: string
@@ -571,6 +637,30 @@ export type Database = {
           name?: string
           price?: number | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_points: {
+        Row: {
+          id: string
+          points: number
+          total_earned: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          points?: number
+          total_earned?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          points?: number
+          total_earned?: number
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
