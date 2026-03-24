@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, Camera, Save, User, Package, Calendar, Clock, 
-  CheckCircle, XCircle, AlertCircle, Hash, Mail, Shield
+  CheckCircle, XCircle, AlertCircle, Hash, Mail, Shield, Gift
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '@/components/TopBar';
@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
 import { ar } from 'date-fns/locale';
+import ReferralSection from '@/components/ReferralSection';
 
 interface Order {
   id: string;
@@ -236,11 +237,12 @@ const ProfilePage: React.FC = () => {
           {/* Tabs */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <Tabs defaultValue="info" dir="rtl">
-              <TabsList className="grid w-full grid-cols-4 mb-4">
+              <TabsList className="grid w-full grid-cols-5 mb-4">
                 <TabsTrigger value="info" className="text-xs"><User className="w-3.5 h-3.5 ml-1" />البيانات</TabsTrigger>
                 <TabsTrigger value="orders" className="text-xs"><Package className="w-3.5 h-3.5 ml-1" />الطلبات</TabsTrigger>
                 <TabsTrigger value="bookings" className="text-xs"><Calendar className="w-3.5 h-3.5 ml-1" />الحجوزات</TabsTrigger>
                 <TabsTrigger value="subscriptions" className="text-xs"><Shield className="w-3.5 h-3.5 ml-1" />الباقات</TabsTrigger>
+                <TabsTrigger value="referrals" className="text-xs"><Gift className="w-3.5 h-3.5 ml-1" />الإحالات</TabsTrigger>
               </TabsList>
 
               {/* Personal Info Tab */}

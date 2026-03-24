@@ -10,6 +10,9 @@ interface ChatMessage {
   content: string;
   is_read: boolean;
   created_at: string;
+  media_url?: string | null;
+  media_type?: string | null;
+  file_name?: string | null;
 }
 
 interface ChatUser {
