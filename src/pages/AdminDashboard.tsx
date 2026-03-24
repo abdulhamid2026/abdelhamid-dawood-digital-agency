@@ -111,7 +111,7 @@ const AdminDashboard: React.FC = () => {
           </div>
 
           <Tabs defaultValue="stats" className="w-full" dir="rtl">
-            <TabsList className="grid w-full grid-cols-7 sm:grid-cols-13 mb-6 h-auto">
+            <TabsList className="grid w-full grid-cols-7 sm:grid-cols-14 mb-6 h-auto">
               <TabsTrigger value="stats" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <BarChart3 className="w-4 h-4" /><span className="hidden sm:inline">الإحصائيات</span>
               </TabsTrigger>
