@@ -371,6 +371,11 @@ const ProfilePage: React.FC = () => {
                   ))}
                 </div>
               </TabsContent>
+
+              {/* Referrals Tab */}
+              <TabsContent value="referrals">
+                <ReferralSection />
+              </TabsContent>
             </Tabs>
           </motion.div>
         </div>
