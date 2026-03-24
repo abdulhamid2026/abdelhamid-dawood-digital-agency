@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, Package, Calendar, Settings, Users,
   TrendingUp, Clock, XCircle, ArrowRight, Newspaper, MessageSquare, Image,
-  BarChart3, Crown, Smartphone, Radio, Wifi, Palette,
+  BarChart3, Crown, Smartphone, Radio, Wifi, Palette, Gift,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,7 @@ import AdminAppsTable from '@/components/admin/AdminAppsTable';
 import AdminChannelsTable from '@/components/admin/AdminChannelsTable';
 import AdminWifiTable from '@/components/admin/AdminWifiTable';
 import AdminPortfolioTable from '@/components/admin/AdminPortfolioTable';
+import AdminReferralsTable from '@/components/admin/AdminReferralsTable';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
@@ -150,6 +151,9 @@ const AdminDashboard: React.FC = () => {
               <TabsTrigger value="portfolio" className="flex items-center gap-1 text-xs sm:text-sm py-2">
                 <Palette className="w-4 h-4" /><span className="hidden sm:inline">الأعمال</span>
               </TabsTrigger>
+              <TabsTrigger value="referrals" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+                <Gift className="w-4 h-4" /><span className="hidden sm:inline">الإحالات</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="stats"><AdminStatsCharts bookings={bookings} orders={orders} services={services} /></TabsContent>
@@ -165,6 +169,7 @@ const AdminDashboard: React.FC = () => {
             <TabsContent value="channels"><AdminChannelsTable /></TabsContent>
             <TabsContent value="wifi"><AdminWifiTable /></TabsContent>
             <TabsContent value="portfolio"><AdminPortfolioTable /></TabsContent>
+            <TabsContent value="referrals"><AdminReferralsTable /></TabsContent>
           </Tabs>
         </div>
       </main>
