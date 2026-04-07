@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, LineChart, Line, Legend, AreaChart, Area,
+  PieChart, Pie, Cell, Legend, AreaChart, Area,
 } from 'recharts';
+import { supabase } from '@/integrations/supabase/client';
+import { Users, ShoppingCart, Calendar, Wifi, Package, TrendingUp } from 'lucide-react';
 
 interface StatsChartsProps {
   bookings: any[];
@@ -23,7 +25,27 @@ const COLORS = [
 ];
 
 const AdminStatsCharts: React.FC<StatsChartsProps> = ({ bookings, orders, services }) => {
-  // Bookings by status
+  const [wifiOrdersCount, setWifiOrdersCount] = useState(0);
+  const [subscriptionsCount, setSubscriptionsCount] = useState(0);
+  const [usersCount, setUsersCount] = useState(0);
+  const [referralsCount, setReferralsCount] = useState(0);
+
+  useEffect(() => {
+    const fetchExtra = async () => {
+      const [wifi, subs, users, refs] = await Promise.all([
+        supabase.from('wifi_orders').select('id', { count: 'exact', head: true }),
+        supabase.from('package_subscriptions').select('id', { count: 'exact', head: true }),
+        supabase.from('profiles').select('id', { count: 'exact', head: true }),
+        supabase.from('referrals').select('id', { count: 'exact', head: true }),
+      ]);
+      setWifiOrdersCount(wifi.count || 0);
+      setSubscriptionsCount(subs.count || 0);
+      setUsersCount(users.count || 0);
+      setReferralsCount(refs.count || 0);
+    };
+    fetchExtra();
+  }, []);
+
   const bookingsByStatus = useMemo(() => {
     const map: Record<string, number> = {};
     bookings.forEach(b => {
@@ -33,7 +55,6 @@ const AdminStatsCharts: React.FC<StatsChartsProps> = ({ bookings, orders, servic
     return Object.entries(map).map(([name, value]) => ({ name, value }));
   }, [bookings]);
 
-  // Orders by status
   const ordersByStatus = useMemo(() => {
     const map: Record<string, number> = {};
     orders.forEach(o => {
@@ -43,7 +64,6 @@ const AdminStatsCharts: React.FC<StatsChartsProps> = ({ bookings, orders, servic
     return Object.entries(map).map(([name, value]) => ({ name, value }));
   }, [orders]);
 
-  // Monthly trend (last 6 months)
   const monthlyTrend = useMemo(() => {
     const months: { name: string; bookings: number; orders: number }[] = [];
     const now = new Date();
@@ -52,20 +72,13 @@ const AdminStatsCharts: React.FC<StatsChartsProps> = ({ bookings, orders, servic
       const month = d.getMonth();
       const year = d.getFullYear();
       const label = d.toLocaleDateString('ar-EG', { month: 'short', year: '2-digit' });
-      const bCount = bookings.filter(b => {
-        const bd = new Date(b.created_at);
-        return bd.getMonth() === month && bd.getFullYear() === year;
-      }).length;
-      const oCount = orders.filter(o => {
-        const od = new Date(o.created_at);
-        return od.getMonth() === month && od.getFullYear() === year;
-      }).length;
+      const bCount = bookings.filter(b => { const bd = new Date(b.created_at); return bd.getMonth() === month && bd.getFullYear() === year; }).length;
+      const oCount = orders.filter(o => { const od = new Date(o.created_at); return od.getMonth() === month && od.getFullYear() === year; }).length;
       months.push({ name: label, bookings: bCount, orders: oCount });
     }
     return months;
   }, [bookings, orders]);
 
-  // Services distribution
   const servicesData = useMemo(() => {
     return services.slice(0, 8).map(s => ({
       name: s.name.length > 12 ? s.name.substring(0, 12) + '…' : s.name,
@@ -74,51 +87,41 @@ const AdminStatsCharts: React.FC<StatsChartsProps> = ({ bookings, orders, servic
     })).filter(s => s.bookings > 0 || s.orders > 0);
   }, [services, bookings, orders]);
 
-  // Revenue
-  const totalRevenue = useMemo(() => {
-    return orders
-      .filter(o => o.status !== 'cancelled')
-      .reduce((sum, o) => sum + (o.total_amount || 0), 0);
-  }, [orders]);
-
+  const totalRevenue = useMemo(() => orders.filter(o => o.status !== 'cancelled').reduce((sum, o) => sum + (o.total_amount || 0), 0), [orders]);
   const completedBookings = bookings.filter(b => b.status === 'completed').length;
   const completedOrders = orders.filter(o => o.status === 'completed').length;
+  const pendingBookings = bookings.filter(b => b.status === 'pending').length;
+  const pendingOrders = orders.filter(o => o.status === 'pending').length;
+
+  const summaryStats = [
+    { label: 'حجوزات مكتملة', value: completedBookings, icon: Calendar, color: 'text-emerald-500' },
+    { label: 'حجوزات معلقة', value: pendingBookings, icon: Calendar, color: 'text-amber-500' },
+    { label: 'طلبات مكتملة', value: completedOrders, icon: ShoppingCart, color: 'text-emerald-500' },
+    { label: 'طلبات معلقة', value: pendingOrders, icon: ShoppingCart, color: 'text-amber-500' },
+    { label: 'خدمات متاحة', value: services.length, icon: Package, color: 'text-primary' },
+    { label: 'إجمالي الإيرادات', value: totalRevenue.toLocaleString(), icon: TrendingUp, color: 'text-primary' },
+    { label: 'طلبات واي فاي', value: wifiOrdersCount, icon: Wifi, color: 'text-cyan-500' },
+    { label: 'اشتراكات الباقات', value: subscriptionsCount, icon: Package, color: 'text-violet-500' },
+    { label: 'المستخدمون', value: usersCount, icon: Users, color: 'text-primary' },
+    { label: 'الإحالات', value: referralsCount, icon: Users, color: 'text-pink-500' },
+  ];
 
   return (
     <div className="space-y-6">
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-primary">{completedBookings}</p>
-            <p className="text-xs text-muted-foreground">حجوزات مكتملة</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-primary">{completedOrders}</p>
-            <p className="text-xs text-muted-foreground">طلبات مكتملة</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-primary">{services.length}</p>
-            <p className="text-xs text-muted-foreground">خدمات متاحة</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-primary">{totalRevenue.toLocaleString()}</p>
-            <p className="text-xs text-muted-foreground">إجمالي الإيرادات</p>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        {summaryStats.map(s => (
+          <Card key={s.label}>
+            <CardContent className="p-3 text-center">
+              <s.icon className={`w-5 h-5 mx-auto mb-1 ${s.color}`} />
+              <p className="text-xl font-bold text-foreground">{s.value}</p>
+              <p className="text-[10px] text-muted-foreground">{s.label}</p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      {/* Monthly Trend */}
       <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base">الاتجاه الشهري</CardTitle>
-        </CardHeader>
+        <CardHeader className="pb-2"><CardTitle className="text-base">الاتجاه الشهري</CardTitle></CardHeader>
         <CardContent>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -136,63 +139,46 @@ const AdminStatsCharts: React.FC<StatsChartsProps> = ({ bookings, orders, servic
         </CardContent>
       </Card>
 
-      {/* Status Distribution */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">حالة الحجوزات</CardTitle>
-          </CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-base">حالة الحجوزات</CardTitle></CardHeader>
           <CardContent>
             <div className="h-52">
               {bookingsByStatus.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie data={bookingsByStatus} cx="50%" cy="50%" innerRadius={40} outerRadius={75} dataKey="value" label={({ name, value }) => `${name}: ${value}`} labelLine={false} style={{ fontSize: 11 }}>
-                      {bookingsByStatus.map((_, i) => (
-                        <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                      ))}
+                      {bookingsByStatus.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                     </Pie>
                     <Tooltip contentStyle={{ fontSize: 12 }} />
                   </PieChart>
                 </ResponsiveContainer>
-              ) : (
-                <div className="flex items-center justify-center h-full text-muted-foreground text-sm">لا توجد بيانات</div>
-              )}
+              ) : <div className="flex items-center justify-center h-full text-muted-foreground text-sm">لا توجد بيانات</div>}
             </div>
           </CardContent>
         </Card>
-
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">حالة الطلبات</CardTitle>
-          </CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-base">حالة الطلبات</CardTitle></CardHeader>
           <CardContent>
             <div className="h-52">
               {ordersByStatus.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie data={ordersByStatus} cx="50%" cy="50%" innerRadius={40} outerRadius={75} dataKey="value" label={({ name, value }) => `${name}: ${value}`} labelLine={false} style={{ fontSize: 11 }}>
-                      {ordersByStatus.map((_, i) => (
-                        <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                      ))}
+                      {ordersByStatus.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                     </Pie>
                     <Tooltip contentStyle={{ fontSize: 12 }} />
                   </PieChart>
                 </ResponsiveContainer>
-              ) : (
-                <div className="flex items-center justify-center h-full text-muted-foreground text-sm">لا توجد بيانات</div>
-              )}
+              ) : <div className="flex items-center justify-center h-full text-muted-foreground text-sm">لا توجد بيانات</div>}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Services Performance */}
       {servicesData.length > 0 && (
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">أداء الخدمات</CardTitle>
-          </CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-base">أداء الخدمات</CardTitle></CardHeader>
           <CardContent>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
