@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, Package, Calendar, Settings, Users,
   TrendingUp, Clock, XCircle, ArrowRight, Newspaper, MessageSquare, Image,
-  BarChart3, Crown, Smartphone, Radio, Wifi, Palette, Gift,
+  BarChart3, Crown, Smartphone, Radio, Wifi, Palette, Gift, Star, Cog,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -27,6 +27,8 @@ import AdminChannelsTable from '@/components/admin/AdminChannelsTable';
 import AdminWifiTable from '@/components/admin/AdminWifiTable';
 import AdminPortfolioTable from '@/components/admin/AdminPortfolioTable';
 import AdminReferralsTable from '@/components/admin/AdminReferralsTable';
+import AdminFeaturedClientsTable from '@/components/admin/AdminFeaturedClientsTable';
+import AdminPlatformSettings from '@/components/admin/AdminPlatformSettings';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
@@ -111,50 +113,58 @@ const AdminDashboard: React.FC = () => {
           </div>
 
           <Tabs defaultValue="stats" className="w-full" dir="rtl">
-            <TabsList className="grid w-full grid-cols-7 sm:grid-cols-14 mb-6 h-auto">
-              <TabsTrigger value="stats" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <BarChart3 className="w-4 h-4" /><span className="hidden sm:inline">الإحصائيات</span>
-              </TabsTrigger>
-              <TabsTrigger value="bookings" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Calendar className="w-4 h-4" /><span className="hidden sm:inline">الحجوزات</span>
-              </TabsTrigger>
-              <TabsTrigger value="orders" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Package className="w-4 h-4" /><span className="hidden sm:inline">الطلبات</span>
-              </TabsTrigger>
-              <TabsTrigger value="packages" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Crown className="w-4 h-4" /><span className="hidden sm:inline">الباقات</span>
-              </TabsTrigger>
-              <TabsTrigger value="services" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Settings className="w-4 h-4" /><span className="hidden sm:inline">الخدمات</span>
-              </TabsTrigger>
-              <TabsTrigger value="users" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Users className="w-4 h-4" /><span className="hidden sm:inline">المستخدمون</span>
-              </TabsTrigger>
-              <TabsTrigger value="news" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Newspaper className="w-4 h-4" /><span className="hidden sm:inline">الأخبار</span>
-              </TabsTrigger>
-              <TabsTrigger value="slides" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Image className="w-4 h-4" /><span className="hidden sm:inline">السلايدر</span>
-              </TabsTrigger>
-              <TabsTrigger value="chat" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <MessageSquare className="w-4 h-4" /><span className="hidden sm:inline">المراسلات</span>
-              </TabsTrigger>
-              <TabsTrigger value="apps" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Smartphone className="w-4 h-4" /><span className="hidden sm:inline">التطبيقات</span>
-              </TabsTrigger>
-              <TabsTrigger value="channels" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Radio className="w-4 h-4" /><span className="hidden sm:inline">البث</span>
-              </TabsTrigger>
-              <TabsTrigger value="wifi" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Wifi className="w-4 h-4" /><span className="hidden sm:inline">الواي فاي</span>
-              </TabsTrigger>
-              <TabsTrigger value="portfolio" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Palette className="w-4 h-4" /><span className="hidden sm:inline">الأعمال</span>
-              </TabsTrigger>
-              <TabsTrigger value="referrals" className="flex items-center gap-1 text-xs sm:text-sm py-2">
-                <Gift className="w-4 h-4" /><span className="hidden sm:inline">الإحالات</span>
-              </TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto mb-6">
+              <TabsList className="inline-flex w-auto min-w-full h-auto gap-1 p-1">
+                <TabsTrigger value="stats" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <BarChart3 className="w-4 h-4" /><span className="hidden sm:inline">الإحصائيات</span>
+                </TabsTrigger>
+                <TabsTrigger value="bookings" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Calendar className="w-4 h-4" /><span className="hidden sm:inline">الحجوزات</span>
+                </TabsTrigger>
+                <TabsTrigger value="orders" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Package className="w-4 h-4" /><span className="hidden sm:inline">الطلبات</span>
+                </TabsTrigger>
+                <TabsTrigger value="packages" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Crown className="w-4 h-4" /><span className="hidden sm:inline">الباقات</span>
+                </TabsTrigger>
+                <TabsTrigger value="services" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Settings className="w-4 h-4" /><span className="hidden sm:inline">الخدمات</span>
+                </TabsTrigger>
+                <TabsTrigger value="users" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Users className="w-4 h-4" /><span className="hidden sm:inline">المستخدمون</span>
+                </TabsTrigger>
+                <TabsTrigger value="news" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Newspaper className="w-4 h-4" /><span className="hidden sm:inline">الأخبار</span>
+                </TabsTrigger>
+                <TabsTrigger value="slides" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Image className="w-4 h-4" /><span className="hidden sm:inline">السلايدر</span>
+                </TabsTrigger>
+                <TabsTrigger value="chat" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <MessageSquare className="w-4 h-4" /><span className="hidden sm:inline">المراسلات</span>
+                </TabsTrigger>
+                <TabsTrigger value="apps" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Smartphone className="w-4 h-4" /><span className="hidden sm:inline">التطبيقات</span>
+                </TabsTrigger>
+                <TabsTrigger value="channels" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Radio className="w-4 h-4" /><span className="hidden sm:inline">البث</span>
+                </TabsTrigger>
+                <TabsTrigger value="wifi" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Wifi className="w-4 h-4" /><span className="hidden sm:inline">الواي فاي</span>
+                </TabsTrigger>
+                <TabsTrigger value="portfolio" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Palette className="w-4 h-4" /><span className="hidden sm:inline">الأعمال</span>
+                </TabsTrigger>
+                <TabsTrigger value="referrals" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Gift className="w-4 h-4" /><span className="hidden sm:inline">الإحالات</span>
+                </TabsTrigger>
+                <TabsTrigger value="clients" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Star className="w-4 h-4" /><span className="hidden sm:inline">العملاء</span>
+                </TabsTrigger>
+                <TabsTrigger value="platform" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <Cog className="w-4 h-4" /><span className="hidden sm:inline">إدارة المنصة</span>
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="stats"><AdminStatsCharts bookings={bookings} orders={orders} services={services} /></TabsContent>
             <TabsContent value="bookings"><AdminBookingsTable /></TabsContent>
@@ -170,6 +180,8 @@ const AdminDashboard: React.FC = () => {
             <TabsContent value="wifi"><AdminWifiTable /></TabsContent>
             <TabsContent value="portfolio"><AdminPortfolioTable /></TabsContent>
             <TabsContent value="referrals"><AdminReferralsTable /></TabsContent>
+            <TabsContent value="clients"><AdminFeaturedClientsTable /></TabsContent>
+            <TabsContent value="platform"><AdminPlatformSettings /></TabsContent>
           </Tabs>
         </div>
       </main>

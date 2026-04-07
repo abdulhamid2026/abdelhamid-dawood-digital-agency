@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -6,21 +6,42 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Trash2, Edit2, Save, X, Image } from 'lucide-react';
+import { Plus, Trash2, Edit2, Save, X, Image, Upload } from 'lucide-react';
 import { usePortfolio, PORTFOLIO_CATEGORIES } from '@/hooks/usePortfolio';
 import ExportButton from './ExportButton';
 import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const AdminPortfolioTable: React.FC = () => {
   const { items, addItem, updateItem, deleteItem } = usePortfolio();
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({ title: '', description: '', category: 'social_media', image_url: '', sort_order: 0, is_active: true });
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const resetForm = () => {
     setForm({ title: '', description: '', category: 'social_media', image_url: '', sort_order: 0, is_active: true });
     setIsAdding(false);
     setEditingId(null);
+  };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const ext = file.name.split('.').pop();
+    const path = `items/${Date.now()}.${ext}`;
+    const { error } = await supabase.storage.from('portfolio').upload(path, file);
+    if (error) {
+      toast({ title: 'خطأ', description: 'فشل رفع الصورة', variant: 'destructive' });
+    } else {
+      const { data: urlData } = supabase.storage.from('portfolio').getPublicUrl(path);
+      setForm(f => ({ ...f, image_url: urlData.publicUrl }));
+    }
+    setUploading(false);
   };
 
   const handleAdd = async () => {
@@ -81,7 +102,13 @@ const AdminPortfolioTable: React.FC = () => {
             </div>
             <Textarea placeholder="وصف العمل" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Input placeholder="رابط الصورة" value={form.image_url} onChange={e => setForm({ ...form, image_url: e.target.value })} />
+              <div className="flex gap-2 items-center">
+                <Input placeholder="رابط الصورة" value={form.image_url} onChange={e => setForm({ ...form, image_url: e.target.value })} className="flex-1" />
+                <input type="file" accept="image/*" ref={fileRef} onChange={handleUpload} className="hidden" />
+                <Button size="sm" variant="outline" onClick={() => fileRef.current?.click()} disabled={uploading}>
+                  <Upload className="w-4 h-4 ml-1" />{uploading ? 'جاري...' : 'رفع'}
+                </Button>
+              </div>
               <Input type="number" placeholder="الترتيب" value={form.sort_order} onChange={e => setForm({ ...form, sort_order: parseInt(e.target.value) || 0 })} />
             </div>
             {form.image_url && (
