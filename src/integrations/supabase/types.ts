@@ -207,6 +207,36 @@ export type Database = {
         }
         Relationships: []
       }
+      featured_clients: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          name: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       hero_slides: {
         Row: {
           created_at: string
@@ -636,6 +666,30 @@ export type Database = {
           is_active?: boolean
           name?: string
           price?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          created_at: string
+          id: string
+          setting_key: string
+          setting_value: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          setting_key: string
+          setting_value?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          setting_key?: string
+          setting_value?: string | null
           updated_at?: string
         }
         Relationships: []
