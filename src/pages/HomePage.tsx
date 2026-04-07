@@ -12,9 +12,14 @@ import LiveStreamPromoCard from '@/components/LiveStreamPromoCard';
 import WifiPromoCard from '@/components/WifiPromoCard';
 import PortfolioPromoCard from '@/components/PortfolioPromoCard';
 import SocialIcons from '@/components/SocialIcons';
+import FeaturedClientsSection from '@/components/FeaturedClientsSection';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 const HomePage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { settings, isLoading } = useSiteSettings();
+
+  const show = (key: string) => !settings[key] || settings[key] === 'true';
 
   return (
     <div className="min-h-screen bg-background">
@@ -27,30 +32,38 @@ const HomePage: React.FC = () => {
             <HeroSlider />
           </motion.section>
 
-          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-            <NewsTicker />
-          </motion.section>
+          {show('show_news') && (
+            <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+              <NewsTicker />
+            </motion.section>
+          )}
 
-          <PackagesPromoCard />
-          <AppsPromoCard />
-          <LiveStreamPromoCard />
-          <WifiPromoCard />
-          <PortfolioPromoCard />
+          {show('show_packages') && <PackagesPromoCard />}
+          {show('show_apps') && <AppsPromoCard />}
+          {show('show_livestream') && <LiveStreamPromoCard />}
+          {show('show_wifi') && <WifiPromoCard />}
+          {show('show_portfolio') && <PortfolioPromoCard />}
 
-          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-foreground">خدماتنا</h2>
-              <span className="text-sm text-muted-foreground">اختر الخدمة المطلوبة</span>
-            </div>
-            <ServiceGrid />
-          </motion.section>
+          {show('show_services') && (
+            <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-foreground">خدماتنا</h2>
+                <span className="text-sm text-muted-foreground">اختر الخدمة المطلوبة</span>
+              </div>
+              <ServiceGrid />
+            </motion.section>
+          )}
 
-          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-bold text-foreground mb-1">تابعنا على</h3>
-            </div>
-            <SocialIcons />
-          </motion.section>
+          {show('show_featured_clients') && <FeaturedClientsSection />}
+
+          {show('show_social') && (
+            <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-bold text-foreground mb-1">تابعنا على</h3>
+              </div>
+              <SocialIcons />
+            </motion.section>
+          )}
         </div>
       </main>
 
