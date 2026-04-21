@@ -11,6 +11,7 @@ import AppsPromoCard from '@/components/AppsPromoCard';
 import LiveStreamPromoCard from '@/components/LiveStreamPromoCard';
 import WifiPromoCard from '@/components/WifiPromoCard';
 import PortfolioPromoCard from '@/components/PortfolioPromoCard';
+import AIToolsPromoCard from '@/components/AIToolsPromoCard';
 import SocialIcons from '@/components/SocialIcons';
 import FeaturedClientsSection from '@/components/FeaturedClientsSection';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
@@ -40,6 +41,7 @@ const HomePage: React.FC = () => {
 
           {show('show_packages') && <PackagesPromoCard />}
           {show('show_apps') && <AppsPromoCard />}
+          {show('show_ai_tools') && <AIToolsPromoCard />}
           {show('show_livestream') && <LiveStreamPromoCard />}
           {show('show_wifi') && <WifiPromoCard />}
           {show('show_portfolio') && <PortfolioPromoCard />}

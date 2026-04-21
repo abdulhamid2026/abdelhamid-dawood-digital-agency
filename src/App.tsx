@@ -22,6 +22,7 @@ import PackagesPage from "@/pages/PackagesPage";
 import AppsStorePage from "@/pages/AppsStorePage";
 import LiveStreamPage from "@/pages/LiveStreamPage";
 import WifiNetworksPage from "@/pages/WifiNetworksPage";
+import AIToolsPage from "@/pages/AIToolsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,6 +57,7 @@ const AppContent: React.FC = () => {
       <Route path="/apps-store" element={<ProtectedRoute><AppsStorePage /></ProtectedRoute>} />
       <Route path="/live-stream" element={<ProtectedRoute><LiveStreamPage /></ProtectedRoute>} />
       <Route path="/wifi-networks" element={<ProtectedRoute><WifiNetworksPage /></ProtectedRoute>} />
+      <Route path="/ai-tools" element={<ProtectedRoute><AIToolsPage /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
