@@ -89,7 +89,7 @@ const AppsStorePage: React.FC = () => {
                 </div>
               </motion.div>
               <h1 className="text-2xl font-bold text-white mb-1">متجر تطبيقاتنا</h1>
-              <p className="text-white/80 text-sm">برمجة وتطوير عبدالحميد داوؤد</p>
+              <p className="text-white/80 text-sm">برمجة وتطوير منصة ابوكيان الرقمية</p>
               <div className="flex items-center justify-center gap-4 mt-3">
                 <div className="flex items-center gap-1 text-white/70 text-xs">
                   <Shield className="w-3.5 h-3.5" />
