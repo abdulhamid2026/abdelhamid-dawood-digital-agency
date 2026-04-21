@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_tools: {
+        Row: {
+          category: string
+          color: string | null
+          created_at: string
+          description: string | null
+          icon_url: string | null
+          id: string
+          is_active: boolean
+          is_featured: boolean
+          logo_url: string | null
+          name: string
+          sort_order: number
+          tool_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          is_active?: boolean
+          is_featured?: boolean
+          logo_url?: string | null
+          name: string
+          sort_order?: number
+          tool_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          is_active?: boolean
+          is_featured?: boolean
+          logo_url?: string | null
+          name?: string
+          sort_order?: number
+          tool_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       app_storage: {
         Row: {
           app_id: string
