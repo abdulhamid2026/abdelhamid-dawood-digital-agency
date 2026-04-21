@@ -86,7 +86,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="text-4xl md:text-5xl font-bold text-gradient-gold mb-4 text-center"
         >
-          عبدالحميد داوؤد
+          منصة ابوكيان الرقمية
         </motion.h1>
 
         {/* Description */}

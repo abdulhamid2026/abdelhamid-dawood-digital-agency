@@ -42,7 +42,7 @@ const AuthPage: React.FC = () => {
       } else {
         toast({
           title: mode === 'login' ? 'تم تسجيل الدخول' : 'تم إنشاء الحساب',
-          description: mode === 'login' ? 'مرحباً بك في عبدالحميد داوؤد' : 'يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب',
+          description: mode === 'login' ? 'مرحباً بك في منصة ابوكيان الرقمية' : 'يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب',
         });
         if (mode === 'login') {
           navigate('/');
@@ -93,7 +93,7 @@ const AuthPage: React.FC = () => {
           >
             <Sparkles className="w-10 h-10 text-primary-foreground" />
           </motion.div>
-          <h1 className="text-3xl font-bold text-gradient-gold mb-2">عبدالحميد داوؤد</h1>
+          <h1 className="text-3xl font-bold text-gradient-gold mb-2">منصة ابوكيان الرقمية</h1>
           <p className="text-muted-foreground">خدمات الدعاية والإعلان</p>
         </div>
 
