@@ -19,6 +19,7 @@ const SECTIONS = [
   { key: 'show_services', label: 'قسم الخدمات' },
   { key: 'show_social', label: 'أيقونات التواصل' },
   { key: 'show_featured_clients', label: 'عملاؤنا المميزون' },
+  { key: 'show_ai_tools', label: 'بطاقة أدوات الذكاء الاصطناعي' },
 ];
 
 const AdminPlatformSettings: React.FC = () => {
