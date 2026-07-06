@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
@@ -24,6 +25,15 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>منصة ابوكيان الرقمية | خدمات الدعاية والإعلان والتسويق</title>
+        <meta name="description" content="منصة ابوكيان الرقمية للدعاية والإعلان والتسويق الإلكتروني وإدارة المواقع والمونتاج والحماية — خدمات احترافية متكاملة." />
+        <link rel="canonical" href="https://abdulhamid-hub.lovable.app/" />
+        <meta property="og:title" content="منصة ابوكيان الرقمية | خدمات الدعاية والإعلان والتسويق" />
+        <meta property="og:description" content="خدمات دعاية وإعلان وتسويق إلكتروني احترافية متكاملة." />
+        <meta property="og:url" content="https://abdulhamid-hub.lovable.app/" />
+      </Helmet>
+      <h1 className="sr-only">منصة ابوكيان الرقمية — خدمات التسويق والدعاية والإعلان المتكاملة</h1>
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
       <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
