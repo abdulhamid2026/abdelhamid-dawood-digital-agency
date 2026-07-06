@@ -2,6 +2,8 @@ import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 
+declare const process: { env: Record<string, string | undefined> };
+
 export default defineTool({
   name: "list_services",
   title: "List services",
@@ -14,7 +16,7 @@ export default defineTool({
     const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!);
     const { data, error } = await supabase
       .from("services")
-      .select("id,title,description,category,price,is_active")
+      .select("id,name,description,category,price,icon,is_active")
       .eq("is_active", true)
       .limit(limit ?? 50);
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
