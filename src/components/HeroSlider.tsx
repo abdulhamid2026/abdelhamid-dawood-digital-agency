@@ -67,18 +67,18 @@ const HeroSlider: React.FC = () => {
         </motion.div>
       </AnimatePresence>
 
-      <Button variant="ghost" size="icon" onClick={prevSlide}
+      <Button variant="ghost" size="icon" onClick={prevSlide} aria-label="الشريحة السابقة"
         className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/70 text-foreground">
         <ChevronRight className="w-5 h-5" />
       </Button>
-      <Button variant="ghost" size="icon" onClick={nextSlide}
+      <Button variant="ghost" size="icon" onClick={nextSlide} aria-label="الشريحة التالية"
         className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/70 text-foreground">
         <ChevronLeft className="w-5 h-5" />
       </Button>
 
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
         {items.map((_, index) => (
-          <button key={index} onClick={() => goToSlide(index)}
+          <button key={index} onClick={() => goToSlide(index)} aria-label={`الانتقال إلى الشريحة ${index + 1}`}
             className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? 'w-6 bg-primary' : 'bg-muted-foreground/50 hover:bg-muted-foreground'}`}
           />
         ))}
