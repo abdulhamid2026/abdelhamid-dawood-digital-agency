@@ -160,6 +160,7 @@ const PortfolioPage: React.FC = () => {
 
       <BottomNav />
     </div>
+    </>
   );
 };
 
