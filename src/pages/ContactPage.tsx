@@ -6,6 +6,7 @@ import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
 import { Button } from '@/components/ui/button';
+import PageSeo from '@/components/PageSeo';
 
 const contactMethods = [
   {
@@ -52,6 +53,11 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageSeo
+        title="تواصل معنا | منصة ابوكيان الرقمية"
+        description="تواصل مع فريق منصة ابوكيان الرقمية عبر الهاتف أو واتساب أو البريد للاستفسار عن خدمات الدعاية والإعلان والتسويق."
+        path="/contact"
+      />
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
       <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
