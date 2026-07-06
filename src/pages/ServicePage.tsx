@@ -7,6 +7,7 @@ import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
 import { Button } from '@/components/ui/button';
 import { services } from '@/data/services';
+import PageSeo from '@/components/PageSeo';
 
 const serviceDetails: Record<string, { features: string[]; benefits: string[] }> = {
   advertising: {
@@ -148,6 +149,18 @@ const ServicePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageSeo
+        title={`${service.title} | منصة ابوكيان الرقمية`}
+        description={service.description || `تعرف على خدمة ${service.title} من منصة ابوكيان الرقمية للدعاية والإعلان والتسويق الإلكتروني.`}
+        path={`/services/${serviceId}`}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: service.title,
+          description: service.description || `خدمة ${service.title} من منصة ابوكيان الرقمية.`,
+          provider: { '@type': 'Organization', name: 'منصة ابوكيان الرقمية' },
+        }}
+      />
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
       <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 

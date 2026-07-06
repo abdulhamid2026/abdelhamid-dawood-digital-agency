@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { services } from '@/data/services';
+import PageSeo from '@/components/PageSeo';
 
 const BookingPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -56,6 +57,11 @@ const BookingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageSeo
+        title="حجز موعد | منصة ابوكيان الرقمية"
+        description="احجز موعدك الآن مع فريق منصة ابوكيان الرقمية لبدء مشروعك في الدعاية والإعلان والتسويق الإلكتروني."
+        path="/booking"
+      />
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
       <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 

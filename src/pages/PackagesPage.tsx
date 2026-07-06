@@ -12,6 +12,7 @@ import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
 import SocialIcons from '@/components/SocialIcons';
+import PageSeo from '@/components/PageSeo';
 import { usePackages, Package } from '@/hooks/usePackages';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -102,6 +103,19 @@ const PackagesPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageSeo
+        title="باقات ابوكيان الرقمية | ذهبية، ماسية وفضية"
+        description="اكتشف باقاتنا الاحترافية للدعاية والإعلان: الذهبية، الماسية، والفضية بأسعار تنافسية وميزات متكاملة."
+        path="/packages"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: 'باقات منصة ابوكيان الرقمية',
+          description: 'باقات خدمات دعاية وإعلان وتسويق إلكتروني بمستويات ذهبية وماسية وفضية.',
+          brand: { '@type': 'Brand', name: 'منصة ابوكيان الرقمية' },
+          offers: { '@type': 'AggregateOffer', priceCurrency: 'YER', offerCount: 3 },
+        }}
+      />
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
       <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 

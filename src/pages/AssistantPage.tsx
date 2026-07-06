@@ -102,6 +102,7 @@ const AssistantPage: React.FC = () => {
               variant="ghost"
               size="icon"
               onClick={() => navigate(-1)}
+              aria-label="رجوع"
             >
               <ArrowRight className="w-5 h-5" />
             </Button>

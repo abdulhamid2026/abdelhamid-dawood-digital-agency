@@ -6,6 +6,7 @@ import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
 import { Button } from '@/components/ui/button';
+import PageSeo from '@/components/PageSeo';
 
 const features = [
   { icon: Target, title: 'رؤية واضحة', description: 'نسعى لتقديم أفضل الخدمات الإعلانية' },
@@ -24,6 +25,11 @@ const AboutPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageSeo
+        title="من نحن | منصة ابوكيان الرقمية"
+        description="تعرف على منصة ابوكيان الرقمية، فريقنا، ورؤيتنا في تقديم خدمات الدعاية والإعلان والتسويق الإلكتروني بجودة عالية."
+        path="/about"
+      />
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
       <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
