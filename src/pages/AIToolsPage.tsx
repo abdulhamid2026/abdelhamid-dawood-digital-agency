@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useAITools } from '@/hooks/useAITools';
+import PageSeo from '@/components/PageSeo';
 
 const categories = [
   { value: 'all', label: 'الكل' },
@@ -41,6 +42,11 @@ const AIToolsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageSeo
+        title="أدوات ونماذج الذكاء الاصطناعي | منصة ابوكيان الرقمية"
+        description="مجموعة مختارة من أفضل أدوات ونماذج الذكاء الاصطناعي للمحادثة والصور والفيديو والصوت والنصوص والبرمجة."
+        path="/ai-tools"
+      />
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
       <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
