@@ -8,6 +8,7 @@ import DrawerMenu from '@/components/DrawerMenu';
 import { Button } from '@/components/ui/button';
 import { usePortfolio, PORTFOLIO_CATEGORIES } from '@/hooks/usePortfolio';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import PageSeo from '@/components/PageSeo';
 
 const PortfolioPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -18,6 +19,12 @@ const PortfolioPage: React.FC = () => {
   const getItemsByCategory = (cat: string) => items.filter(i => i.category === cat && i.is_active);
 
   return (
+    <>
+      <PageSeo
+        title="معرض الأعمال | منصة ابوكيان الرقمية"
+        description="شاهد أبرز أعمالنا في التصميم، الدعاية، المونتاج، والتسويق الإلكتروني لعملاء منصة ابوكيان الرقمية."
+        path="/portfolio"
+      />
     <div className="min-h-screen bg-background">
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
       <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
