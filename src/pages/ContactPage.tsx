@@ -30,8 +30,8 @@ const contactMethods = [
   {
     icon: Mail,
     title: 'البريد الإلكتروني',
-    value: 'info@abdulhamid.com',
-    action: () => window.open('mailto:info@abdulhamid.com'),
+    value: 'info@abukayan.com',
+    action: () => window.open('mailto:info@abukayan.com'),
     color: 'from-violet-500 to-purple-600',
   },
   {
