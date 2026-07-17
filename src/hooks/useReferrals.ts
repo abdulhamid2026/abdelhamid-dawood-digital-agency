@@ -46,7 +46,7 @@ export const useReferrals = () => {
       supabase.from('points_history').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
     ]);
 
-    if (refRes.data) setReferrals(refRes.data as Referral[]);
+    if (refRes.data) setReferrals(refRes.data as unknown as Referral[]);
     if (ptsRes.data) setUserPoints(ptsRes.data as UserPoints);
     if (histRes.data) setPointsHistory(histRes.data as PointsHistory[]);
     setIsLoading(false);
@@ -98,7 +98,7 @@ export const useAdminPoints = () => {
   const fetchAll = async () => {
     const [ptsRes, refRes] = await Promise.all([
       supabase.from('user_points').select('*').order('points', { ascending: false }),
-      supabase.from('referrals').select('*').order('created_at', { ascending: false }),
+      supabase.from('referrals').select('id, referrer_id, referred_user_id, status, points_awarded, created_at').order('created_at', { ascending: false }),
     ]);
 
     if (ptsRes.data) {
@@ -110,7 +110,7 @@ export const useAdminPoints = () => {
         profile: profiles?.find((pr: any) => pr.user_id === p.user_id),
       })));
     }
-    if (refRes.data) setAllReferrals(refRes.data as Referral[]);
+    if (refRes.data) setAllReferrals(refRes.data as unknown as Referral[]);
     setIsLoading(false);
   };
 
