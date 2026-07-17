@@ -47,6 +47,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        if (event === 'TOKEN_REFRESHED' && !session) {
+          // refresh failed – clear any stale tokens
+          try {
+            Object.keys(localStorage)
+              .filter((k) => k.startsWith('sb-') && k.endsWith('-auth-token'))
+              .forEach((k) => localStorage.removeItem(k));
+          } catch {}
+        }
         setSession(session);
         setUser(session?.user ?? null);
         setIsGuest(false);
@@ -77,18 +85,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       
       setIsLoading(false);
+    }).catch(() => {
+      try {
+        Object.keys(localStorage)
+          .filter((k) => k.startsWith('sb-') && k.endsWith('-auth-token'))
+          .forEach((k) => localStorage.removeItem(k));
+      } catch {}
+      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string): Promise<{ error: string | null }> => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    
+    try {
+      // Clear any stale session tokens that could be triggering refresh loops
+      Object.keys(localStorage)
+        .filter((k) => k.startsWith('sb-') && k.endsWith('-auth-token'))
+        .forEach((k) => localStorage.removeItem(k));
+    } catch {}
+
+    let error: { message: string } | null = null;
+    try {
+      const res = await supabase.auth.signInWithPassword({ email, password });
+      error = res.error;
+    } catch (e: any) {
+      return { error: 'تعذر الاتصال بالخادم. تحقق من الإنترنت أو أوقف مانع الإعلانات ثم أعد المحاولة.' };
+    }
+
     if (error) {
+      if (error.message?.toLowerCase().includes('invalid login')) {
+        return { error: 'البريد الإلكتروني أو كلمة المرور غير صحيحة' };
+      }
+      if (error.message?.toLowerCase().includes('email not confirmed')) {
+        return { error: 'يرجى تأكيد بريدك الإلكتروني أولاً' };
+      }
       return { error: error.message };
     }
     
@@ -99,18 +130,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (name: string, email: string, password: string): Promise<{ error: string | null }> => {
     const redirectUrl = `${window.location.origin}/`;
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: {
-          name: name,
+
+    let error: { message: string } | null = null;
+    try {
+      const res = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: { name },
         },
-      },
-    });
-    
+      });
+      error = res.error;
+    } catch (e: any) {
+      return { error: 'تعذر الاتصال بالخادم. تحقق من الإنترنت أو أوقف مانع الإعلانات ثم أعد المحاولة.' };
+    }
+
     if (error) {
       if (error.message.includes('already registered')) {
         return { error: 'هذا البريد الإلكتروني مسجل بالفعل' };
