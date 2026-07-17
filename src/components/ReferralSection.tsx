@@ -105,7 +105,7 @@ const ReferralSection: React.FC = () => {
             <Card key={ref.id} className="mb-2">
               <CardContent className="p-3 flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-foreground">{ref.referred_email}</p>
+                  <p className="text-sm text-foreground">{ref.referred_email_masked ?? '—'}</p>
                   <p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(ref.created_at), { addSuffix: true, locale: ar })}</p>
                 </div>
                 <Badge variant={ref.status === 'completed' ? 'default' : 'secondary'}>

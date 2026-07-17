@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 interface Referral {
   id: string;
   referrer_id: string;
-  referred_email: string;
+  referred_email_masked: string | null;
   referred_user_id: string | null;
   status: string;
   points_awarded: number;
@@ -41,12 +41,12 @@ export const useReferrals = () => {
     if (!user) { setIsLoading(false); return; }
 
     const [refRes, ptsRes, histRes] = await Promise.all([
-      supabase.from('referrals').select('*').eq('referrer_id', user.id).order('created_at', { ascending: false }),
+      supabase.from('my_referrals' as any).select('*').eq('referrer_id', user.id).order('created_at', { ascending: false }),
       supabase.from('user_points').select('*').eq('user_id', user.id).maybeSingle(),
       supabase.from('points_history').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
     ]);
 
-    if (refRes.data) setReferrals(refRes.data as Referral[]);
+    if (refRes.data) setReferrals(refRes.data as unknown as Referral[]);
     if (ptsRes.data) setUserPoints(ptsRes.data as UserPoints);
     if (histRes.data) setPointsHistory(histRes.data as PointsHistory[]);
     setIsLoading(false);
@@ -98,7 +98,7 @@ export const useAdminPoints = () => {
   const fetchAll = async () => {
     const [ptsRes, refRes] = await Promise.all([
       supabase.from('user_points').select('*').order('points', { ascending: false }),
-      supabase.from('referrals').select('*').order('created_at', { ascending: false }),
+      supabase.from('referrals').select('id, referrer_id, referred_user_id, status, points_awarded, created_at').order('created_at', { ascending: false }),
     ]);
 
     if (ptsRes.data) {
@@ -110,7 +110,7 @@ export const useAdminPoints = () => {
         profile: profiles?.find((pr: any) => pr.user_id === p.user_id),
       })));
     }
-    if (refRes.data) setAllReferrals(refRes.data as Referral[]);
+    if (refRes.data) setAllReferrals(refRes.data as unknown as Referral[]);
     setIsLoading(false);
   };
 
