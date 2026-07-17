@@ -985,7 +985,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      my_referrals: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          points_awarded: number | null
+          referred_email_masked: string | null
+          referred_user_id: string | null
+          referrer_id: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          points_awarded?: number | null
+          referred_email_masked?: never
+          referred_user_id?: string | null
+          referrer_id?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          points_awarded?: number | null
+          referred_email_masked?: never
+          referred_user_id?: string | null
+          referrer_id?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
