@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 type AuthMode = 'login' | 'register';
 
@@ -20,6 +21,14 @@ const AuthPage: React.FC = () => {
   const navigate = useNavigate();
   const { login, register, loginAsGuest } = useAuth();
   const { toast } = useToast();
+  const { getSetting, getBool } = useSiteSettings();
+
+  const logoUrl = getSetting('site_logo_url');
+  const logoSize = parseInt(getSetting('auth_logo_size', '80'), 10) || 80;
+  const authTitle = getSetting('auth_title') || getSetting('site_name');
+  const authSubtitle = getSetting('auth_subtitle');
+  const showRegister = getBool('auth_show_register');
+  const showGuest = getBool('auth_show_guest');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +51,7 @@ const AuthPage: React.FC = () => {
       } else {
         toast({
           title: mode === 'login' ? 'تم تسجيل الدخول' : 'تم إنشاء الحساب',
-          description: mode === 'login' ? 'مرحباً بك في منصة ابوكيان الرقمية' : 'يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب',
+          description: mode === 'login' ? `مرحباً بك في ${authTitle}` : 'يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب',
         });
         if (mode === 'login') {
           navigate('/');
@@ -85,16 +94,25 @@ const AuthPage: React.FC = () => {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <motion.div
-            initial={{ scale: 0.5 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', damping: 15 }}
-            className="w-20 h-20 mx-auto mb-4 rounded-2xl gradient-gold flex items-center justify-center shadow-elevated"
-          >
-            <Sparkles className="w-10 h-10 text-primary-foreground" />
-          </motion.div>
-          <h1 className="text-3xl font-bold text-gradient-gold mb-2">منصة ابوكيان الرقمية</h1>
-          <p className="text-muted-foreground">خدمات الدعاية والإعلان</p>
+          {getBool('auth_show_logo') && (
+            <motion.div
+              initial={{ scale: 0.5 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', damping: 15 }}
+              className="mx-auto mb-4 flex items-center justify-center"
+              style={{ width: logoSize, height: logoSize }}
+            >
+              {logoUrl ? (
+                <img src={logoUrl} alt={authTitle} className="w-full h-full rounded-2xl object-contain shadow-elevated" />
+              ) : (
+                <div className="w-full h-full rounded-2xl gradient-gold flex items-center justify-center shadow-elevated">
+                  <Sparkles style={{ width: logoSize / 2, height: logoSize / 2 }} className="text-primary-foreground" />
+                </div>
+              )}
+            </motion.div>
+          )}
+          <h1 className="text-3xl font-bold text-gradient-gold mb-2">{authTitle}</h1>
+          {authSubtitle && <p className="text-muted-foreground">{authSubtitle}</p>}
         </div>
 
         {/* Auth Card */}
@@ -175,7 +193,7 @@ const AuthPage: React.FC = () => {
               className="w-full h-12 gradient-gold text-primary-foreground font-bold text-lg"
               disabled={isLoading}
             >
-              {isLoading ? 'جاري...' : mode === 'login' ? 'دخول' : 'إنشاء حساب'}
+              {isLoading ? 'جاري...' : mode === 'login' ? getSetting('auth_login_button_text', 'دخول') : getSetting('auth_register_button_text', 'إنشاء حساب')}
             </Button>
           </form>
 
@@ -187,13 +205,15 @@ const AuthPage: React.FC = () => {
           </div>
 
           {/* Guest Button */}
-          <Button
-            variant="outline"
-            className="w-full h-12"
-            onClick={handleGuest}
-          >
-            الدخول كضيف
-          </Button>
+          {showGuest && (
+            <Button variant="outline" className="w-full h-12" onClick={handleGuest}>
+              الدخول كضيف
+            </Button>
+          )}
+
+          {getSetting('auth_footer_text') && (
+            <p className="text-center text-xs text-muted-foreground mt-4">{getSetting('auth_footer_text')}</p>
+          )}
         </div>
       </motion.div>
     </div>
