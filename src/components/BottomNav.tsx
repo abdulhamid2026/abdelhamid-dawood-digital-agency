@@ -1,19 +1,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Home, Users, Calendar, Phone, Bot } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
+import { getIcon } from '@/lib/iconMap';
 
-const navItems = [
-  { id: 'home', label: 'الرئيسية', icon: Home, path: '/' },
-  { id: 'about', label: 'من نحن', icon: Users, path: '/about' },
-  { id: 'booking', label: 'حجز', icon: Calendar, path: '/booking' },
-  { id: 'contact', label: 'اتصل بنا', icon: Phone, path: '/contact' },
-  { id: 'assistant', label: 'المساعد', icon: Bot, path: '/assistant' },
-];
+interface NavItem { id: string; label: string; icon: string; path: string }
 
 const BottomNav: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { getBool, getJson } = useSiteSettings();
+
+  if (!getBool('bottom_nav_enabled')) return null;
+
+  const navItems = getJson<NavItem[]>('bottom_nav_items', []);
+  if (!navItems.length) return null;
 
   return (
     <motion.nav
@@ -25,32 +26,23 @@ const BottomNav: React.FC = () => {
         <div className="flex items-center justify-around h-16">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
-            const Icon = item.icon;
+            const Icon = getIcon(item.icon);
 
             return (
               <button
                 key={item.id}
-                onClick={() => navigate(item.path)}
+                onClick={() => item.path.startsWith('http') ? window.open(item.path, '_blank') : navigate(item.path)}
                 className="flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-300"
               >
                 <motion.div
-                  animate={{
-                    scale: isActive ? 1.1 : 1,
-                    y: isActive ? -2 : 0,
-                  }}
+                  animate={{ scale: isActive ? 1.1 : 1, y: isActive ? -2 : 0 }}
                   className={`p-2 rounded-xl transition-colors ${
-                    isActive
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
+                    isActive ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
                 </motion.div>
-                <span
-                  className={`text-xs font-medium transition-colors ${
-                    isActive ? 'text-primary' : 'text-muted-foreground'
-                  }`}
-                >
+                <span className={`text-xs font-medium transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
                   {item.label}
                 </span>
               </button>

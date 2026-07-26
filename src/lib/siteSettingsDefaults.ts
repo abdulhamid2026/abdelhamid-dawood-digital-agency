@@ -1,0 +1,90 @@
+export const DEFAULT_SETTINGS: Record<string, string> = {
+  // الهوية
+  site_name: 'منصة ابوكيان الرقمية',
+  site_tagline: 'خدمات الدعاية والإعلان والتسويق الإلكتروني',
+  site_logo_url: '',
+
+  // رأس الموقع
+  header_enabled: 'true',
+  header_show_logo: 'true',
+  header_show_name: 'true',
+  header_logo_size: '36',
+  header_title: '',
+  header_show_notifications: 'true',
+  header_show_messages: 'true',
+  header_show_whatsapp: 'true',
+  header_whatsapp_number: '967778215553',
+  header_buttons: '[]',
+
+  // شاشة البداية
+  splash_enabled: 'true',
+  splash_duration: '5000',
+  splash_show_logo: 'true',
+  splash_logo_size: '112',
+  splash_title: '',
+  splash_subtitle: '',
+  splash_welcome: 'مرحباً بك',
+  splash_welcome_sub: 'نسعد بخدمتك دائماً',
+  splash_show_time: 'true',
+
+  // صفحة الدخول والتسجيل
+  auth_show_logo: 'true',
+  auth_logo_size: '80',
+  auth_title: '',
+  auth_subtitle: 'خدمات الدعاية والإعلان',
+  auth_show_register: 'true',
+  auth_show_guest: 'true',
+  auth_login_button_text: 'دخول',
+  auth_register_button_text: 'إنشاء حساب',
+  auth_footer_text: '',
+
+  // القائمة السفلية
+  bottom_nav_enabled: 'true',
+  bottom_nav_items: JSON.stringify([
+    { id: 'home', label: 'الرئيسية', icon: 'Home', path: '/' },
+    { id: 'about', label: 'من نحن', icon: 'Users', path: '/about' },
+    { id: 'booking', label: 'حجز', icon: 'Calendar', path: '/booking' },
+    { id: 'contact', label: 'اتصل بنا', icon: 'Phone', path: '/contact' },
+    { id: 'assistant', label: 'المساعد', icon: 'Bot', path: '/assistant' },
+  ]),
+
+  // الصفحة الرئيسية
+  home_services_title: 'خدماتنا',
+  home_services_subtitle: 'اختر الخدمة المطلوبة',
+  home_social_title: 'تابعنا على',
+  home_cards: '[]',
+
+  // الأقسام
+  show_news: 'true',
+  show_packages: 'true',
+  show_apps: 'true',
+  show_livestream: 'true',
+  show_wifi: 'true',
+  show_portfolio: 'true',
+  show_services: 'true',
+  show_social: 'true',
+  show_featured_clients: 'true',
+  show_ai_tools: 'true',
+
+  // الألوان (HEX)
+  theme_enabled: 'false',
+  color_background: '#0a0f1c',
+  color_foreground: '#f5f1e8',
+  color_card: '#0f1626',
+  color_primary: '#e0b13c',
+  color_primary_foreground: '#0a0f1c',
+  color_secondary: '#20293d',
+  color_muted_foreground: '#8a93a6',
+  color_accent: '#19a7e0',
+  color_border: '#293349',
+  radius: '0.75',
+
+  // التدرجات والتأثيرات
+  gradient_from: '#e0b13c',
+  gradient_to: '#e09a19',
+  gradient_angle: '135',
+  effect_glass: 'true',
+  effect_shadows: 'true',
+  effect_animations: 'true',
+  effect_glow: 'true',
+};

@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { SiteSettingsProvider, useSiteSettings } from "@/hooks/useSiteSettings";
 import SplashScreen from "@/components/SplashScreen";
 import HomePage from "@/pages/HomePage";
 import AuthPage from "@/pages/AuthPage";
@@ -35,8 +36,17 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const AppContent: React.FC = () => {
   const [showSplash, setShowSplash] = useState(true);
   const { isAuthenticated } = useAuth();
+  const { isLoading: settingsLoading, getBool } = useSiteSettings();
 
-  if (showSplash) {
+  if (settingsLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  if (showSplash && getBool('splash_enabled')) {
     return <SplashScreen onComplete={() => setShowSplash(false)} />;
   }
 
@@ -67,6 +77,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <AuthProvider>
+        <SiteSettingsProvider>
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -74,6 +85,7 @@ const App = () => (
             <AppContent />
           </BrowserRouter>
         </TooltipProvider>
+        </SiteSettingsProvider>
       </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
