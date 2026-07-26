@@ -260,3 +260,23 @@
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
+
+/* ==== تأثيرات المنصة القابلة للتحكم من لوحة الإدارة ==== */
+.no-glass .glass,
+.no-glass [class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+}
+.no-shadows *,
+.no-shadows *::before,
+.no-shadows *::after {
+  box-shadow: none !important;
+}
+.no-animations *,
+.no-animations *::before,
+.no-animations *::after {
+  animation: none !important;
+  transition: none !important;
+}
+.no-glow .platform-glow {
+  display: none !important;
+}
