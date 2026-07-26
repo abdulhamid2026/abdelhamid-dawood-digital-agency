@@ -129,7 +129,7 @@ const AuthPage: React.FC = () => {
             >
               تسجيل الدخول
             </button>
-            <button
+            {showRegister && <button
               onClick={() => setMode('register')}
               className={`flex-1 py-2.5 rounded-lg font-medium transition-all ${
                 mode === 'register'
@@ -138,7 +138,7 @@ const AuthPage: React.FC = () => {
               }`}
             >
               حساب جديد
-            </button>
+            </button>}
           </div>
 
           {/* Form */}
