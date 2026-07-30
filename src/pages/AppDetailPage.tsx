@@ -121,9 +121,9 @@ const AppDetailPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-sm"
           >
-            <div className={`absolute inset-x-0 top-0 h-28 bg-gradient-to-br ${gradient} opacity-90`} />
+            <div className={`absolute inset-x-0 top-0 h-24 bg-gradient-to-br ${gradient} opacity-90`} />
             <div className="absolute top-0 left-0 w-40 h-40 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2" />
-            <div className="relative p-5 pt-10">
+            <div className="relative p-5 pt-16">
               <div className="flex items-end gap-4">
                 <div className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${gradient} ring-4 ring-card shadow-xl flex items-center justify-center overflow-hidden flex-shrink-0`}>
                   {app.icon_url ? (
