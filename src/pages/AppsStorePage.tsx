@@ -15,9 +15,8 @@ const formatNumber = (n: number) =>
 
 const AppCard: React.FC<{ app: App; index: number }> = ({ app, index }) => {
   const navigate = useNavigate();
-  const isNew = app.last_update_at
-    ? Date.now() - new Date(app.last_update_at).getTime() < 30 * 24 * 3600 * 1000
-    : false;
+  const isNew = !!app.whats_new && !!app.last_update_at
+    && Date.now() - new Date(app.last_update_at).getTime() < 30 * 24 * 3600 * 1000;
 
   return (
     <motion.div
