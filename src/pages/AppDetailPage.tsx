@@ -8,7 +8,6 @@ import PageSeo from '@/components/PageSeo';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
 import {
   Smartphone, Download, Star, Shield, ArrowRight, Sparkles, Clock, HardDrive,
   Tag, LifeBuoy, Mail, Phone, Globe, X, ChevronLeft, ChevronRight, User2, MessageSquare, Package,
@@ -102,6 +101,7 @@ const AppDetailPage: React.FC = () => {
       <PageSeo
         title={`${app.name} — تحميل التطبيق | منصة ابوكيان الرقمية`}
         description={(app.description || `تحميل ${app.name} الإصدار ${app.version}`).slice(0, 155)}
+        path={`/apps-store/${app.id}`}
       />
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
       <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
