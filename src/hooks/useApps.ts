@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -17,9 +18,32 @@ export interface App {
   color: string | null;
   is_active: boolean;
   sort_order: number;
+  developer_name: string | null;
+  support_url: string | null;
+  support_email: string | null;
+  support_phone: string | null;
+  package_name: string | null;
+  requirements: string | null;
+  whats_new: string | null;
+  real_downloads: number;
+  last_update_at: string;
   created_at: string;
   updated_at: string;
 }
+
+export const useApp = (appId?: string) => {
+  const { data: app, isLoading, refetch } = useQuery({
+    queryKey: ['app', appId],
+    queryFn: async () => {
+      if (!appId) return null;
+      const { data, error } = await supabase.from('apps').select('*').eq('id', appId).maybeSingle();
+      if (error) throw error;
+      return data as unknown as App | null;
+    },
+    enabled: !!appId,
+  });
+  return { app: app ?? null, isLoading, refetch };
+};
 
 export const useApps = () => {
   const [apps, setApps] = useState<App[]>([]);

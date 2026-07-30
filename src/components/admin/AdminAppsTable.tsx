@@ -9,7 +9,10 @@ import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Smartphone, ExternalLink } from 'lucide-react';
+import { Plus, Edit, Trash2, Smartphone, ExternalLink, Images, Download } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import AdminAppContentDialog from './AdminAppContentDialog';
+import AdminAppsInsights from './AdminAppsInsights';
 import { toast } from 'sonner';
 import ExportButton from './ExportButton';
 import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
@@ -18,6 +21,7 @@ const categories = [
   { value: 'social', label: 'التواصل الاجتماعي' },
   { value: 'tools', label: 'الأدوات' },
   { value: 'design', label: 'التصاميم والمونتاج' },
+  { value: 'wifi', label: 'شبكات الواي فاي' },
 ];
 
 const colorPresets = [
@@ -48,6 +52,13 @@ const defaultForm = {
   color: 'from-blue-500 to-blue-700',
   is_active: true,
   sort_order: 0,
+  developer_name: '',
+  package_name: '',
+  requirements: '',
+  support_url: '',
+  support_email: '',
+  support_phone: '',
+  whats_new: '',
 };
 
 const AdminAppsTable: React.FC = () => {
@@ -57,6 +68,7 @@ const AdminAppsTable: React.FC = () => {
   const [form, setForm] = useState(defaultForm);
   const [apkFile, setApkFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [contentApp, setContentApp] = useState<App | null>(null);
 
   const openAdd = () => {
     setEditingApp(null);
@@ -81,6 +93,13 @@ const AdminAppsTable: React.FC = () => {
       color: app.color || 'from-blue-500 to-blue-700',
       is_active: app.is_active,
       sort_order: app.sort_order,
+      developer_name: app.developer_name || '',
+      package_name: app.package_name || '',
+      requirements: app.requirements || '',
+      support_url: app.support_url || '',
+      support_email: app.support_email || '',
+      support_phone: app.support_phone || '',
+      whats_new: app.whats_new || '',
     });
     setApkFile(null);
     setIsOpen(true);
@@ -124,7 +143,15 @@ const AdminAppsTable: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-4">
+    <Tabs defaultValue="list" dir="rtl" className="space-y-4">
+      <TabsList className="grid grid-cols-2 w-full max-w-sm">
+        <TabsTrigger value="list">التطبيقات</TabsTrigger>
+        <TabsTrigger value="insights">الإحصائيات والتعليقات</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="insights"><AdminAppsInsights /></TabsContent>
+
+      <TabsContent value="list" className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
           <Smartphone className="w-5 h-5" /> إدارة التطبيقات
@@ -204,6 +231,38 @@ const AdminAppsTable: React.FC = () => {
                     <Input value={form.downloads_count} onChange={e => setForm({...form, downloads_count: e.target.value})} />
                   </div>
                 </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label>اسم المطور</Label>
+                    <Input value={form.developer_name} onChange={e => setForm({...form, developer_name: e.target.value})} placeholder="منصة ابوكيان الرقمية" />
+                  </div>
+                  <div>
+                    <Label>اسم الحزمة</Label>
+                    <Input value={form.package_name} onChange={e => setForm({...form, package_name: e.target.value})} placeholder="com.example.app" />
+                  </div>
+                </div>
+                <div>
+                  <Label>متطلبات التشغيل</Label>
+                  <Input value={form.requirements} onChange={e => setForm({...form, requirements: e.target.value})} placeholder="أندرويد 8.0 فأعلى" />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label>رابط الدعم</Label>
+                    <Input value={form.support_url} onChange={e => setForm({...form, support_url: e.target.value})} placeholder="https://..." />
+                  </div>
+                  <div>
+                    <Label>واتساب الدعم</Label>
+                    <Input value={form.support_phone} onChange={e => setForm({...form, support_phone: e.target.value})} placeholder="967778215553" />
+                  </div>
+                </div>
+                <div>
+                  <Label>بريد الدعم</Label>
+                  <Input value={form.support_email} onChange={e => setForm({...form, support_email: e.target.value})} placeholder="support@example.com" />
+                </div>
+                <div>
+                  <Label>ما الجديد (ملخص آخر تحديث)</Label>
+                  <Textarea rows={2} value={form.whats_new} onChange={e => setForm({...form, whats_new: e.target.value})} />
+                </div>
                 <div>
                   <Label>لون التدرج</Label>
                   <Select value={form.color} onValueChange={v => setForm({...form, color: v})}>
@@ -248,13 +307,14 @@ const AdminAppsTable: React.FC = () => {
               <TableHead className="text-right">التصنيف</TableHead>
               <TableHead className="text-right">الإصدار</TableHead>
               <TableHead className="text-right">الحالة</TableHead>
-              <TableHead className="text-right">التحميل</TableHead>
+              <TableHead className="text-right">التحميلات</TableHead>
+              <TableHead className="text-right">الرابط</TableHead>
               <TableHead className="text-right">إجراءات</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {apps.length === 0 ? (
-              <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">لا توجد تطبيقات بعد</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="text-center text-muted-foreground py-8">لا توجد تطبيقات بعد</TableCell></TableRow>
             ) : apps.map(app => (
               <TableRow key={app.id}>
                 <TableCell>
@@ -275,6 +335,11 @@ const AdminAppsTable: React.FC = () => {
                   </Badge>
                 </TableCell>
                 <TableCell>
+                  <span className="flex items-center gap-1 text-xs">
+                    <Download className="w-3 h-3 text-emerald-500" /> {app.real_downloads || 0}
+                  </span>
+                </TableCell>
+                <TableCell>
                   {app.download_url ? (
                     <a href={app.download_url} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="w-4 h-4 text-primary" />
@@ -283,6 +348,7 @@ const AdminAppsTable: React.FC = () => {
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-1">
+                    <Button size="sm" variant="ghost" aria-label="المحتوى واللقطات" onClick={() => setContentApp(app)}><Images className="w-4 h-4" /></Button>
                     <Button size="sm" variant="ghost" onClick={() => openEdit(app)}><Edit className="w-4 h-4" /></Button>
                     <Button size="sm" variant="ghost" className="text-destructive" onClick={() => handleDelete(app.id)}><Trash2 className="w-4 h-4" /></Button>
                   </div>
@@ -292,7 +358,10 @@ const AdminAppsTable: React.FC = () => {
           </TableBody>
         </Table>
       </div>
-    </div>
+
+      <AdminAppContentDialog app={contentApp} open={!!contentApp} onOpenChange={(v) => !v && setContentApp(null)} />
+      </TabsContent>
+    </Tabs>
   );
 };
 

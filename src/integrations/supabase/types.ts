@@ -62,6 +62,123 @@ export type Database = {
         }
         Relationships: []
       }
+      app_downloads: {
+        Row: {
+          app_id: string
+          created_at: string
+          id: string
+          user_id: string | null
+          version: string | null
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          id?: string
+          user_id?: string | null
+          version?: string | null
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string | null
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_downloads_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "apps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      app_reviews: {
+        Row: {
+          admin_reply: string | null
+          admin_reply_at: string | null
+          app_id: string
+          comment: string | null
+          created_at: string
+          id: string
+          is_visible: boolean
+          rating: number
+          updated_at: string
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          admin_reply?: string | null
+          admin_reply_at?: string | null
+          app_id: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          rating?: number
+          updated_at?: string
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          admin_reply?: string | null
+          admin_reply_at?: string | null
+          app_id?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          rating?: number
+          updated_at?: string
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_reviews_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "apps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      app_screenshots: {
+        Row: {
+          app_id: string
+          caption: string | null
+          created_at: string
+          id: string
+          image_url: string
+          sort_order: number
+        }
+        Insert: {
+          app_id: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          sort_order?: number
+        }
+        Update: {
+          app_id?: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_screenshots_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "apps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       app_storage: {
         Row: {
           app_id: string
@@ -97,60 +214,131 @@ export type Database = {
           },
         ]
       }
+      app_updates: {
+        Row: {
+          app_id: string
+          changelog: string | null
+          created_at: string
+          download_url: string | null
+          id: string
+          is_major: boolean
+          released_at: string
+          size: string | null
+          version: string
+        }
+        Insert: {
+          app_id: string
+          changelog?: string | null
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          is_major?: boolean
+          released_at?: string
+          size?: string | null
+          version: string
+        }
+        Update: {
+          app_id?: string
+          changelog?: string | null
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          is_major?: boolean
+          released_at?: string
+          size?: string | null
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_updates_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "apps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       apps: {
         Row: {
           category: string
           color: string | null
           created_at: string
           description: string | null
+          developer_name: string | null
           download_url: string | null
           downloads_count: string | null
           icon: string | null
           icon_url: string | null
           id: string
           is_active: boolean
+          last_update_at: string
           name: string
+          package_name: string | null
           rating: number | null
+          real_downloads: number
+          requirements: string | null
           size: string | null
           sort_order: number
+          support_email: string | null
+          support_phone: string | null
+          support_url: string | null
           updated_at: string
           version: string | null
+          whats_new: string | null
         }
         Insert: {
           category?: string
           color?: string | null
           created_at?: string
           description?: string | null
+          developer_name?: string | null
           download_url?: string | null
           downloads_count?: string | null
           icon?: string | null
           icon_url?: string | null
           id?: string
           is_active?: boolean
+          last_update_at?: string
           name: string
+          package_name?: string | null
           rating?: number | null
+          real_downloads?: number
+          requirements?: string | null
           size?: string | null
           sort_order?: number
+          support_email?: string | null
+          support_phone?: string | null
+          support_url?: string | null
           updated_at?: string
           version?: string | null
+          whats_new?: string | null
         }
         Update: {
           category?: string
           color?: string | null
           created_at?: string
           description?: string | null
+          developer_name?: string | null
           download_url?: string | null
           downloads_count?: string | null
           icon?: string | null
           icon_url?: string | null
           id?: string
           is_active?: boolean
+          last_update_at?: string
           name?: string
+          package_name?: string | null
           rating?: number | null
+          real_downloads?: number
+          requirements?: string | null
           size?: string | null
           sort_order?: number
+          support_email?: string | null
+          support_phone?: string | null
+          support_url?: string | null
           updated_at?: string
           version?: string | null
+          whats_new?: string | null
         }
         Relationships: []
       }

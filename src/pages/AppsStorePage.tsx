@@ -3,55 +3,69 @@ import { motion, AnimatePresence } from 'framer-motion';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
-import { Shield, Download, Star, MessageCircle, Wrench, Palette, Smartphone } from 'lucide-react';
+import { Shield, Download, Star, MessageCircle, Wrench, Palette, Smartphone, Wifi, Sparkles, ChevronLeft } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useApps, App } from '@/hooks/useApps';
+import { useNavigate } from 'react-router-dom';
+
+const formatNumber = (n: number) =>
+  n >= 1000000 ? `${(n / 1000000).toFixed(1)}M` : n >= 1000 ? `${(n / 1000).toFixed(1)}K` : `${n}`;
 
 const AppCard: React.FC<{ app: App; index: number }> = ({ app, index }) => {
+  const navigate = useNavigate();
+  const isNew = !!app.whats_new && !!app.last_update_at
+    && Date.now() - new Date(app.last_update_at).getTime() < 30 * 24 * 3600 * 1000;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="bg-card border border-border rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300"
+      onClick={() => navigate(`/apps-store/${app.id}`)}
+      className="cursor-pointer bg-card border border-border rounded-2xl p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300"
     >
       <div className="flex items-start gap-3">
         <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${app.color || 'from-blue-500 to-blue-700'} flex items-center justify-center flex-shrink-0 shadow-lg overflow-hidden`}>
           {app.icon_url ? (
-            <img src={app.icon_url} alt={app.name} className="w-full h-full object-cover" />
+            <img src={app.icon_url} alt={`أيقونة ${app.name}`} loading="lazy" className="w-full h-full object-cover" />
           ) : (
             <Smartphone className="w-7 h-7 text-white" />
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <h3 className="font-bold text-foreground text-sm">{app.name}</h3>
             {app.version && <Badge variant="outline" className="text-[9px] px-1 py-0">v{app.version}</Badge>}
+            {isNew && (
+              <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 text-[9px] font-bold">
+                <Sparkles className="w-2.5 h-2.5" /> تحديث
+              </span>
+            )}
           </div>
+          <p className="text-[10px] text-muted-foreground mt-0.5">{app.developer_name || 'منصة ابوكيان الرقمية'}</p>
           <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{app.description}</p>
           <div className="flex items-center gap-3 mt-2">
             <div className="flex items-center gap-1">
               <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-              <span className="text-xs text-muted-foreground">{app.rating}</span>
+              <span className="text-xs text-muted-foreground">{Number(app.rating || 0).toFixed(1)}</span>
             </div>
             <span className="text-xs text-muted-foreground">{app.size}</span>
-            <Badge variant="secondary" className="text-[10px] px-1.5 py-0">{app.downloads_count}</Badge>
+            <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+              {formatNumber(app.real_downloads || 0)} تحميل
+            </Badge>
           </div>
         </div>
       </div>
       <Button
         size="sm"
         className="w-full mt-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-xl text-xs h-9"
-        onClick={() => {
-          if (app.download_url) {
-            window.open(app.download_url, '_blank');
-          }
-        }}
+        onClick={(e) => { e.stopPropagation(); navigate(`/apps-store/${app.id}`); }}
       >
         <Download className="w-3.5 h-3.5 ml-1" />
-        تحميل مجاني
+        تحميل الآن
+        <ChevronLeft className="w-3.5 h-3.5 mr-1" />
       </Button>
     </motion.div>
   );
@@ -64,6 +78,7 @@ const AppsStorePage: React.FC = () => {
   const socialApps = apps.filter(a => a.category === 'social' && a.is_active);
   const toolsApps = apps.filter(a => a.category === 'tools' && a.is_active);
   const designApps = apps.filter(a => a.category === 'design' && a.is_active);
+  const wifiApps = apps.filter(a => a.category === 'wifi' && a.is_active);
 
   return (
     <div className="min-h-screen bg-background">
@@ -114,7 +129,7 @@ const AppsStorePage: React.FC = () => {
             </div>
           ) : (
             <Tabs defaultValue="social" dir="rtl" className="w-full">
-              <TabsList className="w-full grid grid-cols-3 h-12 rounded-xl bg-muted/50">
+              <TabsList className="w-full grid grid-cols-4 h-12 rounded-xl bg-muted/50">
                 <TabsTrigger value="social" className="rounded-lg text-xs data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white">
                   <MessageCircle className="w-3.5 h-3.5 ml-1" />
                   التواصل ({socialApps.length})
@@ -126,6 +141,10 @@ const AppsStorePage: React.FC = () => {
                 <TabsTrigger value="design" className="rounded-lg text-xs data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-600 data-[state=active]:text-white">
                   <Palette className="w-3.5 h-3.5 ml-1" />
                   التصاميم ({designApps.length})
+                </TabsTrigger>
+                <TabsTrigger value="wifi" className="rounded-lg text-xs data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500 data-[state=active]:to-blue-600 data-[state=active]:text-white">
+                  <Wifi className="w-3.5 h-3.5 ml-1" />
+                  الواي فاي ({wifiApps.length})
                 </TabsTrigger>
               </TabsList>
 
@@ -148,6 +167,19 @@ const AppsStorePage: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {designApps.map((app, i) => <AppCard key={app.id} app={app} index={i} />)}
                     {designApps.length === 0 && <p className="text-center text-muted-foreground col-span-2 py-8">لا توجد تطبيقات في هذا القسم</p>}
+                  </div>
+                </TabsContent>
+                <TabsContent value="wifi" className="mt-4">
+                  <div className="mb-4 rounded-2xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-700 p-4 text-white">
+                    <div className="flex items-center gap-2">
+                      <Wifi className="w-5 h-5" />
+                      <h2 className="font-bold text-sm">تطبيقات شبكات الواي فاي</h2>
+                    </div>
+                    <p className="text-white/80 text-xs mt-1">أدوات إدارة وتحكم وطباعة كروت الشبكات وصفحات الهوتسبوت</p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {wifiApps.map((app, i) => <AppCard key={app.id} app={app} index={i} />)}
+                    {wifiApps.length === 0 && <p className="text-center text-muted-foreground col-span-2 py-8">لا توجد تطبيقات في هذا القسم</p>}
                   </div>
                 </TabsContent>
               </AnimatePresence>
