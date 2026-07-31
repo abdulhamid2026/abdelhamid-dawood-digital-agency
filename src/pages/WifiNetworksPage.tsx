@@ -76,14 +76,11 @@ const WifiNetworksPage: React.FC = () => {
   const resetForm = () => setFormData({ customer_name: '', country: 'اليمن', country_code: '+967', customer_phone: '', details: '', title: '' });
 
   const handlePurchase = (product: WifiProduct) => {
-    setSelectedProduct(product);
-    resetForm();
-    setOrderDialog(true);
+    navigate(`/wifi-networks/${product.id}/purchase`);
   };
 
   const handleViewDetails = (product: WifiProduct) => {
-    setSelectedProduct(product);
-    setDetailDialog(true);
+    navigate(`/wifi-networks/${product.id}`);
   };
 
   const handleSubmitOrder = async (orderType: string) => {

@@ -774,36 +774,83 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_images: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          image_url: string
+          item_id: string
+          sort_order: number
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          item_id: string
+          sort_order?: number
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          item_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_images_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       portfolio_items: {
         Row: {
           category: string
+          client_name: string | null
           created_at: string
           description: string | null
+          details: string | null
           id: string
           image_url: string | null
           is_active: boolean | null
+          project_date: string | null
+          project_url: string | null
           sort_order: number | null
           title: string
           updated_at: string
         }
         Insert: {
           category?: string
+          client_name?: string | null
           created_at?: string
           description?: string | null
+          details?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean | null
+          project_date?: string | null
+          project_url?: string | null
           sort_order?: number | null
           title: string
           updated_at?: string
         }
         Update: {
           category?: string
+          client_name?: string | null
           created_at?: string
           description?: string | null
+          details?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean | null
+          project_date?: string | null
+          project_url?: string | null
           sort_order?: number | null
           title?: string
           updated_at?: string
@@ -981,6 +1028,7 @@ export type Database = {
           country: string | null
           country_code: string | null
           created_at: string
+          customer_email: string | null
           customer_name: string
           customer_phone: string
           details: string | null
@@ -1000,6 +1048,7 @@ export type Database = {
           country?: string | null
           country_code?: string | null
           created_at?: string
+          customer_email?: string | null
           customer_name: string
           customer_phone: string
           details?: string | null
@@ -1019,6 +1068,7 @@ export type Database = {
           country?: string | null
           country_code?: string | null
           created_at?: string
+          customer_email?: string | null
           customer_name?: string
           customer_phone?: string
           details?: string | null
@@ -1111,63 +1161,172 @@ export type Database = {
           },
         ]
       }
+      wifi_product_updates: {
+        Row: {
+          changelog: string | null
+          created_at: string
+          download_url: string | null
+          id: string
+          is_major: boolean
+          product_id: string
+          released_at: string
+          size: string | null
+          version: string
+        }
+        Insert: {
+          changelog?: string | null
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          is_major?: boolean
+          product_id: string
+          released_at?: string
+          size?: string | null
+          version: string
+        }
+        Update: {
+          changelog?: string | null
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          is_major?: boolean
+          product_id?: string
+          released_at?: string
+          size?: string | null
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wifi_product_updates_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "wifi_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wifi_product_videos: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          sort_order: number
+          title: string
+          youtube_url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          sort_order?: number
+          title: string
+          youtube_url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          sort_order?: number
+          title?: string
+          youtube_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wifi_product_videos_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "wifi_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wifi_products: {
         Row: {
           category: string
           code_content: string | null
           created_at: string
           description: string | null
+          developer_name: string | null
           discount_percent: number | null
           download_url: string | null
+          guide_content: string | null
           id: string
           image_url: string | null
           is_active: boolean | null
           is_free: boolean | null
+          last_update_at: string
           logo_url: string | null
           name: string
+          os: string | null
           preview_url: string | null
           price: number | null
+          size: string | null
           sort_order: number | null
+          support_email: string | null
+          support_phone: string | null
+          support_url: string | null
           type: string | null
           updated_at: string
+          version: string | null
+          website_url: string | null
         }
         Insert: {
           category?: string
           code_content?: string | null
           created_at?: string
           description?: string | null
+          developer_name?: string | null
           discount_percent?: number | null
           download_url?: string | null
+          guide_content?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean | null
           is_free?: boolean | null
+          last_update_at?: string
           logo_url?: string | null
           name: string
+          os?: string | null
           preview_url?: string | null
           price?: number | null
+          size?: string | null
           sort_order?: number | null
+          support_email?: string | null
+          support_phone?: string | null
+          support_url?: string | null
           type?: string | null
           updated_at?: string
+          version?: string | null
+          website_url?: string | null
         }
         Update: {
           category?: string
           code_content?: string | null
           created_at?: string
           description?: string | null
+          developer_name?: string | null
           discount_percent?: number | null
           download_url?: string | null
+          guide_content?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean | null
           is_free?: boolean | null
+          last_update_at?: string
           logo_url?: string | null
           name?: string
+          os?: string | null
           preview_url?: string | null
           price?: number | null
+          size?: string | null
           sort_order?: number | null
+          support_email?: string | null
+          support_phone?: string | null
+          support_url?: string | null
           type?: string | null
           updated_at?: string
+          version?: string | null
+          website_url?: string | null
         }
         Relationships: []
       }

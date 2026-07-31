@@ -85,7 +85,7 @@ const PortfolioPage: React.FC = () => {
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: idx * 0.05 }}
                           className="group relative aspect-square bg-card border border-border rounded-xl overflow-hidden cursor-pointer"
-                          onClick={() => item.image_url && setSelectedImage(item.image_url)}
+                          onClick={() => navigate(`/portfolio/${item.id}`)}
                         >
                           {item.image_url ? (
                             <img src={item.image_url} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
@@ -103,7 +103,16 @@ const PortfolioPage: React.FC = () => {
                               )}
                             </div>
                             <div className="absolute top-2 left-2">
-                              <ZoomIn className="w-5 h-5 text-white/80" />
+                              <button
+                                aria-label="تكبير الصورة"
+                                className="p-1 rounded-md bg-black/40"
+                                onClick={(e) => { e.stopPropagation(); if (item.image_url) setSelectedImage(item.image_url); }}
+                              >
+                                <ZoomIn className="w-4 h-4 text-white/90" />
+                              </button>
+                            </div>
+                            <div className="absolute top-2 right-2">
+                              <span className="text-[10px] text-white/90 bg-primary/80 rounded-md px-2 py-1">عرض التفاصيل</span>
                             </div>
                           </div>
                         </motion.div>

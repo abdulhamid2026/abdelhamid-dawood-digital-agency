@@ -10,6 +10,7 @@ import { useSiteSettings } from '@/hooks/useSiteSettings';
 import { getIcon } from '@/lib/iconMap';
 import NotificationsDropdown from './NotificationsDropdown';
 import MessagesDropdown from './MessagesDropdown';
+import ThemeToggle from './ThemeToggle';
 
 interface TopBarProps {
   onMenuClick: () => void;
@@ -78,6 +79,7 @@ const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
 
         {/* Actions */}
         <div className="flex items-center gap-1">
+          <ThemeToggle />
           {customButtons.map((btn) => {
             const Icon = getIcon(btn.icon);
             return (
