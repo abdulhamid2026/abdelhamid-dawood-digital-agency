@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Edit, Trash2, Eye, Wifi, Shield, Globe, Wrench, AlertTriangle, Send, FileText } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Wifi, Shield, Globe, Wrench, AlertTriangle, Send, FileText, Images } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { useWifiProducts, WifiProduct } from '@/hooks/useWifiProducts';
 import { useWifiOrders, WifiOrder } from '@/hooks/useWifiOrders';
 import { useWifiPosts, WifiPost } from '@/hooks/useWifiPosts';
+import AdminWifiContentDialog from '@/components/admin/AdminWifiContentDialog';
 import ExportButton from '@/components/admin/ExportButton';
 import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
 import { toast } from '@/hooks/use-toast';
@@ -39,6 +40,8 @@ const AdminWifiTable: React.FC = () => {
   const [postDialog, setPostDialog] = useState(false);
   const [orderDetailDialog, setOrderDetailDialog] = useState(false);
   const [notifyDialog, setNotifyDialog] = useState(false);
+  const [contentDialog, setContentDialog] = useState(false);
+  const [contentProduct, setContentProduct] = useState<WifiProduct | null>(null);
   const [editingProduct, setEditingProduct] = useState<WifiProduct | null>(null);
   const [editingPost, setEditingPost] = useState<WifiPost | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<WifiOrder | null>(null);
@@ -48,6 +51,7 @@ const AdminWifiTable: React.FC = () => {
   const [productForm, setProductForm] = useState({
     name: '', description: '', category: 'systems', type: '', price: 0, discount_percent: 0,
     is_free: false, image_url: '', logo_url: '', preview_url: '', download_url: '', code_content: '', is_active: true, sort_order: 0,
+    os: '', size: '', version: '', developer_name: '', support_url: '', support_email: '', support_phone: '', website_url: '', guide_content: '',
   });
 
   const [postForm, setPostForm] = useState({ title: '', summary: '', content: '', image_url: '', is_active: true, sort_order: 0 });
@@ -65,10 +69,18 @@ const AdminWifiTable: React.FC = () => {
         is_free: product.is_free, image_url: product.image_url || '', logo_url: product.logo_url || '',
         preview_url: product.preview_url || '', download_url: product.download_url || '',
         code_content: product.code_content || '', is_active: product.is_active, sort_order: product.sort_order,
+        os: (product as any).os || '', size: (product as any).size || '', version: (product as any).version || '',
+        developer_name: (product as any).developer_name || '', support_url: (product as any).support_url || '',
+        support_email: (product as any).support_email || '', support_phone: (product as any).support_phone || '',
+        website_url: (product as any).website_url || '', guide_content: (product as any).guide_content || '',
       });
     } else {
       setEditingProduct(null);
-      setProductForm({ name: '', description: '', category: 'systems', type: '', price: 0, discount_percent: 0, is_free: false, image_url: '', logo_url: '', preview_url: '', download_url: '', code_content: '', is_active: true, sort_order: 0 });
+      setProductForm({
+        name: '', description: '', category: 'systems', type: '', price: 0, discount_percent: 0, is_free: false,
+        image_url: '', logo_url: '', preview_url: '', download_url: '', code_content: '', is_active: true, sort_order: 0,
+        os: '', size: '', version: '', developer_name: '', support_url: '', support_email: '', support_phone: '', website_url: '', guide_content: '',
+      });
     }
     setProductDialog(true);
   };
@@ -190,6 +202,10 @@ const AdminWifiTable: React.FC = () => {
                         <TableCell>
                           <div className="flex gap-1">
                             <Button size="sm" variant="ghost" onClick={() => openProductDialog(p)}><Edit className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" title="اللقطات والفيديوهات والتحديثات"
+                              onClick={() => { setContentProduct(p); setContentDialog(true); }}>
+                              <Images className="w-4 h-4" />
+                            </Button>
                             <Button size="sm" variant="ghost" className="text-destructive" onClick={() => deleteProduct.mutate(p.id)}><Trash2 className="w-4 h-4" /></Button>
                           </div>
                         </TableCell>
@@ -343,6 +359,40 @@ const AdminWifiTable: React.FC = () => {
             <Input placeholder="رابط الشعار" value={productForm.logo_url} onChange={e => setProductForm(p => ({ ...p, logo_url: e.target.value }))} />
             <Input placeholder="رابط المعاينة" value={productForm.preview_url} onChange={e => setProductForm(p => ({ ...p, preview_url: e.target.value }))} />
             <Input placeholder="رابط التحميل" value={productForm.download_url} onChange={e => setProductForm(p => ({ ...p, download_url: e.target.value }))} />
+            <div className="grid grid-cols-3 gap-2">
+              <div>
+                <Label>نظام التشغيل</Label>
+                <Select value={productForm.os || 'none'} onValueChange={v => setProductForm(p => ({ ...p, os: v === 'none' ? '' : v }))}>
+                  <SelectTrigger><SelectValue placeholder="اختر" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">غير محدد</SelectItem>
+                    <SelectItem value="Android">Android</SelectItem>
+                    <SelectItem value="Windows">Windows</SelectItem>
+                    <SelectItem value="iOS">iOS</SelectItem>
+                    <SelectItem value="Web">Web</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>الحجم</Label>
+                <Input placeholder="24 MB" value={productForm.size} onChange={e => setProductForm(p => ({ ...p, size: e.target.value }))} />
+              </div>
+              <div>
+                <Label>الإصدار</Label>
+                <Input placeholder="1.0.0" value={productForm.version} onChange={e => setProductForm(p => ({ ...p, version: e.target.value }))} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <Input placeholder="اسم المطور" value={productForm.developer_name} onChange={e => setProductForm(p => ({ ...p, developer_name: e.target.value }))} />
+              <Input placeholder="الموقع الإلكتروني" dir="ltr" value={productForm.website_url} onChange={e => setProductForm(p => ({ ...p, website_url: e.target.value }))} />
+              <Input placeholder="رابط الدعم" dir="ltr" value={productForm.support_url} onChange={e => setProductForm(p => ({ ...p, support_url: e.target.value }))} />
+              <Input placeholder="بريد الدعم" dir="ltr" value={productForm.support_email} onChange={e => setProductForm(p => ({ ...p, support_email: e.target.value }))} />
+              <Input placeholder="هاتف/واتساب الدعم" dir="ltr" value={productForm.support_phone} onChange={e => setProductForm(p => ({ ...p, support_phone: e.target.value }))} />
+            </div>
+            <div>
+              <Label>شرح النظام (نصي)</Label>
+              <Textarea rows={5} placeholder="اشرح خطوات استخدام النظام..." value={productForm.guide_content} onChange={e => setProductForm(p => ({ ...p, guide_content: e.target.value }))} />
+            </div>
             <div>
               <Label>محتوى الكود (للمنتجات المجانية)</Label>
               <Textarea className="font-mono text-xs" dir="ltr" rows={6} placeholder="الصق الكود هنا..." value={productForm.code_content} onChange={e => setProductForm(p => ({ ...p, code_content: e.target.value }))} />
@@ -352,6 +402,8 @@ const AdminWifiTable: React.FC = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      <AdminWifiContentDialog product={contentProduct} open={contentDialog} onOpenChange={setContentDialog} />
 
       {/* Post Dialog */}
       <Dialog open={postDialog} onOpenChange={setPostDialog}>
