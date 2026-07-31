@@ -16,6 +16,7 @@ import ContactPage from "@/pages/ContactPage";
 import AssistantPage from "@/pages/AssistantPage";
 import ServicePage from "@/pages/ServicePage";
 import PortfolioPage from "@/pages/PortfolioPage";
+import PortfolioDetailPage from "@/pages/PortfolioDetailPage";
 import AdminDashboard from "@/pages/AdminDashboard";
 import ProfilePage from "@/pages/ProfilePage";
 import MessagesPage from "@/pages/MessagesPage";
@@ -24,6 +25,8 @@ import AppsStorePage from "@/pages/AppsStorePage";
 import AppDetailPage from "@/pages/AppDetailPage";
 import LiveStreamPage from "@/pages/LiveStreamPage";
 import WifiNetworksPage from "@/pages/WifiNetworksPage";
+import WifiSystemPage from "@/pages/WifiSystemPage";
+import WifiPurchasePage from "@/pages/WifiPurchasePage";
 import AIToolsPage from "@/pages/AIToolsPage";
 import NotFound from "./pages/NotFound";
 
@@ -61,6 +64,7 @@ const AppContent: React.FC = () => {
       <Route path="/assistant" element={<ProtectedRoute><AssistantPage /></ProtectedRoute>} />
       <Route path="/services/:serviceId" element={<ProtectedRoute><ServicePage /></ProtectedRoute>} />
       <Route path="/portfolio" element={<ProtectedRoute><PortfolioPage /></ProtectedRoute>} />
+      <Route path="/portfolio/:itemId" element={<ProtectedRoute><PortfolioDetailPage /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
@@ -69,6 +73,8 @@ const AppContent: React.FC = () => {
       <Route path="/apps-store/:appId" element={<ProtectedRoute><AppDetailPage /></ProtectedRoute>} />
       <Route path="/live-stream" element={<ProtectedRoute><LiveStreamPage /></ProtectedRoute>} />
       <Route path="/wifi-networks" element={<ProtectedRoute><WifiNetworksPage /></ProtectedRoute>} />
+      <Route path="/wifi-networks/:productId" element={<ProtectedRoute><WifiSystemPage /></ProtectedRoute>} />
+      <Route path="/wifi-networks/:productId/purchase" element={<ProtectedRoute><WifiPurchasePage /></ProtectedRoute>} />
       <Route path="/ai-tools" element={<ProtectedRoute><AIToolsPage /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
