@@ -1,7 +1,17 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="light">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('app-theme');
+          var d = document.documentElement;
+          if (t === 'dark') { d.classList.add('dark'); d.classList.remove('light'); }
+          else { d.classList.add('light'); d.classList.remove('dark'); }
+        } catch (e) {}
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>منصة ابوكيان الرقمية | خدمات الدعاية والإعلان</title>
     <meta name="description" content="منصة ابوكيان الرقمية للدعاية والإعلان والتسويق الإلكتروني - خدمات احترافية متكاملة" />

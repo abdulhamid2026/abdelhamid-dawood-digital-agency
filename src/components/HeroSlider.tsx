@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useHeroSlides } from '@/hooks/useHeroSlides';
 import { sliderItems } from '@/data/services';
 
 const HeroSlider: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const { activeSlides, isLoading } = useHeroSlides();
+  const [[currentIndex, direction], setState] = useState<[number, number]>([0, 1]);
+  const [paused, setPaused] = useState(false);
+  const { activeSlides } = useHeroSlides();
 
   const items = activeSlides.length > 0
     ? activeSlides.map(s => ({
@@ -16,70 +17,124 @@ const HeroSlider: React.FC = () => {
       }))
     : sliderItems.map(s => ({ ...s, image_url: null }));
 
+  const count = items.length;
+
+  const paginate = useCallback((dir: number) => {
+    setState(([i]) => [(i + dir + count) % count, dir]);
+  }, [count]);
+
   useEffect(() => {
-    if (items.length === 0) return;
-    const timer = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % items.length);
-    }, 5000);
+    if (count === 0 || paused) return;
+    const timer = setInterval(() => paginate(1), 6000);
     return () => clearInterval(timer);
-  }, [items.length]);
+  }, [count, paused, paginate]);
 
   useEffect(() => {
-    if (currentIndex >= items.length && items.length > 0) setCurrentIndex(0);
-  }, [items.length, currentIndex]);
+    if (count > 0 && currentIndex >= count) setState([0, 1]);
+  }, [count, currentIndex]);
 
-  if (items.length === 0) return null;
-
-  const goToSlide = (index: number) => setCurrentIndex(index);
-  const nextSlide = () => setCurrentIndex(prev => (prev + 1) % items.length);
-  const prevSlide = () => setCurrentIndex(prev => (prev - 1 + items.length) % items.length);
+  if (count === 0) return null;
 
   const currentItem = items[currentIndex];
 
   return (
-    <div className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden">
-      <AnimatePresence mode="wait">
+    <div
+      className="platform-glow relative w-full h-56 md:h-80 rounded-3xl overflow-hidden border border-border shadow-elevated group"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <AnimatePresence mode="popLayout" custom={direction}>
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0, x: -100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 100 }}
-          transition={{ duration: 0.5 }}
-          className={`absolute inset-0 bg-gradient-to-br ${currentItem?.gradient} border border-border rounded-2xl`}
+          custom={direction}
+          initial={{ opacity: 0, scale: 1.06, x: direction > 0 ? -60 : 60 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          exit={{ opacity: 0, scale: 1.02, x: direction > 0 ? 60 : -60 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className={`absolute inset-0 bg-gradient-to-br ${currentItem?.gradient}`}
         >
-          <div className="absolute inset-0 flex items-center p-6">
-            {/* Image/Icon on the side */}
+          {currentItem?.image_url && (
+            <motion.img
+              src={currentItem.image_url}
+              alt=""
+              aria-hidden="true"
+              initial={{ scale: 1.15 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 7, ease: 'linear' }}
+              className="absolute inset-0 w-full h-full object-cover opacity-40"
+            />
+          )}
+          {/* Luxury overlays */}
+          <div className="absolute inset-0 bg-gradient-to-l from-background/90 via-background/50 to-transparent" />
+          <div className="absolute inset-0 opacity-60" style={{ background: 'var(--gradient-glow)' }} />
+          <motion.div
+            initial={{ x: '-120%' }}
+            animate={{ x: '120%' }}
+            transition={{ duration: 2.4, ease: 'easeInOut', delay: 0.3 }}
+            className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-primary/10 to-transparent skew-x-12"
+          />
+
+          <div className="relative h-full flex items-center gap-5 p-6 md:p-10">
             {currentItem?.image_url && (
-              <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2 }}
-                className="hidden sm:flex flex-shrink-0 ml-4">
-                <img src={currentItem.image_url} alt="" className="w-28 h-28 object-contain rounded-xl drop-shadow-lg" />
+              <motion.div
+                initial={{ scale: 0.85, opacity: 0, rotate: -4 }}
+                animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                transition={{ delay: 0.25, duration: 0.6 }}
+                className="hidden sm:block flex-shrink-0"
+              >
+                <div className="p-1 rounded-2xl gradient-gold glow-gold">
+                  <img src={currentItem.image_url} alt="" className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-2xl" />
+                </div>
               </motion.div>
             )}
-            <div className={`flex flex-col ${currentItem?.image_url ? 'items-start text-right' : 'items-center text-center w-full'} justify-center`}>
-              <motion.h2 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
-                className="text-2xl md:text-3xl font-bold text-foreground mb-3"
+            <div className={`flex flex-col justify-center ${currentItem?.image_url ? 'items-start text-right' : 'items-center text-center w-full'}`}>
+              <motion.span
+                initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
+                className="mb-3 inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold bg-primary/15 text-primary border border-primary/30 glass"
+              >
+                ★ منصة ابوكيان الرقمية
+              </motion.span>
+              <motion.h2
+                initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}
+                className="text-2xl md:text-4xl font-black text-gradient-gold mb-2 leading-tight"
               >{currentItem?.title}</motion.h2>
-              <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}
-                className="text-muted-foreground max-w-md text-sm"
+              <motion.p
+                initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }}
+                className="text-foreground/80 max-w-lg text-sm md:text-base"
               >{currentItem?.description}</motion.p>
             </div>
           </div>
+
+          {/* Progress bar */}
+          {!paused && (
+            <motion.div
+              key={`p-${currentIndex}`}
+              initial={{ width: '0%' }}
+              animate={{ width: '100%' }}
+              transition={{ duration: 6, ease: 'linear' }}
+              className="absolute bottom-0 right-0 h-[3px] gradient-gold"
+            />
+          )}
         </motion.div>
       </AnimatePresence>
 
-      <Button variant="ghost" size="icon" onClick={prevSlide} aria-label="الشريحة السابقة"
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/70 text-foreground">
+      <Button variant="ghost" size="icon" onClick={() => paginate(-1)} aria-label="الشريحة السابقة"
+        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full glass bg-background/40 hover:bg-background/70 text-foreground border border-border opacity-0 group-hover:opacity-100 transition-opacity">
         <ChevronRight className="w-5 h-5" />
       </Button>
-      <Button variant="ghost" size="icon" onClick={nextSlide} aria-label="الشريحة التالية"
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/50 hover:bg-background/70 text-foreground">
+      <Button variant="ghost" size="icon" onClick={() => paginate(1)} aria-label="الشريحة التالية"
+        className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full glass bg-background/40 hover:bg-background/70 text-foreground border border-border opacity-0 group-hover:opacity-100 transition-opacity">
         <ChevronLeft className="w-5 h-5" />
       </Button>
+      <Button variant="ghost" size="icon" onClick={() => setPaused(p => !p)} aria-label={paused ? 'تشغيل العرض' : 'إيقاف العرض'}
+        className="absolute top-3 left-3 w-8 h-8 rounded-full glass bg-background/40 hover:bg-background/70 text-foreground border border-border">
+        {paused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+      </Button>
 
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
         {items.map((_, index) => (
-          <button key={index} onClick={() => goToSlide(index)} aria-label={`الانتقال إلى الشريحة ${index + 1}`}
-            className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? 'w-6 bg-primary' : 'bg-muted-foreground/50 hover:bg-muted-foreground'}`}
+          <button key={index} onClick={() => setState([index, index > currentIndex ? 1 : -1])} aria-label={`الانتقال إلى الشريحة ${index + 1}`}
+            className={`h-1.5 rounded-full transition-all duration-500 ${index === currentIndex ? 'w-8 gradient-gold' : 'w-1.5 bg-foreground/30 hover:bg-foreground/60'}`}
           />
         ))}
       </div>
