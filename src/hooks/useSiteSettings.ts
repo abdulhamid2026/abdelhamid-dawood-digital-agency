@@ -91,6 +91,13 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   useEffect(() => { fetchSettings(); }, [fetchSettings]);
 
+  // إعادة تطبيق الثيم عند تبديل الوضع الفاتح/الداكن
+  useEffect(() => {
+    const handler = () => applyTheme(settings);
+    window.addEventListener('app-theme-change', handler);
+    return () => window.removeEventListener('app-theme-change', handler);
+  }, [settings]);
+
   const persist = async (updates: Record<string, string>) => {
     const rows = Object.entries(updates).map(([setting_key, setting_value]) => ({ setting_key, setting_value }));
     const { error } = await supabase
