@@ -26,6 +26,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       root.classList.add('dark');
     }
     localStorage.setItem('app-theme', theme);
+    window.dispatchEvent(new CustomEvent('app-theme-change', { detail: theme }));
   }, [theme]);
 
   const toggleTheme = () => {
