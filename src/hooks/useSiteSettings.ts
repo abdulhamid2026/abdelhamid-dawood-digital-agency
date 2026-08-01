@@ -21,8 +21,10 @@ const SiteSettingsContext = createContext<Ctx | undefined>(undefined);
 
 export const applyTheme = (s: SiteSettings) => {
   const root = document.documentElement;
+  // الألوان المخصصة مصمّمة للوضع الداكن — لا تُطبّق في الوضع الفاتح حتى لا تُلغيه
+  const isDark = root.classList.contains('dark');
   const vars: Record<string, string | undefined> = {};
-  if (s.theme_enabled === 'true') {
+  if (s.theme_enabled === 'true' && isDark) {
     const map: Record<string, string> = {
       color_background: '--background',
       color_foreground: '--foreground',
