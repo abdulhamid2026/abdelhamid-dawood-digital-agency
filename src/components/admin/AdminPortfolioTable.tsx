@@ -6,8 +6,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Trash2, Edit2, Save, X, Image, Upload } from 'lucide-react';
+import { Plus, Trash2, Edit2, Save, X, Image, Upload, Settings2 } from 'lucide-react';
 import { usePortfolio, PORTFOLIO_CATEGORIES } from '@/hooks/usePortfolio';
+import AdminPortfolioDetailsDialog from './AdminPortfolioDetailsDialog';
 import ExportButton from './ExportButton';
 import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
 import { supabase } from '@/integrations/supabase/client';
@@ -19,6 +20,7 @@ const AdminPortfolioTable: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({ title: '', description: '', category: 'social_media', image_url: '', sort_order: 0, is_active: true });
   const [uploading, setUploading] = useState(false);
+  const [detailsId, setDetailsId] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -157,6 +159,9 @@ const AdminPortfolioTable: React.FC = () => {
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-1">
+                      <Button size="icon" variant="ghost" title="التفاصيل والمعرض" onClick={() => setDetailsId(item.id)}>
+                        <Settings2 className="w-4 h-4" />
+                      </Button>
                       <Button size="icon" variant="ghost" onClick={() => startEdit(item)}>
                         <Edit2 className="w-4 h-4" />
                       </Button>
@@ -174,6 +179,7 @@ const AdminPortfolioTable: React.FC = () => {
           </Table>
         </div>
       </CardContent>
+      <AdminPortfolioDetailsDialog itemId={detailsId} onOpenChange={(o) => !o && setDetailsId(null)} />
     </Card>
   );
 };
