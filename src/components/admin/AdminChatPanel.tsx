@@ -1,3 +1,4 @@
+import { uploadToBucket } from '@/lib/uploadFile';
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, ArrowRight, Paperclip, Image as ImageIcon, FileText, Download, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';

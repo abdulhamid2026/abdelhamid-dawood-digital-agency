@@ -1,3 +1,4 @@
+import { uploadToBucket } from '@/lib/uploadFile';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Image, Plus, Edit, Trash2, MoreVertical, ToggleLeft, ToggleRight, Upload, Link2 } from 'lucide-react';

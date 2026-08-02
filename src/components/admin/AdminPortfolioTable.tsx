@@ -1,3 +1,4 @@
+import { uploadToBucket } from '@/lib/uploadFile';
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
