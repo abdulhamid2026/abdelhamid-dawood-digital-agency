@@ -1,3 +1,4 @@
+import { uploadToBucket } from '@/lib/uploadFile';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Image, Plus, Edit, Trash2, MoreVertical, ToggleLeft, ToggleRight, Upload, Link2 } from 'lucide-react';
@@ -42,16 +43,14 @@ const AdminSlidesTable: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     setIsUploadingImage(true);
-    const ext = file.name.split('.').pop();
-    const path = `slides/${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from('avatars').upload(path, file, { upsert: true });
-    if (!error) {
-      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path);
-      setFormData(prev => ({ ...prev, image_url: publicUrl }));
+    const { url, error } = await uploadToBucket('avatars', file, 'slides');
+    if (url) {
+      setFormData(prev => ({ ...prev, image_url: url }));
       toast({ title: 'تم الرفع', description: 'تم رفع الصورة بنجاح' });
     } else {
-      toast({ title: 'خطأ', description: 'فشل في رفع الصورة', variant: 'destructive' });
+      toast({ title: 'خطأ', description: error || 'فشل في رفع الصورة', variant: 'destructive' });
     }
+    e.target.value = '';
     setIsUploadingImage(false);
   };
 

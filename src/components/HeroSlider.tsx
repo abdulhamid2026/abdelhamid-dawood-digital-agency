@@ -39,7 +39,7 @@ const HeroSlider: React.FC = () => {
 
   return (
     <div
-      className="platform-glow relative w-full h-56 md:h-80 rounded-3xl overflow-hidden border border-border shadow-elevated group"
+      className="platform-glow relative w-full h-64 md:h-96 rounded-3xl overflow-hidden border border-border shadow-elevated group"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -54,18 +54,28 @@ const HeroSlider: React.FC = () => {
           className={`absolute inset-0 bg-gradient-to-br ${currentItem?.gradient}`}
         >
           {currentItem?.image_url && (
-            <motion.img
-              src={currentItem.image_url}
-              alt=""
-              aria-hidden="true"
-              initial={{ scale: 1.15 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 7, ease: 'linear' }}
-              className="absolute inset-0 w-full h-full object-cover opacity-40"
-            />
+            <>
+              {/* Blurred fill so any image ratio looks premium */}
+              <img
+                src={currentItem.image_url}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-50"
+              />
+              <motion.img
+                src={currentItem.image_url}
+                alt={currentItem.title}
+                loading="eager"
+                initial={{ scale: 1.12, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 7, ease: 'linear' }}
+                className="absolute inset-0 w-full h-full object-contain md:object-cover"
+              />
+            </>
           )}
           {/* Luxury overlays */}
-          <div className="absolute inset-0 bg-gradient-to-l from-background/90 via-background/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-l from-background/95 via-background/60 to-background/20" />
+          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-background/90 to-transparent" />
           <div className="absolute inset-0 opacity-60" style={{ background: 'var(--gradient-glow)' }} />
           <motion.div
             initial={{ x: '-120%' }}
@@ -74,20 +84,8 @@ const HeroSlider: React.FC = () => {
             className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-primary/10 to-transparent skew-x-12"
           />
 
-          <div className="relative h-full flex items-center gap-5 p-6 md:p-10">
-            {currentItem?.image_url && (
-              <motion.div
-                initial={{ scale: 0.85, opacity: 0, rotate: -4 }}
-                animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                transition={{ delay: 0.25, duration: 0.6 }}
-                className="hidden sm:block flex-shrink-0"
-              >
-                <div className="p-1 rounded-2xl gradient-gold glow-gold">
-                  <img src={currentItem.image_url} alt="" className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-2xl" />
-                </div>
-              </motion.div>
-            )}
-            <div className={`flex flex-col justify-center ${currentItem?.image_url ? 'items-start text-right' : 'items-center text-center w-full'}`}>
+          <div className="relative h-full flex items-end md:items-center gap-5 p-6 md:p-10 pb-12">
+            <div className={`flex flex-col justify-center ${currentItem?.image_url ? 'items-start text-right max-w-xl' : 'items-center text-center w-full'}`}>
               <motion.span
                 initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
                 className="mb-3 inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold bg-primary/15 text-primary border border-primary/30 glass"

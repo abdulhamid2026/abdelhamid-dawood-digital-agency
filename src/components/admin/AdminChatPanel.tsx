@@ -1,3 +1,4 @@
+import { uploadToBucket } from '@/lib/uploadFile';
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, ArrowRight, Paperclip, Image as ImageIcon, FileText, Download, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -36,15 +37,13 @@ const AdminChatPanel: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file || !user || !selectedUserId) return;
     setIsUploading(true);
-    const ext = file.name.split('.').pop();
-    const path = `${user.id}/${Date.now()}.${ext}`;
-    const { error: uploadError } = await supabase.storage.from('chat-media').upload(path, file);
-    if (uploadError) {
-      toast({ title: 'خطأ', description: 'فشل رفع الملف', variant: 'destructive' });
+    const { url: publicUrl, error: uploadError } = await uploadToBucket('chat-media', file, user.id);
+    if (uploadError || !publicUrl) {
+      toast({ title: 'خطأ', description: uploadError || 'فشل رفع الملف', variant: 'destructive' });
       setIsUploading(false);
+      e.target.value = '';
       return;
     }
-    const { data: { publicUrl } } = supabase.storage.from('chat-media').getPublicUrl(path);
     let mediaType = 'file';
     if (file.type.startsWith('image/')) mediaType = 'image';
     else if (file.type.startsWith('video/')) mediaType = 'video';

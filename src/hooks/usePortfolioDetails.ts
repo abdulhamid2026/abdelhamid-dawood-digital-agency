@@ -1,3 +1,4 @@
+import { uploadToBucket } from '@/lib/uploadFile';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -20,14 +21,12 @@ export type PortfolioItemFull = PortfolioItem & {
 };
 
 export const uploadPortfolioImage = async (file: File, itemId: string) => {
-  const path = `gallery/${itemId}/${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
-  const { error } = await supabase.storage.from('portfolio').upload(path, file, { upsert: true });
-  if (error) {
-    toast({ title: 'فشل رفع الصورة', variant: 'destructive' });
+  const { url, error } = await uploadToBucket('portfolio', file, `gallery/${itemId}`);
+  if (error || !url) {
+    toast({ title: 'فشل رفع الصورة', description: error || undefined, variant: 'destructive' });
     return null;
   }
-  const { data } = supabase.storage.from('portfolio').getPublicUrl(path);
-  return data.publicUrl;
+  return url;
 };
 
 export const usePortfolioItem = (itemId?: string) => {

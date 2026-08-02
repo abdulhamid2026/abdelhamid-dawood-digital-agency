@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { toast } from '@/hooks/use-toast';
+import { uploadToBucket } from '@/lib/uploadFile';
 import BottomNav from '@/components/BottomNav';
 
 interface ChatMessage {
@@ -88,17 +89,15 @@ const MessagesPage: React.FC = () => {
     if (!file || !user || !adminId) return;
     setIsUploading(true);
 
-    const ext = file.name.split('.').pop();
-    const path = `${user.id}/${Date.now()}.${ext}`;
-    const { error: uploadError } = await supabase.storage.from('chat-media').upload(path, file);
+    const { url: publicUrl, error: uploadError } = await uploadToBucket('chat-media', file, user.id);
 
-    if (uploadError) {
-      toast({ title: 'خطأ', description: 'فشل رفع الملف', variant: 'destructive' });
+    if (uploadError || !publicUrl) {
+      toast({ title: 'خطأ', description: uploadError || 'فشل رفع الملف', variant: 'destructive' });
       setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
-    const { data: { publicUrl } } = supabase.storage.from('chat-media').getPublicUrl(path);
     let mediaType = 'file';
     if (file.type.startsWith('image/')) mediaType = 'image';
     else if (file.type.startsWith('video/')) mediaType = 'video';

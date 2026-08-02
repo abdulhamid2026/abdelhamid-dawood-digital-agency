@@ -1,3 +1,4 @@
+import { uploadToBucket } from '@/lib/uploadFile';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -54,11 +55,8 @@ export const useAITools = () => {
   };
 
   const uploadIcon = async (file: File): Promise<string | null> => {
-    const fileName = `ai-tool-${Date.now()}-${file.name}`;
-    const { error } = await supabase.storage.from('portfolio').upload(fileName, file);
-    if (error) return null;
-    const { data } = supabase.storage.from('portfolio').getPublicUrl(fileName);
-    return data.publicUrl;
+    const { url } = await uploadToBucket('portfolio', file, 'ai-tools');
+    return url;
   };
 
   return { tools, isLoading, addTool, updateTool, deleteTool, uploadIcon, refetch: fetchTools };

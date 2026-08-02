@@ -14,6 +14,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import AdminAppContentDialog from './AdminAppContentDialog';
 import AdminAppsInsights from './AdminAppsInsights';
 import { toast } from 'sonner';
+import { uploadToBucket } from '@/lib/uploadFile';
 import ExportButton from './ExportButton';
 import { exportToExcel, exportToPDF } from '@/lib/exportUtils';
 
@@ -68,6 +69,22 @@ const AdminAppsTable: React.FC = () => {
   const [form, setForm] = useState(defaultForm);
   const [apkFile, setApkFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadingIcon, setUploadingIcon] = useState(false);
+
+  const handleIconUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingIcon(true);
+    const { url, error } = await uploadToBucket('app-files', file, 'icons');
+    if (url) {
+      setForm(f => ({ ...f, icon_url: url }));
+      toast.success('تم رفع أيقونة التطبيق');
+    } else {
+      toast.error(error || 'فشل رفع الأيقونة');
+    }
+    e.target.value = '';
+    setUploadingIcon(false);
+  };
   const [contentApp, setContentApp] = useState<App | null>(null);
 
   const openAdd = () => {
@@ -193,8 +210,10 @@ const AdminAppsTable: React.FC = () => {
                   <p className="text-xs text-muted-foreground mt-1">اتركه فارغ إذا كنت تريد استخدام رابط صورة</p>
                 </div>
                 <div>
-                  <Label>رابط صورة الأيقونة - اختياري</Label>
-                  <Input value={form.icon_url} onChange={e => setForm({...form, icon_url: e.target.value})} placeholder="https://example.com/icon.png" />
+                  <Label>صورة الأيقونة (رفع من الجهاز أو رابط)</Label>
+                  <Input type="file" accept="image/*" disabled={uploadingIcon} onChange={handleIconUpload} />
+                  {uploadingIcon && <p className="text-xs text-muted-foreground mt-1">جاري رفع الصورة...</p>}
+                  <Input className="mt-2" value={form.icon_url} onChange={e => setForm({...form, icon_url: e.target.value})} placeholder="https://example.com/icon.png" />
                   {form.icon_url && (
                     <div className="mt-2 flex items-center gap-2">
                       <img src={form.icon_url} alt="preview" className="w-10 h-10 rounded-lg object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />

@@ -1,3 +1,4 @@
+import { uploadToBucket } from '@/lib/uploadFile';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -30,14 +31,12 @@ export const getYoutubeId = (url: string): string | null => {
 };
 
 export const uploadWifiImage = async (file: File, productId: string) => {
-  const path = `wifi/${productId}/${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
-  const { error } = await supabase.storage.from('app-files').upload(path, file, { upsert: true });
-  if (error) {
-    toast({ title: 'فشل رفع الصورة', variant: 'destructive' });
+  const { url, error } = await uploadToBucket('app-files', file, `wifi/${productId}`);
+  if (error || !url) {
+    toast({ title: 'فشل رفع الصورة', description: error || undefined, variant: 'destructive' });
     return null;
   }
-  const { data } = supabase.storage.from('app-files').getPublicUrl(path);
-  return data.publicUrl;
+  return url;
 };
 
 export const useWifiProduct = (productId?: string) => {
