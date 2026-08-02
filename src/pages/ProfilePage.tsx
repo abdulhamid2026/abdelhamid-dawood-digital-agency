@@ -20,6 +20,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import ReferralSection from '@/components/ReferralSection';
+import OrderTracker from '@/components/OrderTracker';
+import { uploadToBucket } from '@/lib/uploadFile';
 
 interface Order {
   id: string;
@@ -66,6 +68,7 @@ const statusConfig: Record<string, { label: string; color: string; icon: React.E
   completed: { label: 'مكتمل', color: 'bg-emerald-500/20 text-emerald-600', icon: CheckCircle },
   cancelled: { label: 'ملغي', color: 'bg-destructive/20 text-destructive', icon: XCircle },
   processing: { label: 'قيد التنفيذ', color: 'bg-primary/20 text-primary', icon: Clock },
+  received: { label: 'تم الاستلام', color: 'bg-emerald-500/20 text-emerald-600', icon: CheckCircle },
 };
 
 const getStatus = (s: string) => statusConfig[s] || statusConfig.pending;
@@ -117,19 +120,33 @@ const ProfilePage: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
     setIsUploading(true);
-    const fileExt = file.name.split('.').pop();
-    const filePath = `${user.id}/avatar.${fileExt}`;
-    const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file, { upsert: true });
-    if (uploadError) {
-      toast({ title: 'خطأ', description: 'فشل في رفع الصورة', variant: 'destructive' });
+    const { url: publicUrl, error: uploadError } = await uploadToBucket('avatars', file, user.id);
+    if (uploadError || !publicUrl) {
+      toast({ title: 'خطأ', description: uploadError || 'فشل في رفع الصورة', variant: 'destructive' });
       setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
-    const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath);
     setAvatarUrl(publicUrl);
     await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('user_id', user.id);
     toast({ title: 'تم الرفع', description: 'تم تحديث الصورة الشخصية' });
     setIsUploading(false);
+  };
+
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+
+  const confirmReceipt = async (table: 'orders' | 'wifi_orders' | 'package_subscriptions', id: string) => {
+    setConfirmingId(id);
+    const { error } = await supabase.from(table).update({ status: 'received' }).eq('id', id);
+    if (error) {
+      toast({ title: 'خطأ', description: 'تعذّر تأكيد الاستلام', variant: 'destructive' });
+    } else {
+      if (table === 'orders') setOrders(prev => prev.map(o => (o.id === id ? { ...o, status: 'received' } : o)));
+      if (table === 'wifi_orders') setWifiOrders(prev => prev.map(o => (o.id === id ? { ...o, status: 'received' } : o)));
+      if (table === 'package_subscriptions') setPackageSubs(prev => prev.map(o => (o.id === id ? { ...o, status: 'received' } : o)));
+      toast({ title: 'شكراً لك', description: 'تم تأكيد استلام الطلب بنجاح' });
+    }
+    setConfirmingId(null);
   };
 
   const handleSave = async () => {
@@ -296,6 +313,11 @@ const ProfilePage: React.FC = () => {
                               <span>{formatDistanceToNow(new Date(order.created_at), { addSuffix: true, locale: ar })}</span>
                               {order.total_amount && <span className="font-bold text-primary">${order.total_amount}</span>}
                             </div>
+                            <OrderTracker
+                              status={order.status}
+                              isConfirming={confirmingId === order.id}
+                              onConfirmReceipt={() => confirmReceipt('orders', order.id)}
+                            />
                           </CardContent>
                         </Card>
                       ))}
@@ -313,6 +335,11 @@ const ProfilePage: React.FC = () => {
                               <span>{formatDistanceToNow(new Date(wo.created_at), { addSuffix: true, locale: ar })}</span>
                               {wo.price ? <span className="font-bold text-primary">${wo.price}</span> : null}
                             </div>
+                            <OrderTracker
+                              status={wo.status}
+                              isConfirming={confirmingId === wo.id}
+                              onConfirmReceipt={() => confirmReceipt('wifi_orders', wo.id)}
+                            />
                           </CardContent>
                         </Card>
                       ))}
@@ -366,6 +393,11 @@ const ProfilePage: React.FC = () => {
                           {renderStatusBadge(sub.status)}
                         </div>
                         <p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(sub.created_at), { addSuffix: true, locale: ar })}</p>
+                        <OrderTracker
+                          status={sub.status}
+                          isConfirming={confirmingId === sub.id}
+                          onConfirmReceipt={() => confirmReceipt('package_subscriptions', sub.id)}
+                        />
                       </CardContent>
                     </Card>
                   ))}
