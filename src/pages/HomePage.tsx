@@ -17,10 +17,13 @@ import SocialIcons from '@/components/SocialIcons';
 import FeaturedClientsSection from '@/components/FeaturedClientsSection';
 import CustomHomeCards from '@/components/CustomHomeCards';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
+import { useAuth } from '@/contexts/AuthContext';
+import GuestGate from '@/components/GuestGate';
 
 const HomePage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { getBool, getSetting } = useSiteSettings();
+  const { isGuest } = useAuth();
 
   const show = (key: string) => getBool(key);
 
@@ -50,26 +53,35 @@ const HomePage: React.FC = () => {
             </motion.section>
           )}
 
-          {show('show_packages') && <PackagesPromoCard />}
-          {show('show_apps') && <AppsPromoCard />}
-          {show('show_ai_tools') && <AIToolsPromoCard />}
-          {show('show_livestream') && <LiveStreamPromoCard />}
-          {show('show_wifi') && <WifiPromoCard />}
-          {show('show_portfolio') && <PortfolioPromoCard />}
+          {isGuest ? (
+            <GuestGate
+              title="سجّل الآن لمشاهدة الخدمات والأقسام"
+              description="أنت تتصفح كزائر، لذلك لا تظهر لك الأقسام والخدمات. أنشئ حسابك المجاني خلال ثوانٍ وشاهد كل محتوى منصة ابوكيان الرقمية."
+            />
+          ) : (
+            <>
+              {show('show_packages') && <PackagesPromoCard />}
+              {show('show_apps') && <AppsPromoCard />}
+              {show('show_ai_tools') && <AIToolsPromoCard />}
+              {show('show_livestream') && <LiveStreamPromoCard />}
+              {show('show_wifi') && <WifiPromoCard />}
+              {show('show_portfolio') && <PortfolioPromoCard />}
 
-          <CustomHomeCards />
+              <CustomHomeCards />
 
-          {show('show_services') && (
-            <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-foreground">{getSetting('home_services_title', 'خدماتنا')}</h2>
-                <span className="text-sm text-muted-foreground">{getSetting('home_services_subtitle', '')}</span>
-              </div>
-              <ServiceGrid />
-            </motion.section>
+              {show('show_services') && (
+                <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-bold text-foreground">{getSetting('home_services_title', 'خدماتنا')}</h2>
+                    <span className="text-sm text-muted-foreground">{getSetting('home_services_subtitle', '')}</span>
+                  </div>
+                  <ServiceGrid />
+                </motion.section>
+              )}
+
+              {show('show_featured_clients') && <FeaturedClientsSection />}
+            </>
           )}
-
-          {show('show_featured_clients') && <FeaturedClientsSection />}
 
           {show('show_social') && (
             <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>

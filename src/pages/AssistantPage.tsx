@@ -1,93 +1,88 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Bot, Send, User } from 'lucide-react';
+import { ArrowRight, Bot, Send, Sparkles, UserPlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
   id: number;
   text: string;
   isBot: boolean;
-  timestamp: Date;
 }
 
-const botResponses: Record<string, string> = {
-  'مرحبا': 'أهلاً وسهلاً بك! كيف يمكنني مساعدتك اليوم؟',
-  'السلام عليكم': 'وعليكم السلام ورحمة الله وبركاته! كيف يمكنني خدمتك؟',
-  'خدمات': 'نقدم العديد من الخدمات منها:\n• الدعاية والإعلان\n• التسويق الإلكتروني\n• إدارة الصفحات والمواقع\n• المونتاج\n• الحماية والأمان\n• الطباعة\n\nما الخدمة التي تهمك؟',
-  'اسعار': 'أسعارنا تنافسية ومناسبة لجميع الميزانيات. للحصول على عرض سعر مخصص، يرجى التواصل معنا عبر واتساب على الرقم: 778215553',
-  'تسويق': 'نقدم خدمات تسويق إلكتروني شاملة تشمل:\n• إدارة حملات السوشيال ميديا\n• الإعلانات المدفوعة\n• تحسين محركات البحث\n• التسويق بالمحتوى\n\nهل تريد معرفة المزيد؟',
-  'دعاية': 'خدمات الدعاية والإعلان لدينا تشمل:\n• تصميم الشعارات والهوية البصرية\n• الإعلانات الرقمية\n• المطبوعات الدعائية\n• الفيديوهات الترويجية\n\nكيف يمكننا مساعدتك؟',
-  'مونتاج': 'نقدم خدمات مونتاج فيديو احترافية:\n• مونتاج إعلاني\n• فيديوهات ترويجية\n• موشن جرافيك\n• تعديل الفيديوهات\n\nهل لديك مشروع معين؟',
-  'حماية': 'خدمات الحماية والأمان تشمل:\n• حماية الحسابات\n• تأمين المواقع\n• استعادة الحسابات المخترقة\n• فحص الثغرات الأمنية\n\nهل تحتاج مساعدة في هذا المجال؟',
-  'تواصل': 'يمكنك التواصل معنا عبر:\n📱 واتساب: 778215553\n📧 البريد: info@abukayan.com\n\nنحن متاحون على مدار الساعة لخدمتك!',
-  'شكرا': 'عفواً! سعدنا بخدمتك. لا تتردد في التواصل معنا في أي وقت 😊',
-};
-
-const getResponse = (message: string): string => {
-  const lowerMessage = message.toLowerCase();
-  
-  for (const [key, response] of Object.entries(botResponses)) {
-    if (lowerMessage.includes(key)) {
-      return response;
-    }
-  }
-  
-  return 'شكراً لتواصلك معنا! للحصول على مساعدة متخصصة، يرجى التواصل مع فريقنا عبر واتساب على الرقم: 778215553\n\nيمكنك أيضاً سؤالي عن: الخدمات، الأسعار، التسويق، الدعاية، المونتاج، الحماية، أو التواصل';
-};
+const SUGGESTIONS = [
+  'ما هي خدمات المنصة؟',
+  'أريد حملة تسويق إلكتروني',
+  'كم تكلفة تصميم هوية بصرية؟',
+  'من هو مطوّر المنصة؟',
+  'كيف أتواصل مع الإدارة؟',
+];
 
 const AssistantPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      text: 'مرحباً بك! أنا المساعد الذكي لـ منصة ابوكيان الرقمية. كيف يمكنني مساعدتك اليوم؟\n\nيمكنك سؤالي عن:\n• الخدمات المتاحة\n• الأسعار\n• التسويق الإلكتروني\n• الدعاية والإعلان\n• المونتاج\n• الحماية والأمان',
-      isBot: true,
-      timestamp: new Date(),
-    },
-  ]);
+  const { profile, user, isGuest } = useAuth();
+  const navigate = useNavigate();
+
+  const displayName = profile?.name || (user?.email ? user.email.split('@')[0] : '');
+
+  const welcome = displayName
+    ? `أهلاً بك يا ${displayName} 👋\nأنا مساعد ابوكيان الذكي، سعيد بعودتك! اسألني عن أي شيء داخل المنصة: الخدمات، الباقات، الأسعار، متجر التطبيقات، شبكات الواي فاي، أو طريقة التواصل مع الإدارة.`
+    : 'أهلاً وسهلاً بك في منصة ابوكيان الرقمية 👋\nأنا المساعد الذكي، جاهز للإجابة عن كل أسئلتك.\nوأنصحك بإنشاء حساب مجاني للاستفادة من جميع الخدمات ومتابعة طلباتك ومراسلة الإدارة.';
+
+  const [messages, setMessages] = useState<Message[]>([{ id: 1, text: welcome, isBot: true }]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    setMessages((prev) => (prev.length === 1 ? [{ id: 1, text: welcome, isBot: true }] : prev));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [displayName]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping]);
 
-    const userMessage: Message = {
-      id: Date.now(),
-      text: input,
-      isBot: false,
-      timestamp: new Date(),
-    };
+  const send = async (text: string) => {
+    const question = text.trim();
+    if (!question || isTyping) return;
 
-    setMessages((prev) => [...prev, userMessage]);
+    const history = [...messages, { id: Date.now(), text: question, isBot: false }];
+    setMessages(history);
     setInput('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: Date.now() + 1,
-        text: getResponse(input),
-        isBot: true,
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
+    try {
+      const { data, error } = await supabase.functions.invoke('assistant-chat', {
+        body: {
+          messages: history.slice(1).map((m) => ({ role: m.isBot ? 'assistant' : 'user', content: m.text })),
+          userName: displayName,
+          isGuest,
+        },
+      });
+
+      const reply =
+        (!error && (data as any)?.reply) ||
+        'عذراً، تعذّر الوصول للمساعد الآن. يمكنك مراسلة الإدارة مباشرة من صفحة الرسائل أو عبر واتساب: 778215553';
+
+      setMessages((prev) => [...prev, { id: Date.now() + 1, text: reply, isBot: true }]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now() + 1, text: 'حدث خطأ في الاتصال. حاول مرة أخرى بعد قليل.', isBot: true },
+      ]);
+    } finally {
       setIsTyping(false);
-    }, 1000);
+    }
   };
+
+  const handleSend = () => send(input);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -106,12 +101,12 @@ const AssistantPage: React.FC = () => {
             >
               <ArrowRight className="w-5 h-5" />
             </Button>
-            <div className="w-10 h-10 rounded-full gradient-gold flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full gradient-gold flex items-center justify-center glow-gold">
               <Bot className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="flex-1">
-              <h1 className="font-bold text-foreground">المساعد الذكي</h1>
-              <p className="text-xs text-muted-foreground">متصل الآن</p>
+              <h1 className="font-bold text-foreground">مساعد ابوكيان الذكي</h1>
+              <p className="text-xs text-emerald-500">متصل الآن • مدعوم بالذكاء الاصطناعي</p>
             </div>
           </div>
         </div>
@@ -161,6 +156,29 @@ const AssistantPage: React.FC = () => {
 
             <div ref={messagesEndRef} />
           </div>
+        </div>
+
+        {/* Suggestions */}
+        <div className="px-4 pb-2">
+          <div className="container mx-auto max-w-lg flex gap-2 overflow-x-auto scrollbar-custom pb-1">
+            {SUGGESTIONS.map((s) => (
+              <button
+                key={s}
+                onClick={() => send(s)}
+                disabled={isTyping}
+                className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors disabled:opacity-50"
+              >
+                <Sparkles className="w-3 h-3 inline ml-1" />{s}
+              </button>
+            ))}
+          </div>
+          {!user && (
+            <div className="container mx-auto max-w-lg mt-2">
+              <Button onClick={() => navigate('/auth?mode=register')} variant="outline" className="w-full h-10 border-primary/30 font-bold text-sm">
+                <UserPlus className="w-4 h-4 ml-2" /> سجّل الآن واستفد من جميع الخدمات
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Input */}
