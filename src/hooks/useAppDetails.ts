@@ -75,11 +75,9 @@ export const useAppScreenshots = (appId?: string) => {
   });
 
   const uploadScreenshot = async (file: File, targetAppId: string) => {
-    const path = `screenshots/${targetAppId}/${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
-    const { error } = await supabase.storage.from('app-files').upload(path, file, { upsert: true });
-    if (error) { toast.error('فشل رفع الصورة'); return null; }
-    const { data } = supabase.storage.from('app-files').getPublicUrl(path);
-    return data.publicUrl;
+    const { url, error } = await uploadToBucket('app-files', file, `screenshots/${targetAppId}`);
+    if (error || !url) { toast.error(error || 'فشل رفع الصورة'); return null; }
+    return url;
   };
 
   return { screenshots, isLoading, addScreenshot, deleteScreenshot, uploadScreenshot };
