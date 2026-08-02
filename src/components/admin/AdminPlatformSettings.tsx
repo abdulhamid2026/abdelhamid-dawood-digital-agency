@@ -81,16 +81,14 @@ const AdminPlatformSettings: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const ext = file.name.split('.').pop();
-    const path = `site/logo_${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from('portfolio').upload(path, file);
-    if (error) {
-      toast({ title: 'خطأ', description: 'فشل رفع الشعار', variant: 'destructive' });
+    const { url, error } = await uploadToBucket('portfolio', file, 'site');
+    if (error || !url) {
+      toast({ title: 'خطأ', description: error || 'فشل رفع الشعار', variant: 'destructive' });
     } else {
-      const { data: urlData } = supabase.storage.from('portfolio').getPublicUrl(path);
-      set('site_logo_url', urlData.publicUrl);
+      set('site_logo_url', url);
       toast({ title: 'تم', description: 'تم رفع الشعار — اضغط حفظ للتطبيق' });
     }
+    e.target.value = '';
     setUploading(false);
   };
 

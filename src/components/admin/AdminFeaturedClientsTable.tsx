@@ -24,15 +24,13 @@ const AdminFeaturedClientsTable: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const ext = file.name.split('.').pop();
-    const path = `clients/${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from('portfolio').upload(path, file);
-    if (error) {
-      toast({ title: 'خطأ', description: 'فشل رفع الصورة', variant: 'destructive' });
+    const { url, error } = await uploadToBucket('portfolio', file, 'clients');
+    if (error || !url) {
+      toast({ title: 'خطأ', description: error || 'فشل رفع الصورة', variant: 'destructive' });
     } else {
-      const { data: urlData } = supabase.storage.from('portfolio').getPublicUrl(path);
-      setForm(f => ({ ...f, image_url: urlData.publicUrl }));
+      setForm(f => ({ ...f, image_url: url }));
     }
+    e.target.value = '';
     setUploading(false);
   };
 
