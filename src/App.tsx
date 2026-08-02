@@ -28,6 +28,7 @@ import WifiNetworksPage from "@/pages/WifiNetworksPage";
 import WifiSystemPage from "@/pages/WifiSystemPage";
 import WifiPurchasePage from "@/pages/WifiPurchasePage";
 import AIToolsPage from "@/pages/AIToolsPage";
+import GuestBlockedPage from "@/pages/GuestBlockedPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,14 @@ const queryClient = new QueryClient();
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/auth" replace />;
+};
+
+/** Route available to registered members only — guests see a registration invite. */
+const MemberRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, isGuest } = useAuth();
+  if (!isAuthenticated) return <Navigate to="/auth" replace />;
+  if (isGuest) return <GuestBlockedPage />;
+  return <>{children}</>;
 };
 
 const AppContent: React.FC = () => {
@@ -62,20 +71,20 @@ const AppContent: React.FC = () => {
       <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
       <Route path="/contact" element={<ProtectedRoute><ContactPage /></ProtectedRoute>} />
       <Route path="/assistant" element={<ProtectedRoute><AssistantPage /></ProtectedRoute>} />
-      <Route path="/services/:serviceId" element={<ProtectedRoute><ServicePage /></ProtectedRoute>} />
-      <Route path="/portfolio" element={<ProtectedRoute><PortfolioPage /></ProtectedRoute>} />
-      <Route path="/portfolio/:itemId" element={<ProtectedRoute><PortfolioDetailPage /></ProtectedRoute>} />
+      <Route path="/services/:serviceId" element={<MemberRoute><ServicePage /></MemberRoute>} />
+      <Route path="/portfolio" element={<MemberRoute><PortfolioPage /></MemberRoute>} />
+      <Route path="/portfolio/:itemId" element={<MemberRoute><PortfolioDetailPage /></MemberRoute>} />
       <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-      <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
-      <Route path="/packages" element={<ProtectedRoute><PackagesPage /></ProtectedRoute>} />
-      <Route path="/apps-store" element={<ProtectedRoute><AppsStorePage /></ProtectedRoute>} />
-      <Route path="/apps-store/:appId" element={<ProtectedRoute><AppDetailPage /></ProtectedRoute>} />
-      <Route path="/live-stream" element={<ProtectedRoute><LiveStreamPage /></ProtectedRoute>} />
-      <Route path="/wifi-networks" element={<ProtectedRoute><WifiNetworksPage /></ProtectedRoute>} />
-      <Route path="/wifi-networks/:productId" element={<ProtectedRoute><WifiSystemPage /></ProtectedRoute>} />
-      <Route path="/wifi-networks/:productId/purchase" element={<ProtectedRoute><WifiPurchasePage /></ProtectedRoute>} />
-      <Route path="/ai-tools" element={<ProtectedRoute><AIToolsPage /></ProtectedRoute>} />
+      <Route path="/profile" element={<MemberRoute><ProfilePage /></MemberRoute>} />
+      <Route path="/messages" element={<MemberRoute><MessagesPage /></MemberRoute>} />
+      <Route path="/packages" element={<MemberRoute><PackagesPage /></MemberRoute>} />
+      <Route path="/apps-store" element={<MemberRoute><AppsStorePage /></MemberRoute>} />
+      <Route path="/apps-store/:appId" element={<MemberRoute><AppDetailPage /></MemberRoute>} />
+      <Route path="/live-stream" element={<MemberRoute><LiveStreamPage /></MemberRoute>} />
+      <Route path="/wifi-networks" element={<MemberRoute><WifiNetworksPage /></MemberRoute>} />
+      <Route path="/wifi-networks/:productId" element={<MemberRoute><WifiSystemPage /></MemberRoute>} />
+      <Route path="/wifi-networks/:productId/purchase" element={<MemberRoute><WifiPurchasePage /></MemberRoute>} />
+      <Route path="/ai-tools" element={<MemberRoute><AIToolsPage /></MemberRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
