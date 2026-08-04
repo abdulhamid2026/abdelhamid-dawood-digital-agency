@@ -8,6 +8,9 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SiteSettingsProvider, useSiteSettings } from "@/hooks/useSiteSettings";
 import SplashScreen from "@/components/SplashScreen";
+import TechBlogPage from './pages/TechBlogPage';
+import TechBlogSectionPage from './pages/TechBlogSectionPage';
+import TechBlogPostPage from './pages/TechBlogPostPage';
 import HomePage from "@/pages/HomePage";
 import AuthPage from "@/pages/AuthPage";
 import AboutPage from "@/pages/AboutPage";
@@ -85,6 +88,9 @@ const AppContent: React.FC = () => {
       <Route path="/wifi-networks/:productId" element={<MemberRoute><WifiSystemPage /></MemberRoute>} />
       <Route path="/wifi-networks/:productId/purchase" element={<MemberRoute><WifiPurchasePage /></MemberRoute>} />
       <Route path="/ai-tools" element={<MemberRoute><AIToolsPage /></MemberRoute>} />
+      <Route path="/tech-blog" element={<TechBlogPage />} />
+      <Route path="/tech-blog/post/:id" element={<TechBlogPostPage />} />
+      <Route path="/tech-blog/:slug" element={<TechBlogSectionPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

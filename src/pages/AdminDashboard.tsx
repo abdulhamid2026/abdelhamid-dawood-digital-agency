@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, Package, Calendar, Settings, Users,
   TrendingUp, Clock, XCircle, ArrowRight, Newspaper, MessageSquare, Image,
-  BarChart3, Crown, Smartphone, Radio, Wifi, Palette, Gift, Star, Cog, Brain,
+  BarChart3, Crown, Smartphone, Radio, Wifi, Palette, Gift, Star, Cog, Brain, ShieldCheck,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -30,6 +30,7 @@ import AdminReferralsTable from '@/components/admin/AdminReferralsTable';
 import AdminFeaturedClientsTable from '@/components/admin/AdminFeaturedClientsTable';
 import AdminPlatformSettings from '@/components/admin/AdminPlatformSettings';
 import AdminAIToolsTable from '@/components/admin/AdminAIToolsTable';
+import AdminBlogTable from '@/components/admin/AdminBlogTable';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import DrawerMenu from '@/components/DrawerMenu';
@@ -164,6 +165,9 @@ const AdminDashboard: React.FC = () => {
                 <TabsTrigger value="ai_tools" className="flex items-center gap-1 text-xs py-2 px-2">
                   <Brain className="w-4 h-4" /><span className="hidden sm:inline">أدوات AI</span>
                 </TabsTrigger>
+                <TabsTrigger value="tech_blog" className="flex items-center gap-1 text-xs py-2 px-2">
+                  <ShieldCheck className="w-4 h-4" /><span className="hidden sm:inline">التدوينات</span>
+                </TabsTrigger>
                 <TabsTrigger value="platform" className="flex items-center gap-1 text-xs py-2 px-2">
                   <Cog className="w-4 h-4" /><span className="hidden sm:inline">إدارة المنصة</span>
                 </TabsTrigger>
@@ -186,6 +190,7 @@ const AdminDashboard: React.FC = () => {
             <TabsContent value="referrals"><AdminReferralsTable /></TabsContent>
             <TabsContent value="clients"><AdminFeaturedClientsTable /></TabsContent>
             <TabsContent value="ai_tools"><AdminAIToolsTable /></TabsContent>
+            <TabsContent value="tech_blog"><AdminBlogTable /></TabsContent>
             <TabsContent value="platform"><AdminPlatformSettings /></TabsContent>
           </Tabs>
         </div>

@@ -13,6 +13,7 @@ import LiveStreamPromoCard from '@/components/LiveStreamPromoCard';
 import WifiPromoCard from '@/components/WifiPromoCard';
 import PortfolioPromoCard from '@/components/PortfolioPromoCard';
 import AIToolsPromoCard from '@/components/AIToolsPromoCard';
+import TechBlogPromoCard from '@/components/TechBlogPromoCard';
 import SocialIcons from '@/components/SocialIcons';
 import FeaturedClientsSection from '@/components/FeaturedClientsSection';
 import CustomHomeCards from '@/components/CustomHomeCards';
@@ -63,6 +64,7 @@ const HomePage: React.FC = () => {
               {show('show_packages') && <PackagesPromoCard />}
               {show('show_apps') && <AppsPromoCard />}
               {show('show_ai_tools') && <AIToolsPromoCard />}
+              {show('show_tech_blog') && <TechBlogPromoCard />}
               {show('show_livestream') && <LiveStreamPromoCard />}
               {show('show_wifi') && <WifiPromoCard />}
               {show('show_portfolio') && <PortfolioPromoCard />}
