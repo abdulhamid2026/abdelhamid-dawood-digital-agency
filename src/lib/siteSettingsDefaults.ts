@@ -64,6 +64,12 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   show_services: 'true',
   show_social: 'true',
   show_featured_clients: 'true',
+  show_tech_blog: 'true',
+  tech_blog_title: 'تدوينات معلوماتية',
+  tech_blog_subtitle: 'الأمن والمعلومات · الحماية من الثغرات والاختراقات · نصائح وحلول',
+  tech_blog_note: 'هذه الخدمة مقدمة لعملائنا وأصدقائنا الكرام. بكل حب.. من أبوكيان',
+  tech_blog_gradient_from: '#0f172a',
+  tech_blog_gradient_to: '#0ea5e9',
   show_ai_tools: 'true',
 
   // الألوان (HEX)
