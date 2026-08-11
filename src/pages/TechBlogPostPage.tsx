@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { useBlogPost, useBlogComments } from '@/hooks/useTechBlog';
 import { useAuth } from '@/contexts/AuthContext';
 import { getIcon } from '@/lib/iconMap';
+import { useGuestAction } from '@/contexts/GuestActionContext';
 
 const TechBlogPostPage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -26,6 +27,7 @@ const TechBlogPostPage: React.FC = () => {
   const { post, section, siblings, isLoading } = useBlogPost(id);
   const { visibleComments, addComment, deleteComment } = useBlogComments(id);
   const { user } = useAuth();
+  const { requireAccount } = useGuestAction();
 
   const cleanHtml = useMemo(() => DOMPurify.sanitize(post?.content || ''), [post?.content]);
   const idx = siblings.findIndex(s => s.id === id);
@@ -52,6 +54,7 @@ const TechBlogPostPage: React.FC = () => {
   };
 
   const submitComment = async () => {
+    if (!requireAccount(undefined, { title: 'التعليق يتطلب حساباً', description: 'سجّل حسابك المجاني لكتابة تعليقك والمشاركة في النقاش.' })) return;
     if (!user) { toast.error('يرجى تسجيل الدخول للتعليق'); navigate('/auth'); return; }
     if (!comment.trim() || !id) return;
     setSending(true);
@@ -143,7 +146,7 @@ const TechBlogPostPage: React.FC = () => {
               <Button size="sm" variant="outline" className="gap-1" onClick={() => share('telegram')}><Send className="w-4 h-4 text-sky-500" />تيليجرام</Button>
               <Button size="sm" variant="outline" className="gap-1" onClick={() => share('x')}><Share2 className="w-4 h-4" />X</Button>
               <Button size="sm" variant="outline" className="gap-1" onClick={() => share('copy')}><Copy className="w-4 h-4" />نسخ الرابط</Button>
-              <Button size="sm" className="gap-1" onClick={() => navigate('/messages')}><Mail className="w-4 h-4" />مراسلة بخصوص الموضوع</Button>
+              <Button size="sm" className="gap-1" onClick={() => requireAccount(() => navigate('/messages'), { title: 'المراسلة تتطلب حساباً', description: 'سجّل حسابك المجاني لمراسلة الإدارة بخصوص هذا الموضوع.' })}><Mail className="w-4 h-4" />مراسلة بخصوص الموضوع</Button>
             </div>
           </div>
 
