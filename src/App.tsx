@@ -33,6 +33,7 @@ import WifiPurchasePage from "@/pages/WifiPurchasePage";
 import AIToolsPage from "@/pages/AIToolsPage";
 import GuestBlockedPage from "@/pages/GuestBlockedPage";
 import NotFound from "./pages/NotFound";
+import { GuestActionProvider } from "@/contexts/GuestActionContext";
 
 const queryClient = new QueryClient();
 
@@ -42,7 +43,15 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 };
 
 /** Route available to registered members only — guests see a registration invite. */
+/** Route open to guests too — content is visible, service actions ask for registration. */
 const MemberRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) return <Navigate to="/auth" replace />;
+  return <>{children}</>;
+};
+
+/** Route requiring a real account (personal areas) — guests get the invite page. */
+const AccountRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isGuest } = useAuth();
   if (!isAuthenticated) return <Navigate to="/auth" replace />;
   if (isGuest) return <GuestBlockedPage />;
@@ -51,7 +60,8 @@ const MemberRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const AppContent: React.FC = () => {
   const [showSplash, setShowSplash] = useState(true);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const hasAccount = !!user;
   const { isLoading: settingsLoading, getBool } = useSiteSettings();
 
   if (settingsLoading) {
@@ -67,8 +77,9 @@ const AppContent: React.FC = () => {
   }
 
   return (
+    <GuestActionProvider>
     <Routes>
-      <Route path="/auth" element={isAuthenticated ? <Navigate to="/" replace /> : <AuthPage />} />
+      <Route path="/auth" element={hasAccount ? <Navigate to="/" replace /> : <AuthPage />} />
       <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
       <Route path="/about" element={<ProtectedRoute><AboutPage /></ProtectedRoute>} />
       <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
@@ -78,8 +89,8 @@ const AppContent: React.FC = () => {
       <Route path="/portfolio" element={<MemberRoute><PortfolioPage /></MemberRoute>} />
       <Route path="/portfolio/:itemId" element={<MemberRoute><PortfolioDetailPage /></MemberRoute>} />
       <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-      <Route path="/profile" element={<MemberRoute><ProfilePage /></MemberRoute>} />
-      <Route path="/messages" element={<MemberRoute><MessagesPage /></MemberRoute>} />
+      <Route path="/profile" element={<AccountRoute><ProfilePage /></AccountRoute>} />
+      <Route path="/messages" element={<AccountRoute><MessagesPage /></AccountRoute>} />
       <Route path="/packages" element={<MemberRoute><PackagesPage /></MemberRoute>} />
       <Route path="/apps-store" element={<MemberRoute><AppsStorePage /></MemberRoute>} />
       <Route path="/apps-store/:appId" element={<MemberRoute><AppDetailPage /></MemberRoute>} />
@@ -93,6 +104,7 @@ const AppContent: React.FC = () => {
       <Route path="/tech-blog/:slug" element={<TechBlogSectionPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </GuestActionProvider>
   );
 };
 
