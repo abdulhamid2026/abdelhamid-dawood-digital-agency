@@ -16,6 +16,7 @@ import PageSeo from '@/components/PageSeo';
 import { usePackages, Package } from '@/hooks/usePackages';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useGuestAction } from '@/contexts/GuestActionContext';
 
 const typeConfig: Record<string, { icon: React.ComponentType<any>; gradient: string; badge: string; border: string }> = {
   gold: { icon: Crown, gradient: 'from-amber-400 via-yellow-500 to-amber-600', badge: 'ذهبية', border: 'border-amber-400/40' },
@@ -47,6 +48,7 @@ const countryCodes = [
 ];
 
 const PackagesPage: React.FC = () => {
+  const { requireAccount } = useGuestAction();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState<Package | null>(null);
   const [customerName, setCustomerName] = useState('');
@@ -60,6 +62,7 @@ const PackagesPage: React.FC = () => {
   const activePackages = packages.filter(p => p.is_active);
 
   const handleSubscribe = async () => {
+    if (!requireAccount(undefined, { title: 'الاشتراك يتطلب حساباً', description: 'سجّل حسابك المجاني للاشتراك في الباقة ومتابعة اشتراكك ومراسلة الإدارة.' })) return;
     if (!selectedPkg || !customerName.trim() || !customerPhone.trim()) {
       toast({ title: 'خطأ', description: 'يرجى ملء جميع الحقول', variant: 'destructive' });
       return;

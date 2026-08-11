@@ -8,6 +8,7 @@ import DrawerMenu from '@/components/DrawerMenu';
 import { Button } from '@/components/ui/button';
 import { services } from '@/data/services';
 import PageSeo from '@/components/PageSeo';
+import { useGuestAction } from '@/contexts/GuestActionContext';
 
 const serviceDetails: Record<string, { features: string[]; benefits: string[] }> = {
   advertising: {
@@ -125,6 +126,7 @@ const serviceDetails: Record<string, { features: string[]; benefits: string[] }>
 };
 
 const ServicePage: React.FC = () => {
+  const { requireAccount } = useGuestAction();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const { serviceId } = useParams();
@@ -244,14 +246,14 @@ const ServicePage: React.FC = () => {
             className="space-y-3"
           >
             <Button
-              onClick={openWhatsApp}
+              onClick={() => requireAccount(openWhatsApp, { title: 'طلب الخدمة يتطلب حساباً', description: 'سجّل حسابك المجاني لطلب الخدمة ومتابعة طلبك والحصول على الدعم الكامل.' })}
               className="w-full h-14 gradient-gold text-primary-foreground font-bold text-lg"
             >
               طلب الخدمة عبر واتساب
             </Button>
             <Button
               variant="outline"
-              onClick={() => navigate('/booking')}
+              onClick={() => requireAccount(() => navigate('/booking'), { title: 'الحجز يتطلب حساباً', description: 'سجّل حسابك المجاني لحجز موعد ومتابعة حالته.' })}
               className="w-full h-12"
             >
               حجز موعد

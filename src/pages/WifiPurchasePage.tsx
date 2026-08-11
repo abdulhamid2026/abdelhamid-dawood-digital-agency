@@ -16,6 +16,7 @@ import { useWifiProduct } from '@/hooks/useWifiSystemDetails';
 import { useWifiOrders } from '@/hooks/useWifiOrders';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
+import { useGuestAction } from '@/contexts/GuestActionContext';
 
 const countryCodes = [
   { code: '+967', country: 'اليمن 🇾🇪' },
@@ -37,6 +38,7 @@ const WifiPurchasePage: React.FC = () => {
   const { product, isLoading } = useWifiProduct(productId);
   const { createOrder } = useWifiOrders();
   const { user, profile } = useAuth();
+  const { requireAccount } = useGuestAction();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [done, setDone] = useState(false);
   const [form, setForm] = useState({
@@ -70,6 +72,7 @@ const WifiPurchasePage: React.FC = () => {
     : Number(product.price || 0);
 
   const submit = async () => {
+    if (!requireAccount(undefined, { title: 'الشراء يتطلب حساباً', description: 'سجّل حسابك المجاني لإتمام الطلب ومتابعته والتواصل مع الإدارة بشأنه.' })) return;
     if (!form.customer_name.trim()) return toast({ title: 'الاسم الكامل مطلوب', variant: 'destructive' });
     if (!/^[0-9]{6,15}$/.test(form.customer_phone.replace(/\s/g, ''))) {
       return toast({ title: 'رقم الهاتف مطلوب وبصيغة صحيحة', variant: 'destructive' });
@@ -118,7 +121,7 @@ const WifiPurchasePage: React.FC = () => {
                     <MessageSquare className="w-4 h-4 ml-2" /> متابعة الطلب والمراسلة
                   </Button>
                 ) : (
-                  <Button className="w-full" onClick={() => navigate('/auth')}>
+                  <Button className="w-full" onClick={() => navigate('/auth?mode=register')}>
                     <UserPlus className="w-4 h-4 ml-2" /> سجّل الآن لمتابعة طلبك
                   </Button>
                 )}

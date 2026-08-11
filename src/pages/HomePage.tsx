@@ -18,13 +18,10 @@ import SocialIcons from '@/components/SocialIcons';
 import FeaturedClientsSection from '@/components/FeaturedClientsSection';
 import CustomHomeCards from '@/components/CustomHomeCards';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
-import { useAuth } from '@/contexts/AuthContext';
-import GuestGate from '@/components/GuestGate';
 
 const HomePage: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { getBool, getSetting } = useSiteSettings();
-  const { isGuest } = useAuth();
 
   const show = (key: string) => getBool(key);
 
@@ -54,12 +51,7 @@ const HomePage: React.FC = () => {
             </motion.section>
           )}
 
-          {isGuest ? (
-            <GuestGate
-              title="سجّل الآن لمشاهدة الخدمات والأقسام"
-              description="أنت تتصفح كزائر، لذلك لا تظهر لك الأقسام والخدمات. أنشئ حسابك المجاني خلال ثوانٍ وشاهد كل محتوى منصة ابوكيان الرقمية."
-            />
-          ) : (
+          {true && (
             <>
               {show('show_packages') && <PackagesPromoCard />}
               {show('show_apps') && <AppsPromoCard />}

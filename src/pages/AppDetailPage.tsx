@@ -15,6 +15,7 @@ import {
 import { useApp } from '@/hooks/useApps';
 import { useAppScreenshots, useAppUpdates, useAppReviews, useAppDownload } from '@/hooks/useAppDetails';
 import { useAuth } from '@/contexts/AuthContext';
+import { useGuestAction } from '@/contexts/GuestActionContext';
 
 const formatDate = (d?: string | null) =>
   d ? new Date(d).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
@@ -54,6 +55,7 @@ const AppDetailPage: React.FC = () => {
   const { screenshots } = useAppScreenshots(appId);
   const { updates } = useAppUpdates(appId);
   const { reviews, myReview, submitReview } = useAppReviews(appId);
+  const { requireAccount } = useGuestAction();
   const { recordDownload } = useAppDownload();
   const { user } = useAuth();
 
@@ -68,6 +70,7 @@ const AppDetailPage: React.FC = () => {
     : false;
 
   const handleDownload = async () => {
+    if (!requireAccount(undefined, { title: 'التحميل يتطلب حساباً', description: 'سجّل حسابك المجاني لتحميل التطبيقات ومتابعة تحديثاتها والحصول على الدعم.' })) return;
     if (!app?.download_url) return;
     await recordDownload(app.id, app.version);
     window.open(app.download_url, '_blank', 'noopener');
@@ -331,6 +334,7 @@ const AppDetailPage: React.FC = () => {
                   size="sm"
                   className="w-full h-9 rounded-xl text-xs"
                   onClick={() => {
+                    if (!requireAccount(undefined, { title: 'التقييم يتطلب حساباً', description: 'سجّل حسابك المجاني لإضافة تقييمك وتعليقك على التطبيق.' })) return;
                     submitReview.mutate({ app_id: app.id, rating, comment: comment.trim() });
                     setComment('');
                   }}
