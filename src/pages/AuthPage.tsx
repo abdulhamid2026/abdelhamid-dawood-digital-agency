@@ -205,18 +205,11 @@ const AuthPage: React.FC = () => {
             <div className="flex-1 h-px bg-border" />
           </div>
 
-          {/* Guest / Skip Buttons */}
-          <div className="space-y-2">
-            {showGuest && (
-              <Button variant="outline" className="w-full h-12" onClick={handleGuest}>
-                الدخول كضيف
-              </Button>
-            )}
-            <Button variant="ghost" className="w-full h-11 font-bold text-muted-foreground" onClick={handleGuest}>
-              تخطي الآن ومتابعة التصفح
-              <SkipForward className="w-4 h-4 mr-2" />
+          {showGuest && (
+            <Button variant="outline" className="w-full h-12" onClick={handleGuest}>
+              الدخول كضيف
             </Button>
-          </div>
+          )}
 
           {getSetting('auth_footer_text') && (
             <p className="text-center text-xs text-muted-foreground mt-4">{getSetting('auth_footer_text')}</p>
