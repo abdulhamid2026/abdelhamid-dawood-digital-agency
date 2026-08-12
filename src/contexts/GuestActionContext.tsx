@@ -32,11 +32,11 @@ export const GuestActionProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const isActionAllowedForGuests = useCallback(
     (key?: string) => {
-      if (getBool('guest_full_access') && getSetting('guest_allow_all_actions') === 'true') return true;
+      if (getSetting('guest_allow_all_actions') === 'true') return true;
       if (!key) return false;
       return getSetting(actionKeyFor(key)) === 'true';
     },
-    [getBool, getSetting]
+    [getSetting]
   );
 
   const openInvite = useCallback((options?: GuestActionOptions) => {

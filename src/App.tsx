@@ -34,6 +34,7 @@ import AIToolsPage from "@/pages/AIToolsPage";
 import GuestBlockedPage from "@/pages/GuestBlockedPage";
 import NotFound from "./pages/NotFound";
 import { GuestActionProvider } from "@/contexts/GuestActionContext";
+import { pageKeyFor } from "@/lib/guestAccess";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,18 @@ const MemberRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 /** Route requiring a real account (personal areas) — guests get the invite page. */
+/** بوابة محتوى الزائر — يتحكم بها المدير من قسم "التحكم بمحتوى المنصة" */
+const GuestPageRoute: React.FC<{ pageKey: string; children: React.ReactNode }> = ({ pageKey, children }) => {
+  const { isAuthenticated, isGuest } = useAuth();
+  const { getBool, getSetting } = useSiteSettings();
+  if (!isAuthenticated) return <Navigate to="/auth" replace />;
+  if (!isGuest) return <>{children}</>;
+  if (!getBool('guest_mode_enabled')) return <Navigate to="/auth" replace />;
+  if (getBool('guest_full_access')) return <>{children}</>;
+  if (getSetting(pageKeyFor(pageKey)) === 'true') return <>{children}</>;
+  return <GuestBlockedPage />;
+};
+
 const AccountRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isGuest } = useAuth();
   if (!isAuthenticated) return <Navigate to="/auth" replace />;
@@ -80,28 +93,28 @@ const AppContent: React.FC = () => {
     <GuestActionProvider>
     <Routes>
       <Route path="/auth" element={hasAccount ? <Navigate to="/" replace /> : <AuthPage />} />
-      <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-      <Route path="/about" element={<ProtectedRoute><AboutPage /></ProtectedRoute>} />
-      <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
-      <Route path="/contact" element={<ProtectedRoute><ContactPage /></ProtectedRoute>} />
-      <Route path="/assistant" element={<ProtectedRoute><AssistantPage /></ProtectedRoute>} />
-      <Route path="/services/:serviceId" element={<MemberRoute><ServicePage /></MemberRoute>} />
-      <Route path="/portfolio" element={<MemberRoute><PortfolioPage /></MemberRoute>} />
-      <Route path="/portfolio/:itemId" element={<MemberRoute><PortfolioDetailPage /></MemberRoute>} />
+      <Route path="/" element={<GuestPageRoute pageKey="home"><HomePage /></GuestPageRoute>} />
+      <Route path="/about" element={<GuestPageRoute pageKey="about"><AboutPage /></GuestPageRoute>} />
+      <Route path="/booking" element={<GuestPageRoute pageKey="booking"><BookingPage /></GuestPageRoute>} />
+      <Route path="/contact" element={<GuestPageRoute pageKey="contact"><ContactPage /></GuestPageRoute>} />
+      <Route path="/assistant" element={<GuestPageRoute pageKey="assistant"><AssistantPage /></GuestPageRoute>} />
+      <Route path="/services/:serviceId" element={<GuestPageRoute pageKey="services"><ServicePage /></GuestPageRoute>} />
+      <Route path="/portfolio" element={<GuestPageRoute pageKey="portfolio"><PortfolioPage /></GuestPageRoute>} />
+      <Route path="/portfolio/:itemId" element={<GuestPageRoute pageKey="portfolio"><PortfolioDetailPage /></GuestPageRoute>} />
       <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
       <Route path="/profile" element={<AccountRoute><ProfilePage /></AccountRoute>} />
       <Route path="/messages" element={<AccountRoute><MessagesPage /></AccountRoute>} />
-      <Route path="/packages" element={<MemberRoute><PackagesPage /></MemberRoute>} />
-      <Route path="/apps-store" element={<MemberRoute><AppsStorePage /></MemberRoute>} />
-      <Route path="/apps-store/:appId" element={<MemberRoute><AppDetailPage /></MemberRoute>} />
-      <Route path="/live-stream" element={<MemberRoute><LiveStreamPage /></MemberRoute>} />
-      <Route path="/wifi-networks" element={<MemberRoute><WifiNetworksPage /></MemberRoute>} />
-      <Route path="/wifi-networks/:productId" element={<MemberRoute><WifiSystemPage /></MemberRoute>} />
-      <Route path="/wifi-networks/:productId/purchase" element={<MemberRoute><WifiPurchasePage /></MemberRoute>} />
-      <Route path="/ai-tools" element={<MemberRoute><AIToolsPage /></MemberRoute>} />
-      <Route path="/tech-blog" element={<TechBlogPage />} />
-      <Route path="/tech-blog/post/:id" element={<TechBlogPostPage />} />
-      <Route path="/tech-blog/:slug" element={<TechBlogSectionPage />} />
+      <Route path="/packages" element={<GuestPageRoute pageKey="packages"><PackagesPage /></GuestPageRoute>} />
+      <Route path="/apps-store" element={<GuestPageRoute pageKey="apps"><AppsStorePage /></GuestPageRoute>} />
+      <Route path="/apps-store/:appId" element={<GuestPageRoute pageKey="apps"><AppDetailPage /></GuestPageRoute>} />
+      <Route path="/live-stream" element={<GuestPageRoute pageKey="livestream"><LiveStreamPage /></GuestPageRoute>} />
+      <Route path="/wifi-networks" element={<GuestPageRoute pageKey="wifi"><WifiNetworksPage /></GuestPageRoute>} />
+      <Route path="/wifi-networks/:productId" element={<GuestPageRoute pageKey="wifi"><WifiSystemPage /></GuestPageRoute>} />
+      <Route path="/wifi-networks/:productId/purchase" element={<GuestPageRoute pageKey="wifi"><WifiPurchasePage /></GuestPageRoute>} />
+      <Route path="/ai-tools" element={<GuestPageRoute pageKey="ai_tools"><AIToolsPage /></GuestPageRoute>} />
+      <Route path="/tech-blog" element={<GuestPageRoute pageKey="tech_blog"><TechBlogPage /></GuestPageRoute>} />
+      <Route path="/tech-blog/post/:id" element={<GuestPageRoute pageKey="tech_blog"><TechBlogPostPage /></GuestPageRoute>} />
+      <Route path="/tech-blog/:slug" element={<GuestPageRoute pageKey="tech_blog"><TechBlogSectionPage /></GuestPageRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
     </GuestActionProvider>
