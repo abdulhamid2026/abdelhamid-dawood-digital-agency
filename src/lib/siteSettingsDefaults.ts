@@ -99,6 +99,7 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
 Object.assign(DEFAULT_SETTINGS, {
   guest_mode_enabled: 'true',
   guest_full_access: 'true',
+  guest_allow_all_actions: 'false',
   // الصفحات (تُستخدم عند إيقاف الوصول الكامل)
   guest_page_home: 'true',
   guest_page_about: 'true',
