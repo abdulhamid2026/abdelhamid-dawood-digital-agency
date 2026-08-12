@@ -94,3 +94,53 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   effect_animations: 'true',
   effect_glow: 'true',
 };
+
+// التحكم بمحتوى الزوار (وضع الضيف)
+Object.assign(DEFAULT_SETTINGS, {
+  guest_mode_enabled: 'true',
+  guest_full_access: 'true',
+  guest_allow_all_actions: 'false',
+  // الصفحات (تُستخدم عند إيقاف الوصول الكامل)
+  guest_page_home: 'true',
+  guest_page_about: 'true',
+  guest_page_booking: 'false',
+  guest_page_contact: 'true',
+  guest_page_assistant: 'true',
+  guest_page_services: 'false',
+  guest_page_portfolio: 'true',
+  guest_page_packages: 'true',
+  guest_page_apps: 'true',
+  guest_page_livestream: 'false',
+  guest_page_wifi: 'true',
+  guest_page_ai_tools: 'true',
+  guest_page_tech_blog: 'true',
+  // الأزرار والإجراءات (true = مسموح للزائر بدون تسجيل)
+  guest_action_booking: 'false',
+  guest_action_order: 'false',
+  guest_action_download: 'false',
+  guest_action_purchase: 'false',
+  guest_action_subscribe: 'false',
+  guest_action_comment: 'false',
+  guest_action_rating: 'false',
+  guest_action_message: 'false',
+  // محتوى نافذة الدعوة للتسجيل
+  guest_dialog_badge: 'وضع الزائر',
+  guest_dialog_title: 'هذه الخدمة تتطلب حساباً',
+  guest_dialog_description:
+    'أنت تتصفح كزائر. سجّل حسابك المجاني في منصة ابوكيان الرقمية للحصول على الخدمة كاملة ومتابعة طلباتك ومراسلة الإدارة.',
+  guest_dialog_perks: JSON.stringify([
+    'الوصول الكامل لكل الخدمات والطلبات',
+    'متابعة طلباتك ومراسلة الإدارة',
+    'نقاط ومكافآت نظام الإحالة',
+  ]),
+  guest_dialog_show_register: 'true',
+  guest_dialog_register_text: 'إنشاء حساب مجاني',
+  guest_dialog_show_login: 'true',
+  guest_dialog_login_text: 'تسجيل الدخول',
+  guest_dialog_show_continue: 'true',
+  guest_dialog_continue_text: 'متابعة التصفح كزائر',
+  // صفحة المحتوى المقفل
+  guest_blocked_title: 'هذا المحتوى للأعضاء المسجّلين',
+  guest_blocked_description:
+    'أنت تتصفح كزائر. سجّل حسابك المجاني الآن لمشاهدة هذا القسم والاستفادة من جميع خدمات منصة ابوكيان الرقمية.',
+});

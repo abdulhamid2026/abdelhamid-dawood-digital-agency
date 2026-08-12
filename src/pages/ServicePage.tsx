@@ -246,14 +246,14 @@ const ServicePage: React.FC = () => {
             className="space-y-3"
           >
             <Button
-              onClick={() => requireAccount(openWhatsApp, { title: 'طلب الخدمة يتطلب حساباً', description: 'سجّل حسابك المجاني لطلب الخدمة ومتابعة طلبك والحصول على الدعم الكامل.' })}
+              onClick={() => requireAccount(openWhatsApp, { action: 'order', title: 'طلب الخدمة يتطلب حساباً', description: 'سجّل حسابك المجاني لطلب الخدمة ومتابعة طلبك والحصول على الدعم الكامل.' })}
               className="w-full h-14 gradient-gold text-primary-foreground font-bold text-lg"
             >
               طلب الخدمة عبر واتساب
             </Button>
             <Button
               variant="outline"
-              onClick={() => requireAccount(() => navigate('/booking'), { title: 'الحجز يتطلب حساباً', description: 'سجّل حسابك المجاني لحجز موعد ومتابعة حالته.' })}
+              onClick={() => requireAccount(() => navigate('/booking'), { action: 'booking', title: 'الحجز يتطلب حساباً', description: 'سجّل حسابك المجاني لحجز موعد ومتابعة حالته.' })}
               className="w-full h-12"
             >
               حجز موعد

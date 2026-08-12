@@ -54,7 +54,7 @@ const TechBlogPostPage: React.FC = () => {
   };
 
   const submitComment = async () => {
-    if (!requireAccount(undefined, { title: 'التعليق يتطلب حساباً', description: 'سجّل حسابك المجاني لكتابة تعليقك والمشاركة في النقاش.' })) return;
+    if (!requireAccount(undefined, { action: 'comment', title: 'التعليق يتطلب حساباً', description: 'سجّل حسابك المجاني لكتابة تعليقك والمشاركة في النقاش.' })) return;
     if (!user) { toast.error('يرجى تسجيل الدخول للتعليق'); navigate('/auth'); return; }
     if (!comment.trim() || !id) return;
     setSending(true);
@@ -146,7 +146,7 @@ const TechBlogPostPage: React.FC = () => {
               <Button size="sm" variant="outline" className="gap-1" onClick={() => share('telegram')}><Send className="w-4 h-4 text-sky-500" />تيليجرام</Button>
               <Button size="sm" variant="outline" className="gap-1" onClick={() => share('x')}><Share2 className="w-4 h-4" />X</Button>
               <Button size="sm" variant="outline" className="gap-1" onClick={() => share('copy')}><Copy className="w-4 h-4" />نسخ الرابط</Button>
-              <Button size="sm" className="gap-1" onClick={() => requireAccount(() => navigate('/messages'), { title: 'المراسلة تتطلب حساباً', description: 'سجّل حسابك المجاني لمراسلة الإدارة بخصوص هذا الموضوع.' })}><Mail className="w-4 h-4" />مراسلة بخصوص الموضوع</Button>
+              <Button size="sm" className="gap-1" onClick={() => requireAccount(() => navigate('/messages'), { action: 'message', title: 'المراسلة تتطلب حساباً', description: 'سجّل حسابك المجاني لمراسلة الإدارة بخصوص هذا الموضوع.' })}><Mail className="w-4 h-4" />مراسلة بخصوص الموضوع</Button>
             </div>
           </div>
 

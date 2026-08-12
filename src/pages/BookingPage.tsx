@@ -29,14 +29,14 @@ const BookingPage: React.FC = () => {
 
   const handleWhatsApp = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!requireAccount(undefined, { title: 'الحجز يتطلب حساباً', description: 'سجّل حسابك المجاني لإتمام الحجز ومتابعة حالته والتواصل مع الإدارة.' })) return;
+    if (!requireAccount(undefined, { action: 'booking', title: 'الحجز يتطلب حساباً', description: 'سجّل حسابك المجاني لإتمام الحجز ومتابعة حالته والتواصل مع الإدارة.' })) return;
     const text = `*طلب حجز خدمة*%0A%0Aالاسم: ${name}%0Aالهاتف: ${phone}%0Aالخدمة: ${service}%0Aالتفاصيل: ${message}`;
     window.open(`https://wa.me/967778215553?text=${text}`, '_blank');
     toast({ title: 'تم الإرسال', description: 'سيتم التواصل معك قريباً' });
   };
 
   const handleBookNow = async () => {
-    if (!requireAccount(undefined, { title: 'الحجز يتطلب حساباً', description: 'سجّل حسابك المجاني لإتمام الحجز ومتابعة حالته والتواصل مع الإدارة.' })) return;
+    if (!requireAccount(undefined, { action: 'booking', title: 'الحجز يتطلب حساباً', description: 'سجّل حسابك المجاني لإتمام الحجز ومتابعة حالته والتواصل مع الإدارة.' })) return;
     if (!name || !phone || !service) {
       toast({ title: 'تنبيه', description: 'يرجى ملء جميع الحقول المطلوبة', variant: 'destructive' });
       return;
