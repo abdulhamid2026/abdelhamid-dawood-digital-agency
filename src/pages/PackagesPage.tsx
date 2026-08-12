@@ -62,7 +62,7 @@ const PackagesPage: React.FC = () => {
   const activePackages = packages.filter(p => p.is_active);
 
   const handleSubscribe = async () => {
-    if (!requireAccount(undefined, { title: 'الاشتراك يتطلب حساباً', description: 'سجّل حسابك المجاني للاشتراك في الباقة ومتابعة اشتراكك ومراسلة الإدارة.' })) return;
+    if (!requireAccount(undefined, { action: 'subscribe', title: 'الاشتراك يتطلب حساباً', description: 'سجّل حسابك المجاني للاشتراك في الباقة ومتابعة اشتراكك ومراسلة الإدارة.' })) return;
     if (!selectedPkg || !customerName.trim() || !customerPhone.trim()) {
       toast({ title: 'خطأ', description: 'يرجى ملء جميع الحقول', variant: 'destructive' });
       return;

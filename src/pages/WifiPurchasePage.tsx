@@ -72,7 +72,7 @@ const WifiPurchasePage: React.FC = () => {
     : Number(product.price || 0);
 
   const submit = async () => {
-    if (!requireAccount(undefined, { title: 'الشراء يتطلب حساباً', description: 'سجّل حسابك المجاني لإتمام الطلب ومتابعته والتواصل مع الإدارة بشأنه.' })) return;
+    if (!requireAccount(undefined, { action: 'purchase', title: 'الشراء يتطلب حساباً', description: 'سجّل حسابك المجاني لإتمام الطلب ومتابعته والتواصل مع الإدارة بشأنه.' })) return;
     if (!form.customer_name.trim()) return toast({ title: 'الاسم الكامل مطلوب', variant: 'destructive' });
     if (!/^[0-9]{6,15}$/.test(form.customer_phone.replace(/\s/g, ''))) {
       return toast({ title: 'رقم الهاتف مطلوب وبصيغة صحيحة', variant: 'destructive' });

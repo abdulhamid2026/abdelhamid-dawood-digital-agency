@@ -70,7 +70,7 @@ const AppDetailPage: React.FC = () => {
     : false;
 
   const handleDownload = async () => {
-    if (!requireAccount(undefined, { title: 'التحميل يتطلب حساباً', description: 'سجّل حسابك المجاني لتحميل التطبيقات ومتابعة تحديثاتها والحصول على الدعم.' })) return;
+    if (!requireAccount(undefined, { action: 'download', title: 'التحميل يتطلب حساباً', description: 'سجّل حسابك المجاني لتحميل التطبيقات ومتابعة تحديثاتها والحصول على الدعم.' })) return;
     if (!app?.download_url) return;
     await recordDownload(app.id, app.version);
     window.open(app.download_url, '_blank', 'noopener');
@@ -334,7 +334,7 @@ const AppDetailPage: React.FC = () => {
                   size="sm"
                   className="w-full h-9 rounded-xl text-xs"
                   onClick={() => {
-                    if (!requireAccount(undefined, { title: 'التقييم يتطلب حساباً', description: 'سجّل حسابك المجاني لإضافة تقييمك وتعليقك على التطبيق.' })) return;
+                    if (!requireAccount(undefined, { action: 'rating', title: 'التقييم يتطلب حساباً', description: 'سجّل حسابك المجاني لإضافة تقييمك وتعليقك على التطبيق.' })) return;
                     submitReview.mutate({ app_id: app.id, rating, comment: comment.trim() });
                     setComment('');
                   }}
