@@ -19,7 +19,7 @@ const PortfolioPromoCard: React.FC = () => {
         className="relative overflow-hidden rounded-2xl cursor-pointer group"
       >
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-700" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-950 to-slate-900" />
         
         {/* Animated decorations */}
         <motion.div

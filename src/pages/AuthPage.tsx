@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff, Sparkles, Mail, Lock, User } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, UserRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
+import WaveBackground from '@/components/brand/WaveBackground';
+import LogoCard from '@/components/brand/LogoCard';
+import BrandTitle from '@/components/brand/BrandTitle';
 
 type AuthMode = 'login' | 'register';
 
@@ -26,8 +29,8 @@ const AuthPage: React.FC = () => {
 
   const logoUrl = getSetting('site_logo_url');
   const logoSize = parseInt(getSetting('auth_logo_size', '80'), 10) || 80;
-  const authTitle = getSetting('auth_title') || getSetting('site_name');
-  const authSubtitle = getSetting('auth_subtitle');
+  const authTitle = getSetting('auth_title') || getSetting('site_name') || 'منصة ابوكيان الرقمية';
+  const authSubtitle = getSetting('auth_subtitle') || getSetting('site_tagline') || 'خدمات الدعاية والإعلان';
   const showRegister = getBool('auth_show_register');
   const showGuest = getBool('auth_show_guest');
 
@@ -79,134 +82,128 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
-      {/* Background Glow */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full opacity-20"
-          style={{ background: 'var(--gradient-glow)' }}
-        />
-      </div>
+    <div className="min-h-screen relative flex flex-col items-center justify-center p-4 sm:p-6 bg-background overflow-hidden">
+      <WaveBackground />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative z-10 w-full max-w-md"
       >
-        {/* Logo */}
-        <div className="text-center mb-8">
+        {/* الشعار والعنوان */}
+        <div className="text-center mb-7 flex flex-col items-center gap-4">
           {getBool('auth_show_logo') && (
-            <motion.div
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', damping: 15 }}
-              className="mx-auto mb-4 flex items-center justify-center"
-              style={{ width: logoSize, height: logoSize }}
-            >
-              {logoUrl ? (
-                <img src={logoUrl} alt={authTitle} className="w-full h-full rounded-2xl object-contain shadow-elevated" />
-              ) : (
-                <div className="w-full h-full rounded-2xl gradient-gold flex items-center justify-center shadow-elevated">
-                  <Sparkles style={{ width: logoSize / 2, height: logoSize / 2 }} className="text-primary-foreground" />
-                </div>
-              )}
-            </motion.div>
+            <LogoCard logoUrl={logoUrl} alt={authTitle} size={logoSize + 40} />
           )}
-          <h1 className="text-3xl font-bold text-gradient-gold mb-2">{authTitle}</h1>
-          {authSubtitle && <p className="text-muted-foreground">{authSubtitle}</p>}
+          <div className="space-y-1">
+            <BrandTitle title={authTitle} className="text-2xl sm:text-3xl" />
+            {authSubtitle && <p className="text-sm sm:text-base text-muted-foreground">{authSubtitle}</p>}
+          </div>
         </div>
 
-        {/* Auth Card */}
-        <div className="bg-card border border-border rounded-2xl p-6 shadow-elevated">
-          {/* Mode Tabs */}
-          <div className="flex bg-secondary rounded-xl p-1 mb-6">
+        {/* بطاقة الدخول */}
+        <div className="bg-card/90 glass border border-border rounded-[1.75rem] p-5 sm:p-6 shadow-elevated">
+          {/* التبويبات */}
+          <div className="flex bg-secondary rounded-2xl p-1.5 mb-6">
             <button
+              type="button"
               onClick={() => setMode('login')}
-              className={`flex-1 py-2.5 rounded-lg font-medium transition-all ${
+              className={`flex-1 py-2.5 rounded-xl font-bold transition-all ${
                 mode === 'login'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'gradient-brand text-primary-foreground shadow-brand'
+                  : 'text-primary/70 hover:text-primary'
               }`}
             >
               تسجيل الدخول
             </button>
-            {showRegister && <button
-              onClick={() => setMode('register')}
-              className={`flex-1 py-2.5 rounded-lg font-medium transition-all ${
-                mode === 'register'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              حساب جديد
-            </button>}
+            {showRegister && (
+              <button
+                type="button"
+                onClick={() => setMode('register')}
+                className={`flex-1 py-2.5 rounded-xl font-bold transition-all ${
+                  mode === 'register'
+                    ? 'gradient-brand text-primary-foreground shadow-brand'
+                    : 'text-primary/70 hover:text-primary'
+                }`}
+              >
+                حساب جديد
+              </button>
+            )}
           </div>
 
-          {/* Form */}
+          {/* النموذج */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'register' && (
               <div className="relative">
-                <User className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <User className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
                 <Input
                   type="text"
                   placeholder="الاسم الكامل"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="pr-10 h-12 bg-secondary border-border"
+                  className="pr-11 h-14 bg-background border-border rounded-2xl"
                   required
                 />
               </div>
             )}
 
             <div className="relative">
-              <Mail className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Mail className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
               <Input
                 type="email"
                 placeholder="البريد الإلكتروني"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pr-10 h-12 bg-secondary border-border"
+                className="pr-11 h-14 bg-background border-border rounded-2xl"
                 required
               />
             </div>
 
             <div className="relative">
-              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
               <Input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="كلمة المرور"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pr-10 pl-10 h-12 bg-secondary border-border"
+                className="pr-11 pl-12 h-14 bg-background border-border rounded-2xl"
                 required
               />
               <button
                 type="button"
+                aria-label={showPassword ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'}
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl gradient-duo text-primary-foreground flex items-center justify-center"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
 
             <Button
               type="submit"
-              className="w-full h-12 gradient-gold text-primary-foreground font-bold text-lg"
+              className="w-full h-14 gradient-brand text-primary-foreground font-bold text-lg rounded-2xl shadow-brand hover:opacity-95"
               disabled={isLoading}
             >
               {isLoading ? 'جاري...' : mode === 'login' ? getSetting('auth_login_button_text', 'دخول') : getSetting('auth_register_button_text', 'إنشاء حساب')}
             </Button>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-border" />
+          {/* فاصل */}
+          <div className="flex items-center gap-3 my-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            <div className="flex-1 h-px bg-gradient-to-l from-transparent via-border to-transparent" />
             <span className="text-muted-foreground text-sm">أو</span>
-            <div className="flex-1 h-px bg-border" />
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
           </div>
 
           {showGuest && (
-            <Button variant="outline" className="w-full h-12" onClick={handleGuest}>
+            <Button
+              variant="outline"
+              className="w-full h-14 rounded-2xl border-primary/40 text-primary font-bold hover:bg-primary/5 gap-2"
+              onClick={handleGuest}
+            >
+              <UserRound className="w-5 h-5" />
               الدخول كضيف
             </Button>
           )}

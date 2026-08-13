@@ -11,6 +11,7 @@ import { getIcon } from '@/lib/iconMap';
 import NotificationsDropdown from './NotificationsDropdown';
 import MessagesDropdown from './MessagesDropdown';
 import ThemeToggle from './ThemeToggle';
+import BrandTitle from '@/components/brand/BrandTitle';
 
 interface TopBarProps {
   onMenuClick: () => void;
@@ -65,15 +66,15 @@ const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
         <div className="flex items-center gap-3 min-w-0">
           {getBool('header_show_logo') && (
             logoUrl ? (
-              <img src={logoUrl} alt={title} style={{ width: logoSize, height: logoSize }} className="rounded-xl object-contain shrink-0" />
+              <img src={logoUrl} alt={title} style={{ width: logoSize, height: logoSize }} className="rounded-xl object-contain shrink-0 bg-card p-0.5 shadow-card" />
             ) : (
-              <div style={{ width: logoSize, height: logoSize }} className="rounded-xl gradient-gold flex items-center justify-center shrink-0">
+              <div style={{ width: logoSize, height: logoSize }} className="rounded-xl gradient-brand flex items-center justify-center shrink-0">
                 <Sparkles style={{ width: logoSize / 2, height: logoSize / 2 }} className="text-primary-foreground" />
               </div>
             )
           )}
           {getBool('header_show_name') && (
-            <span className="font-bold text-lg text-foreground truncate">{title}</span>
+            <BrandTitle as="span" title={title} className="text-base sm:text-lg leading-tight truncate" />
           )}
         </div>
 
