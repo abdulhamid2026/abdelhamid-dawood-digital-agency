@@ -29,8 +29,8 @@ const AuthPage: React.FC = () => {
 
   const logoUrl = getSetting('site_logo_url');
   const logoSize = parseInt(getSetting('auth_logo_size', '80'), 10) || 80;
-  const authTitle = getSetting('auth_title') || getSetting('site_name');
-  const authSubtitle = getSetting('auth_subtitle');
+  const authTitle = getSetting('auth_title') || getSetting('site_name') || 'منصة ابوكيان الرقمية';
+  const authSubtitle = getSetting('auth_subtitle') || getSetting('site_tagline') || 'خدمات الدعاية والإعلان';
   const showRegister = getBool('auth_show_register');
   const showGuest = getBool('auth_show_guest');
 
@@ -141,7 +141,7 @@ const AuthPage: React.FC = () => {
                   placeholder="الاسم الكامل"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="pr-11 h-13 py-3.5 bg-background border-border rounded-2xl"
+                  className="pr-11 h-14 bg-background border-border rounded-2xl"
                   required
                 />
               </div>
@@ -154,7 +154,7 @@ const AuthPage: React.FC = () => {
                 placeholder="البريد الإلكتروني"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pr-11 h-13 py-3.5 bg-background border-border rounded-2xl"
+                className="pr-11 h-14 bg-background border-border rounded-2xl"
                 required
               />
             </div>
@@ -166,7 +166,7 @@ const AuthPage: React.FC = () => {
                 placeholder="كلمة المرور"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pr-11 pl-12 h-13 py-3.5 bg-background border-border rounded-2xl"
+                className="pr-11 pl-12 h-14 bg-background border-border rounded-2xl"
                 required
               />
               <button
@@ -175,13 +175,13 @@ const AuthPage: React.FC = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl gradient-duo text-primary-foreground flex items-center justify-center"
               >
-                {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
 
             <Button
               type="submit"
-              className="w-full h-13 py-3.5 gradient-brand text-primary-foreground font-bold text-lg rounded-2xl shadow-brand hover:opacity-95"
+              className="w-full h-14 gradient-brand text-primary-foreground font-bold text-lg rounded-2xl shadow-brand hover:opacity-95"
               disabled={isLoading}
             >
               {isLoading ? 'جاري...' : mode === 'login' ? getSetting('auth_login_button_text', 'دخول') : getSetting('auth_register_button_text', 'إنشاء حساب')}
@@ -200,7 +200,7 @@ const AuthPage: React.FC = () => {
           {showGuest && (
             <Button
               variant="outline"
-              className="w-full h-13 py-3.5 rounded-2xl border-primary/40 text-primary font-bold hover:bg-primary/5 gap-2"
+              className="w-full h-14 rounded-2xl border-primary/40 text-primary font-bold hover:bg-primary/5 gap-2"
               onClick={handleGuest}
             >
               <UserRound className="w-5 h-5" />
