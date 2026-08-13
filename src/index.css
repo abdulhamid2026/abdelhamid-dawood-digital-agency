@@ -337,3 +337,31 @@
 .blog-callout-success::before { content: "✅ نجاح"; }
 .blog-callout-tip { @apply border-violet-500/40 bg-violet-500/10; }
 .blog-callout-tip::before { content: "💡 نصيحة"; }
+
+/* ===== أدوات الهوية الجديدة ===== */
+.gradient-brand { background: var(--gradient-brand); }
+.gradient-red { background: var(--gradient-red); }
+.gradient-duo { background: var(--gradient-duo); }
+.text-gradient-brand {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-gradient-duo {
+  background: var(--gradient-duo);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.shadow-brand { box-shadow: var(--shadow-brand); }
+
+@keyframes wave-drift {
+  0%, 100% { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+  50% { transform: translate3d(2%, -2%, 0) rotate(6deg) scale(1.06); }
+}
+.animate-wave { animation: wave-drift 14s ease-in-out infinite; }
+
+@keyframes particle-float {
+  0%, 100% { transform: translateY(0); opacity: .5; }
+  50% { transform: translateY(-14px); opacity: 1; }
+}
+.animate-particle { animation: particle-float 6s ease-in-out infinite; }
