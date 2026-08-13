@@ -3,124 +3,149 @@
 @tailwind utilities;
 
 @layer base {
+  /* ===== الهوية الجديدة: أزرق / أحمر / أبيض ===== */
   :root {
-    /* Premium Dark Blue & Gold Theme */
-    --background: 222 47% 6%;
-    --foreground: 40 30% 95%;
+    --background: 210 60% 99%;
+    --foreground: 220 60% 14%;
 
-    --card: 222 40% 10%;
-    --card-foreground: 40 30% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 60% 14%;
 
-    --popover: 222 40% 8%;
-    --popover-foreground: 40 30% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 60% 14%;
 
-    --primary: 40 80% 55%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 220 90% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 30% 18%;
-    --secondary-foreground: 40 30% 95%;
+    --secondary: 214 60% 96%;
+    --secondary-foreground: 220 60% 18%;
 
-    --muted: 222 30% 15%;
-    --muted-foreground: 220 15% 60%;
+    --muted: 214 45% 95%;
+    --muted-foreground: 220 16% 45%;
 
-    --accent: 200 80% 50%;
-    --accent-foreground: 222 47% 6%;
+    --accent: 0 84% 52%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 222 30% 20%;
-    --input: 222 30% 18%;
-    --ring: 40 80% 55%;
+    --border: 214 40% 89%;
+    --input: 214 45% 94%;
+    --ring: 220 90% 45%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    /* Custom Colors */
-    --gold: 40 80% 55%;
-    --gold-light: 40 70% 70%;
-    --gold-dark: 40 90% 40%;
-    --navy: 222 47% 11%;
-    --navy-light: 222 40% 18%;
-    --navy-dark: 222 50% 6%;
+    /* ألوان الهوية */
+    --brand-blue: 220 90% 45%;
+    --brand-blue-dark: 224 85% 30%;
+    --brand-blue-light: 212 95% 58%;
+    --brand-red: 0 84% 52%;
+    --brand-red-dark: 356 78% 42%;
+
+    /* أسماء قديمة معاد توجيهها للهوية الجديدة */
+    --gold: 220 90% 45%;
+    --gold-light: 212 95% 58%;
+    --gold-dark: 224 85% 30%;
+    --navy: 224 85% 22%;
+    --navy-light: 220 70% 34%;
+    --navy-dark: 226 90% 14%;
     --success: 160 84% 39%;
     --whatsapp: 142 70% 45%;
 
-    /* Gradients */
-    --gradient-gold: linear-gradient(135deg, hsl(40 80% 55%), hsl(35 90% 45%));
-    --gradient-navy: linear-gradient(180deg, hsl(222 47% 11%), hsl(222 50% 6%));
-    --gradient-hero: linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(222 40% 18%) 50%, hsl(40 80% 55% / 0.1) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(222 40% 12%), hsl(222 45% 8%));
-    --gradient-glow: radial-gradient(ellipse at center, hsl(40 80% 55% / 0.15) 0%, transparent 70%);
+    --gradient-gold: linear-gradient(135deg, hsl(212 95% 55%), hsl(224 85% 32%));
+    --gradient-brand: linear-gradient(135deg, hsl(212 95% 55%), hsl(224 85% 32%));
+    --gradient-red: linear-gradient(135deg, hsl(0 84% 56%), hsl(356 78% 40%));
+    --gradient-duo: linear-gradient(120deg, hsl(224 85% 32%) 0%, hsl(212 95% 55%) 45%, hsl(0 84% 54%) 100%);
+    --gradient-navy: linear-gradient(180deg, hsl(224 85% 24%), hsl(226 90% 14%));
+    --gradient-hero: linear-gradient(135deg, hsl(210 100% 99%) 0%, hsl(212 90% 96%) 55%, hsl(0 84% 54% / 0.06) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(212 60% 98%));
+    --gradient-glow: radial-gradient(ellipse at center, hsl(220 90% 50% / 0.18) 0%, transparent 70%);
 
-    /* Shadows */
-    --shadow-gold: 0 4px 20px -4px hsl(40 80% 55% / 0.3);
-    --shadow-card: 0 8px 32px -8px hsl(222 50% 3% / 0.5);
-    --shadow-elevated: 0 20px 50px -15px hsl(222 50% 3% / 0.7);
-
-    --sidebar-background: 222 40% 8%;
-    --sidebar-foreground: 40 30% 95%;
-    --sidebar-primary: 40 80% 55%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 30% 18%;
-    --sidebar-accent-foreground: 40 30% 95%;
-    --sidebar-border: 222 30% 20%;
-    --sidebar-ring: 40 80% 55%;
-  }
-
-  .light {
-    --background: 40 30% 98%;
-    --foreground: 222 47% 11%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    --primary: 222 47% 20%;
-    --primary-foreground: 40 30% 98%;
-
-    --secondary: 40 20% 94%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 40 20% 94%;
-    --muted-foreground: 222 20% 45%;
-
-    --accent: 40 80% 55%;
-    --accent-foreground: 222 47% 11%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 40 20% 88%;
-    --input: 40 20% 90%;
-    --ring: 222 47% 20%;
-
-    --gold: 40 80% 50%;
-    --gold-light: 40 70% 60%;
-    --gold-dark: 40 90% 35%;
-    --navy: 222 47% 20%;
-    --navy-light: 222 40% 30%;
-    --navy-dark: 222 50% 11%;
-
-    --gradient-gold: linear-gradient(135deg, hsl(40 80% 50%), hsl(35 90% 40%));
-    --gradient-navy: linear-gradient(180deg, hsl(222 47% 20%), hsl(222 50% 11%));
-    --gradient-hero: linear-gradient(135deg, hsl(40 30% 98%) 0%, hsl(40 20% 94%) 50%, hsl(222 47% 20% / 0.05) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(40 20% 96%));
-    --gradient-glow: radial-gradient(ellipse at center, hsl(40 80% 55% / 0.1) 0%, transparent 70%);
-
-    --shadow-gold: 0 4px 20px -4px hsl(40 80% 50% / 0.25);
-    --shadow-card: 0 8px 32px -8px hsl(222 30% 50% / 0.1);
-    --shadow-elevated: 0 20px 50px -15px hsl(222 30% 50% / 0.15);
+    --shadow-gold: 0 8px 26px -8px hsl(220 90% 45% / 0.35);
+    --shadow-brand: 0 10px 30px -10px hsl(220 90% 45% / 0.4);
+    --shadow-card: 0 10px 34px -14px hsl(220 50% 40% / 0.18);
+    --shadow-elevated: 0 24px 60px -20px hsl(220 60% 35% / 0.25);
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 222 47% 20%;
-    --sidebar-primary-foreground: 40 30% 98%;
-    --sidebar-accent: 40 20% 94%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 40 20% 88%;
-    --sidebar-ring: 222 47% 20%;
+    --sidebar-foreground: 220 60% 14%;
+    --sidebar-primary: 220 90% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214 60% 96%;
+    --sidebar-accent-foreground: 220 60% 18%;
+    --sidebar-border: 214 40% 89%;
+    --sidebar-ring: 220 90% 45%;
+  }
+
+  /* الوضع الفاتح هو الافتراضي (نفس :root) */
+  .light {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: 226 60% 7%;
+    --foreground: 210 40% 96%;
+
+    --card: 225 50% 11%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 225 50% 10%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 212 95% 58%;
+    --primary-foreground: 226 60% 8%;
+
+    --secondary: 225 35% 18%;
+    --secondary-foreground: 210 40% 96%;
+
+    --muted: 225 30% 16%;
+    --muted-foreground: 214 20% 68%;
+
+    --accent: 0 84% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 225 30% 22%;
+    --input: 225 30% 20%;
+    --ring: 212 95% 58%;
+
+    --brand-blue: 212 95% 58%;
+    --brand-blue-dark: 224 85% 34%;
+    --brand-blue-light: 205 100% 68%;
+    --brand-red: 0 84% 58%;
+    --brand-red-dark: 356 78% 46%;
+
+    --gold: 212 95% 58%;
+    --gold-light: 205 100% 68%;
+    --gold-dark: 224 85% 34%;
+    --navy: 225 50% 14%;
+    --navy-light: 225 40% 22%;
+    --navy-dark: 226 60% 8%;
+
+    --gradient-gold: linear-gradient(135deg, hsl(205 100% 65%), hsl(224 85% 40%));
+    --gradient-brand: linear-gradient(135deg, hsl(205 100% 65%), hsl(224 85% 40%));
+    --gradient-red: linear-gradient(135deg, hsl(0 84% 60%), hsl(356 78% 44%));
+    --gradient-duo: linear-gradient(120deg, hsl(224 85% 38%) 0%, hsl(205 100% 62%) 45%, hsl(0 84% 58%) 100%);
+    --gradient-navy: linear-gradient(180deg, hsl(225 50% 14%), hsl(226 60% 8%));
+    --gradient-hero: linear-gradient(135deg, hsl(226 60% 9%) 0%, hsl(225 50% 13%) 55%, hsl(0 84% 55% / 0.12) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(225 50% 12%), hsl(226 55% 9%));
+    --gradient-glow: radial-gradient(ellipse at center, hsl(212 95% 58% / 0.22) 0%, transparent 70%);
+
+    --shadow-gold: 0 8px 26px -8px hsl(212 95% 58% / 0.35);
+    --shadow-brand: 0 10px 30px -10px hsl(212 95% 58% / 0.4);
+    --shadow-card: 0 10px 34px -14px hsl(226 70% 3% / 0.6);
+    --shadow-elevated: 0 24px 60px -20px hsl(226 70% 3% / 0.75);
+
+    --sidebar-background: 225 50% 10%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 212 95% 58%;
+    --sidebar-primary-foreground: 226 60% 8%;
+    --sidebar-accent: 225 35% 18%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 225 30% 22%;
+    --sidebar-ring: 212 95% 58%;
   }
 }
 
