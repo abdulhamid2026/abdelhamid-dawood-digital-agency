@@ -1,117 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
+import WaveBackground from '@/components/brand/WaveBackground';
+import LogoCard from '@/components/brand/LogoCard';
+import BrandTitle from '@/components/brand/BrandTitle';
+import WelcomeText from '@/components/brand/WelcomeText';
+import DateTimeCard from '@/components/brand/DateTimeCard';
+import PageIndicators from '@/components/brand/PageIndicators';
 
 interface SplashScreenProps {
   onComplete: () => void;
 }
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
-  const [currentTime, setCurrentTime] = useState(new Date());
   const { getSetting, getBool } = useSiteSettings();
 
   const duration = parseInt(getSetting('splash_duration', '5000'), 10) || 5000;
   const logoUrl = getSetting('site_logo_url');
-  const logoSize = parseInt(getSetting('splash_logo_size', '112'), 10) || 112;
-  const title = getSetting('splash_title') || getSetting('site_name');
-  const subtitle = getSetting('splash_subtitle') || getSetting('site_tagline');
+  const logoSize = parseInt(getSetting('splash_logo_size', '140'), 10) || 140;
+  const title = getSetting('splash_title') || getSetting('site_name') || 'منصة ابوكيان الرقمية';
+  const subtitle =
+    getSetting('splash_subtitle') ||
+    getSetting('site_tagline') ||
+    'خدمات الدعاية والإعلان والتسويق الإلكتروني والبرمجة والتطوير والإنتاج الفني';
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     const splashTimer = setTimeout(() => onComplete(), duration);
-    return () => { clearInterval(timer); clearTimeout(splashTimer); };
+    return () => clearTimeout(splashTimer);
   }, [onComplete, duration]);
 
-  const formatTime = (date: Date) => date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-  const formatDate = (date: Date) => date.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background overflow-hidden"
-      >
-        <div className="absolute inset-0 overflow-hidden platform-glow">
-          <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20"
-            style={{ background: 'var(--gradient-glow)' }}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.3, 0.2] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 overflow-hidden bg-background"
+    >
+      <WaveBackground className="platform-glow" />
 
+      <div className="relative z-10 h-full w-full overflow-y-auto flex flex-col items-center justify-center gap-6 sm:gap-8 px-5 py-10 text-center">
         {getBool('splash_show_logo') && (
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, ease: 'backOut' }}
-            className="relative z-10 mb-8"
-          >
-            {logoUrl ? (
-              <img
-                src={logoUrl}
-                alt={title}
-                style={{ width: logoSize, height: logoSize }}
-                className="rounded-3xl object-contain shadow-elevated"
-              />
-            ) : (
-              <div
-                style={{ width: logoSize, height: logoSize }}
-                className="rounded-3xl gradient-gold flex items-center justify-center shadow-elevated"
-              >
-                <Sparkles style={{ width: logoSize / 2, height: logoSize / 2 }} className="text-primary-foreground" />
-              </div>
-            )}
-          </motion.div>
-        )}
-
-        {title && (
-          <motion.h1
-            initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-gradient-gold mb-4 text-center px-4"
-          >{title}</motion.h1>
-        )}
-
-        {subtitle && (
-          <motion.p
-            initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5, duration: 0.6 }}
-            className="text-lg md:text-xl text-muted-foreground text-center max-w-md px-4 mb-8"
-          >{subtitle}</motion.p>
+          <LogoCard logoUrl={logoUrl} alt={title} size={logoSize} />
         )}
 
         <motion.div
-          initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.7, duration: 0.6 }}
-          className="text-center mb-8"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="space-y-3 max-w-xl"
         >
-          <p className="text-primary text-lg">{getSetting('splash_welcome', 'مرحباً بك')}</p>
-          <p className="text-muted-foreground">{getSetting('splash_welcome_sub', '')}</p>
+          <BrandTitle title={title} className="text-3xl sm:text-5xl" />
+          {subtitle && (
+            <p className="text-sm sm:text-lg text-muted-foreground leading-relaxed px-2">{subtitle}</p>
+          )}
         </motion.div>
+
+        <WelcomeText
+          title={getSetting('splash_welcome', 'مرحباً بك عزيزنا العميل')}
+          subtitle={getSetting('splash_welcome_sub', 'نسعد بخدمتكم دائماً')}
+        />
 
         {getBool('splash_show_time') && (
           <motion.div
-            initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }}
-            className="text-center glass bg-card/50 rounded-2xl px-8 py-4 border border-border"
+            initial={{ y: 24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="w-full"
           >
-            <p className="text-3xl font-bold text-primary mb-2">{formatTime(currentTime)}</p>
-            <p className="text-muted-foreground">{formatDate(currentTime)}</p>
+            <DateTimeCard />
           </motion.div>
         )}
 
         <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
-          className="absolute bottom-12 flex items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1 }}
+          className="pt-2"
         >
-          {[0, 0.2, 0.4].map(d => (
-            <motion.div key={d} className="w-2 h-2 rounded-full bg-primary"
-              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 1, repeat: Infinity, delay: d }} />
-          ))}
+          <PageIndicators count={3} active={0} />
         </motion.div>
-      </motion.div>
-    </AnimatePresence>
+      </div>
+    </motion.div>
   );
 };
 
