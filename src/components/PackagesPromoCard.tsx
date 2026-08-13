@@ -14,9 +14,9 @@ const PackagesPromoCard: React.FC = () => {
       whileHover={{ scale: 1.01 }}
       whileTap={{ scale: 0.98 }}
       onClick={() => navigate('/packages')}
-      className="relative cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 p-[2px] shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 transition-shadow duration-500"
+      className="relative cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500 via-blue-600 to-blue-800 p-[2px] shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/35 transition-shadow duration-500"
     >
-      <div className="relative overflow-hidden rounded-[14px] bg-gradient-to-br from-amber-400/90 via-yellow-500/90 to-orange-500/90 p-5">
+      <div className="relative overflow-hidden rounded-[14px] bg-gradient-to-br from-blue-500/95 via-blue-600/95 to-blue-800/95 p-5">
         {/* Background decorations */}
         <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 right-0 w-24 h-24 bg-white/10 rounded-full translate-x-1/2 translate-y-1/2" />
