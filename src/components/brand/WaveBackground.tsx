@@ -16,20 +16,26 @@ const WaveBackground: React.FC<{ className?: string }> = ({ className = '' }) =>
 
     {/* تموجات كبيرة */}
     <div
-      className="absolute -top-40 -right-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-50 animate-wave"
+      className="absolute -top-56 -right-40 w-[420px] h-[420px] rounded-full blur-3xl opacity-25 animate-wave"
       style={{ background: 'var(--gradient-brand)' }}
     />
     <div
-      className="absolute -top-24 -left-40 w-[420px] h-[420px] rounded-full blur-3xl opacity-30 animate-wave"
+      className="absolute -top-44 -left-48 w-[340px] h-[340px] rounded-full blur-3xl opacity-[0.18] animate-wave"
       style={{ background: 'var(--gradient-red)', animationDelay: '2s' }}
     />
     <div
-      className="absolute -bottom-48 -left-24 w-[560px] h-[560px] rounded-full blur-3xl opacity-40 animate-wave"
+      className="absolute -bottom-60 -left-40 w-[460px] h-[460px] rounded-full blur-3xl opacity-25 animate-wave"
       style={{ background: 'var(--gradient-duo)', animationDelay: '4s' }}
     />
     <div
-      className="absolute -bottom-32 -right-36 w-[420px] h-[420px] rounded-full blur-3xl opacity-30 animate-wave"
+      className="absolute -bottom-52 -right-44 w-[360px] h-[360px] rounded-full blur-3xl opacity-[0.18] animate-wave"
       style={{ background: 'var(--gradient-red)', animationDelay: '1s' }}
+    />
+
+    {/* طبقة تنعيم بيضاء فوق التموجات */}
+    <div
+      className="absolute inset-0"
+      style={{ background: 'radial-gradient(ellipse at center, hsl(var(--background) / 0.92) 30%, hsl(var(--background) / 0.55) 70%, transparent 100%)' }}
     />
 
     {/* جزيئات صغيرة */}
