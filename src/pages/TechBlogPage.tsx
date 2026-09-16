@@ -21,7 +21,7 @@ const TechBlogPage: React.FC = () => {
   const to = getSetting('tech_blog_gradient_to', '#0ea5e9');
   const title = getSetting('tech_blog_title', 'تدوينات معلوماتية');
   const subtitle = getSetting('tech_blog_subtitle', 'الأمن والمعلومات · الحماية من الثغرات والاختراقات · نصائح وحلول');
-  const note = getSetting('tech_blog_note', 'هذه الخدمة مقدمة لعملائنا وأصدقائنا الكرام. بكل حب.. من أبوكيان');
+  const note = getSetting('tech_blog_note', 'هذه الخدمة مقدمة لعملائنا وأصدقائنا الكرام. بكل حب.. من ابوطلال');
 
   const latest = activePosts.slice(0, 6);
 

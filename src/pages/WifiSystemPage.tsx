@@ -71,7 +71,7 @@ const WifiSystemPage: React.FC = () => {
 
   return (
     <>
-      <PageSeo title={`${product.name} | أنظمة التحكم - منصة ابوكيان الرقمية`} description={product.description || 'تفاصيل النظام'} path={`/wifi-networks/${product.id}`} />
+      <PageSeo title={`${product.name} | أنظمة التحكم - ابوطلال للدعاية والإعلان والتسويق الإلكتروني`} description={product.description || 'تفاصيل النظام'} path={`/wifi-networks/${product.id}`} />
       <div className="min-h-screen bg-background">
         <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
         <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

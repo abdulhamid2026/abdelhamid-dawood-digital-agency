@@ -253,7 +253,7 @@ const AdminAppsTable: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label>اسم المطور</Label>
-                    <Input value={form.developer_name} onChange={e => setForm({...form, developer_name: e.target.value})} placeholder="منصة ابوكيان الرقمية" />
+                    <Input value={form.developer_name} onChange={e => setForm({...form, developer_name: e.target.value})} placeholder="ابوطلال للدعاية والإعلان والتسويق الإلكتروني" />
                   </div>
                   <div>
                     <Label>اسم الحزمة</Label>

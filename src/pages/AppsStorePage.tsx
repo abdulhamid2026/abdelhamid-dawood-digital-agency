@@ -44,7 +44,7 @@ const AppCard: React.FC<{ app: App; index: number }> = ({ app, index }) => {
               </span>
             )}
           </div>
-          <p className="text-[10px] text-muted-foreground mt-0.5">{app.developer_name || 'منصة ابوكيان الرقمية'}</p>
+          <p className="text-[10px] text-muted-foreground mt-0.5">{app.developer_name || 'ابوطلال للدعاية والإعلان والتسويق الإلكتروني'}</p>
           <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{app.description}</p>
           <div className="flex items-center gap-3 mt-2">
             <div className="flex items-center gap-1">
@@ -104,7 +104,7 @@ const AppsStorePage: React.FC = () => {
                 </div>
               </motion.div>
               <h1 className="text-2xl font-bold text-white mb-1">متجر تطبيقاتنا</h1>
-              <p className="text-white/80 text-sm">برمجة وتطوير منصة ابوكيان الرقمية</p>
+              <p className="text-white/80 text-sm">برمجة وتطوير ابوطلال للدعاية والإعلان والتسويق الإلكتروني</p>
               <div className="flex items-center justify-center gap-4 mt-3">
                 <div className="flex items-center gap-1 text-white/70 text-xs">
                   <Shield className="w-3.5 h-3.5" />

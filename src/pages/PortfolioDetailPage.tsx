@@ -56,7 +56,7 @@ const PortfolioDetailPage: React.FC = () => {
 
   return (
     <>
-      <PageSeo title={`${item.title} | معرض أعمال منصة ابوكيان الرقمية`} description={item.description || 'تفاصيل العمل'} path={`/portfolio/${item.id}`} />
+      <PageSeo title={`${item.title} | معرض أعمال ابوطلال للدعاية والإعلان والتسويق الإلكتروني`} description={item.description || 'تفاصيل العمل'} path={`/portfolio/${item.id}`} />
       <div className="min-h-screen bg-background">
         <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
         <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

@@ -102,7 +102,7 @@ const AppDetailPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <PageSeo
-        title={`${app.name} — تحميل التطبيق | منصة ابوكيان الرقمية`}
+        title={`${app.name} — تحميل التطبيق | ابوطلال للدعاية والإعلان والتسويق الإلكتروني`}
         description={(app.description || `تحميل ${app.name} الإصدار ${app.version}`).slice(0, 155)}
         path={`/apps-store/${app.id}`}
       />
@@ -150,7 +150,7 @@ const AppDetailPage: React.FC = () => {
                   </div>
                   <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
                     <User2 className="w-3.5 h-3.5" />
-                    {app.developer_name || 'منصة ابوكيان الرقمية'}
+                    {app.developer_name || 'ابوطلال للدعاية والإعلان والتسويق الإلكتروني'}
                   </p>
                   <div className="flex items-center gap-2 mt-2">
                     <Stars value={avgRating} />

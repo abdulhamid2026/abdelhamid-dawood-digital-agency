@@ -90,7 +90,7 @@ const HeroSlider: React.FC = () => {
                 initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
                 className="mb-3 inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold bg-primary/15 text-primary border border-primary/30 glass"
               >
-                ★ منصة ابوكيان الرقمية
+                ★ ابوطلال للدعاية والإعلان والتسويق الإلكتروني
               </motion.span>
               <motion.h2
                 initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}

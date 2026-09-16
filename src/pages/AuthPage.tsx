@@ -29,7 +29,7 @@ const AuthPage: React.FC = () => {
 
   const logoUrl = getSetting('site_logo_url');
   const logoSize = parseInt(getSetting('auth_logo_size', '80'), 10) || 80;
-  const authTitle = getSetting('auth_title') || getSetting('site_name') || 'منصة ابوكيان الرقمية';
+  const authTitle = getSetting('auth_title') || getSetting('site_name') || 'ابوطلال للدعاية والإعلان والتسويق الإلكتروني';
   const authSubtitle = getSetting('auth_subtitle') || getSetting('site_tagline') || 'خدمات الدعاية والإعلان';
   const showRegister = getBool('auth_show_register');
   const showGuest = getBool('auth_show_guest');

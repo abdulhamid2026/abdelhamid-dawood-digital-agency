@@ -12,7 +12,7 @@ import { createClient } from "npm:@supabase/supabase-js@^2.94.1";
 var list_services_default = defineTool({
   name: "list_services",
   title: "List services",
-  description: "List active marketing/advertising services offered by \u0645\u0646\u0635\u0629 \u0627\u0628\u0648\u0643\u064A\u0627\u0646 \u0627\u0644\u0631\u0642\u0645\u064A\u0629.",
+  description: "List active marketing/advertising services offered by \u0627\u0628\u0648\u0637\u0644\u0627\u0644 \u0644\u0644\u062F\u0639\u0627\u064A\u0629 \u0648\u0627\u0644\u0625\u0639\u0644\u0627\u0646 \u0648\u0627\u0644\u062A\u0633\u0648\u064A\u0642 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A.",
   inputSchema: {
     limit: z.number().int().min(1).max(100).optional().describe("Max services to return (default 50).")
   },
@@ -60,7 +60,7 @@ import { createClient as createClient3 } from "npm:@supabase/supabase-js@^2.94.1
 var list_ai_tools_default = defineTool3({
   name: "list_ai_tools",
   title: "List AI tools",
-  description: "List active AI tools and models curated on \u0645\u0646\u0635\u0629 \u0627\u0628\u0648\u0643\u064A\u0627\u0646 \u0627\u0644\u0631\u0642\u0645\u064A\u0629.",
+  description: "List active AI tools and models curated on \u0627\u0628\u0648\u0637\u0644\u0627\u0644 \u0644\u0644\u062F\u0639\u0627\u064A\u0629 \u0648\u0627\u0644\u0625\u0639\u0644\u0627\u0646 \u0648\u0627\u0644\u062A\u0633\u0648\u064A\u0642 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A.",
   inputSchema: {
     category: z3.string().optional().describe("Optional category filter (chat, image, video, audio, text, code, other)."),
     featured_only: z3.boolean().optional().describe("If true, return only featured tools.")
@@ -87,7 +87,7 @@ import { createClient as createClient4 } from "npm:@supabase/supabase-js@^2.94.1
 var list_news_default = defineTool4({
   name: "list_news",
   title: "List news ticker items",
-  description: "List active news ticker announcements published on \u0645\u0646\u0635\u0629 \u0627\u0628\u0648\u0643\u064A\u0627\u0646 \u0627\u0644\u0631\u0642\u0645\u064A\u0629.",
+  description: "List active news ticker announcements published on \u0627\u0628\u0648\u0637\u0644\u0627\u0644 \u0644\u0644\u062F\u0639\u0627\u064A\u0629 \u0648\u0627\u0644\u0625\u0639\u0644\u0627\u0646 \u0648\u0627\u0644\u062A\u0633\u0648\u064A\u0642 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A.",
   inputSchema: {
     limit: z4.number().int().min(1).max(50).optional()
   },
@@ -105,10 +105,10 @@ var list_news_default = defineTool4({
 
 // src/lib/mcp/index.ts
 var mcp_default = defineMcp({
-  name: "abukayan-platform-mcp",
-  title: "\u0645\u0646\u0635\u0629 \u0627\u0628\u0648\u0643\u064A\u0627\u0646 \u0627\u0644\u0631\u0642\u0645\u064A\u0629 MCP",
+  name: "abotalal-platform-mcp",
+  title: "\u0627\u0628\u0648\u0637\u0644\u0627\u0644 \u0644\u0644\u062F\u0639\u0627\u064A\u0629 \u0648\u0627\u0644\u0625\u0639\u0644\u0627\u0646 \u0648\u0627\u0644\u062A\u0633\u0648\u064A\u0642 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A MCP",
   version: "0.1.0",
-  instructions: "Public catalog of \u0645\u0646\u0635\u0629 \u0627\u0628\u0648\u0643\u064A\u0627\u0646 \u0627\u0644\u0631\u0642\u0645\u064A\u0629 (Abukayan Digital Platform): marketing/advertising services, promotional packages, curated AI tools, and news ticker announcements. Use these read-only tools to answer questions about what the platform offers.",
+  instructions: "Public catalog of \u0627\u0628\u0648\u0637\u0644\u0627\u0644 \u0644\u0644\u062F\u0639\u0627\u064A\u0629 \u0648\u0627\u0644\u0625\u0639\u0644\u0627\u0646 \u0648\u0627\u0644\u062A\u0633\u0648\u064A\u0642 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A (Abotalal Advertising and Digital Marketing): marketing/advertising services, promotional packages, curated AI tools, and news ticker announcements. Use these read-only tools to answer questions about what the platform offers.",
   tools: [list_services_default, list_packages_default, list_ai_tools_default, list_news_default]
 });
 
