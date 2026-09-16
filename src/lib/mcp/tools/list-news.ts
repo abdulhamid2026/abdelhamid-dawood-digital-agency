@@ -7,7 +7,7 @@ declare const process: { env: Record<string, string | undefined> };
 export default defineTool({
   name: "list_news",
   title: "List news ticker items",
-  description: "List active news ticker announcements published on منصة ابوكيان الرقمية.",
+  description: "List active news ticker announcements published on ابوطلال للدعاية والإعلان والتسويق الإلكتروني.",
   inputSchema: {
     limit: z.number().int().min(1).max(50).optional(),
   },

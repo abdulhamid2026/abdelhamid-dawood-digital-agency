@@ -62,8 +62,8 @@ const BookingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <PageSeo
-        title="حجز موعد | منصة ابوكيان الرقمية"
-        description="احجز موعدك الآن مع فريق منصة ابوكيان الرقمية لبدء مشروعك في الدعاية والإعلان والتسويق الإلكتروني."
+        title="حجز موعد | ابوطلال للدعاية والإعلان والتسويق الإلكتروني"
+        description="احجز موعدك الآن مع فريق ابوطلال للدعاية والإعلان والتسويق الإلكتروني لبدء مشروعك في الدعاية والإعلان والتسويق الإلكتروني."
         path="/booking"
       />
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />

@@ -99,7 +99,7 @@ const WifiPurchasePage: React.FC = () => {
 
   return (
     <>
-      <PageSeo title={`شراء ${product.name} | منصة ابوكيان الرقمية`} description={`إتمام طلب شراء ${product.name}`} path={`/wifi-networks/${product.id}/purchase`} />
+      <PageSeo title={`شراء ${product.name} | ابوطلال للدعاية والإعلان والتسويق الإلكتروني`} description={`إتمام طلب شراء ${product.name}`} path={`/wifi-networks/${product.id}/purchase`} />
       <div className="min-h-screen bg-background">
         <TopBar onMenuClick={() => setIsDrawerOpen(true)} />
         <DrawerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

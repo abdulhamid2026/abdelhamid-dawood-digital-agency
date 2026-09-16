@@ -32,8 +32,8 @@ const AssistantPage: React.FC = () => {
   const displayName = profile?.name || (user?.email ? user.email.split('@')[0] : '');
 
   const welcome = displayName
-    ? `أهلاً بك يا ${displayName} 👋\nأنا مساعد ابوكيان الذكي، سعيد بعودتك! اسألني عن أي شيء داخل المنصة: الخدمات، الباقات، الأسعار، متجر التطبيقات، شبكات الواي فاي، أو طريقة التواصل مع الإدارة.`
-    : 'أهلاً وسهلاً بك في منصة ابوكيان الرقمية 👋\nأنا المساعد الذكي، جاهز للإجابة عن كل أسئلتك.\nوأنصحك بإنشاء حساب مجاني للاستفادة من جميع الخدمات ومتابعة طلباتك ومراسلة الإدارة.';
+    ? `أهلاً بك يا ${displayName} 👋\nأنا مساعد ابوطلال الذكي، سعيد بعودتك! اسألني عن أي شيء داخل المنصة: الخدمات، الباقات، الأسعار، متجر التطبيقات، شبكات الواي فاي، أو طريقة التواصل مع الإدارة.`
+    : 'أهلاً وسهلاً بك في ابوطلال للدعاية والإعلان والتسويق الإلكتروني 👋\nأنا المساعد الذكي، جاهز للإجابة عن كل أسئلتك.\nوأنصحك بإنشاء حساب مجاني للاستفادة من جميع الخدمات ومتابعة طلباتك ومراسلة الإدارة.';
 
   const [messages, setMessages] = useState<Message[]>([{ id: 1, text: welcome, isBot: true }]);
   const [input, setInput] = useState('');
@@ -105,7 +105,7 @@ const AssistantPage: React.FC = () => {
               <Bot className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="flex-1">
-              <h1 className="font-bold text-foreground">مساعد ابوكيان الذكي</h1>
+              <h1 className="font-bold text-foreground">مساعد ابوطلال الذكي</h1>
               <p className="text-xs text-emerald-500">متصل الآن • مدعوم بالذكاء الاصطناعي</p>
             </div>
           </div>

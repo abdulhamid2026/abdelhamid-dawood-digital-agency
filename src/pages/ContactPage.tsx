@@ -30,8 +30,8 @@ const contactMethods = [
   {
     icon: Mail,
     title: 'البريد الإلكتروني',
-    value: 'info@abukayan.com',
-    action: () => window.open('mailto:info@abukayan.com'),
+    value: 'info@abotalal.com',
+    action: () => window.open('mailto:info@abotalal.com'),
     color: 'from-violet-500 to-purple-600',
   },
   {
@@ -54,8 +54,8 @@ const ContactPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <PageSeo
-        title="تواصل معنا | منصة ابوكيان الرقمية"
-        description="تواصل مع فريق منصة ابوكيان الرقمية عبر الهاتف أو واتساب أو البريد للاستفسار عن خدمات الدعاية والإعلان والتسويق."
+        title="تواصل معنا | ابوطلال للدعاية والإعلان والتسويق الإلكتروني"
+        description="تواصل مع فريق ابوطلال للدعاية والإعلان والتسويق الإلكتروني عبر الهاتف أو واتساب أو البريد للاستفسار عن خدمات الدعاية والإعلان والتسويق."
         path="/contact"
       />
       <TopBar onMenuClick={() => setIsDrawerOpen(true)} />

@@ -7,7 +7,7 @@ declare const process: { env: Record<string, string | undefined> };
 export default defineTool({
   name: "list_services",
   title: "List services",
-  description: "List active marketing/advertising services offered by منصة ابوكيان الرقمية.",
+  description: "List active marketing/advertising services offered by ابوطلال للدعاية والإعلان والتسويق الإلكتروني.",
   inputSchema: {
     limit: z.number().int().min(1).max(100).optional().describe("Max services to return (default 50)."),
   },

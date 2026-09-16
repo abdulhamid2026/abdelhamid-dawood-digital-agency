@@ -7,7 +7,7 @@ declare const process: { env: Record<string, string | undefined> };
 export default defineTool({
   name: "list_ai_tools",
   title: "List AI tools",
-  description: "List active AI tools and models curated on منصة ابوكيان الرقمية.",
+  description: "List active AI tools and models curated on ابوطلال للدعاية والإعلان والتسويق الإلكتروني.",
   inputSchema: {
     category: z.string().optional().describe("Optional category filter (chat, image, video, audio, text, code, other)."),
     featured_only: z.boolean().optional().describe("If true, return only featured tools."),

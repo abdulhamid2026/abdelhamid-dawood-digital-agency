@@ -18,7 +18,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
   const duration = parseInt(getSetting('splash_duration', '5000'), 10) || 5000;
   const logoUrl = getSetting('site_logo_url');
   const logoSize = parseInt(getSetting('splash_logo_size', '140'), 10) || 140;
-  const title = getSetting('splash_title') || getSetting('site_name') || 'منصة ابوكيان الرقمية';
+  const title = getSetting('splash_title') || getSetting('site_name') || 'ابوطلال للدعاية والإعلان والتسويق الإلكتروني';
   const subtitle =
     getSetting('splash_subtitle') ||
     getSetting('site_tagline') ||
