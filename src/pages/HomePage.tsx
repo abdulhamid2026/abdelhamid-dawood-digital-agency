@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>ابوطلال للدعاية والإعلان والتسويق الإلكتروني | خدمات الدعاية والإعلان والتسويق</title>
-        <meta name="description" content="ابوطلال للدعاية والإعلان والتسويق الإلكتروني للدعاية والإعلان والتسويق الإلكتروني وإدارة المواقع والمونتاج والحماية — خدمات احترافية متكاملة." />
+        <meta name="description" content="ابوطلال للدعاية والإعلان والتسويق الإلكتروني وإدارة المواقع والمونتاج والحماية — خدمات احترافية متكاملة." />
         <link rel="canonical" href="https://abdulhamid-hub.lovable.app/" />
         <meta property="og:title" content="ابوطلال للدعاية والإعلان والتسويق الإلكتروني | خدمات الدعاية والإعلان والتسويق" />
         <meta property="og:description" content="خدمات دعاية وإعلان وتسويق إلكتروني احترافية متكاملة." />
