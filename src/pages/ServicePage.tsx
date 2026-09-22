@@ -153,7 +153,7 @@ const ServicePage: React.FC = () => {
     <div className="min-h-screen bg-background">
       <PageSeo
         title={`${service.title} | ابوطلال للدعاية والإعلان والتسويق الإلكتروني`}
-        description={service.description || `تعرف على خدمة ${service.title} من ابوطلال للدعاية والإعلان والتسويق الإلكتروني للدعاية والإعلان والتسويق الإلكتروني.`}
+        description={service.description || `تعرف على خدمة ${service.title} من ابوطلال للدعاية والإعلان والتسويق الإلكتروني.`}
         path={`/services/${serviceId}`}
         jsonLd={{
           '@context': 'https://schema.org',
